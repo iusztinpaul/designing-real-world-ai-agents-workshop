@@ -208,4 +208,5 @@ __marimo__/
 
 # Test working directories
 test_logic/
+test_all/
 .memory/
