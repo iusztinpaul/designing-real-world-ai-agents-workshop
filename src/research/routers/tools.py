@@ -27,7 +27,7 @@ def register_mcp_tools(mcp: FastMCP) -> None:
 
         Reads the seed file in the working directory and uses Gemini to extract
         structured research information. Results are saved to
-        .nova/seed_extraction.json.
+        .memory/seed_extraction.json.
 
         Args:
             working_dir: Path to the working directory containing the seed file.
@@ -47,7 +47,7 @@ def register_mcp_tools(mcp: FastMCP) -> None:
         """Transcribe YouTube videos using Gemini.
 
         Processes each YouTube URL and saves the transcription as a markdown
-        file in .nova/transcripts/.
+        file in .memory/transcripts/.
 
         Args:
             working_dir: Path to the working directory.
@@ -70,7 +70,7 @@ def register_mcp_tools(mcp: FastMCP) -> None:
         transcripts to identify gaps and propose new web-search questions.
 
         Args:
-            working_dir: Path to the working directory containing .nova/ data.
+            working_dir: Path to the working directory containing .memory/ data.
             n_queries: Number of queries to generate (default: 3).
         """
 
@@ -85,7 +85,7 @@ def register_mcp_tools(mcp: FastMCP) -> None:
         """Run Gemini grounded search for a list of research queries.
 
         Executes each query using Gemini with Google Search grounding and
-        appends results to .nova/research_results.json.
+        appends results to .memory/research_results.json.
 
         Args:
             working_dir: Path to the working directory.
@@ -103,7 +103,7 @@ def register_mcp_tools(mcp: FastMCP) -> None:
         """Filter and select high-quality sources from research results.
 
         Uses Gemini to evaluate sources for trustworthiness, authority, and
-        relevance. Results are saved to .nova/selected_sources.json.
+        relevance. Results are saved to .memory/selected_sources.json.
 
         Args:
             working_dir: Path to the working directory.
@@ -119,11 +119,11 @@ def register_mcp_tools(mcp: FastMCP) -> None:
     async def create_research_file(working_dir: str) -> dict[str, Any]:
         """Generate the final comprehensive research.md file.
 
-        Combines all research data from .nova/ into a structured markdown
+        Combines all research data from .memory/ into a structured markdown
         file with collapsible sections for easy navigation.
 
         Args:
-            working_dir: Path to the working directory containing .nova/ data.
+            working_dir: Path to the working directory containing .memory/ data.
         """
 
         return create_research_file_tool(working_dir)

@@ -5,9 +5,9 @@ import logging
 from typing import Any
 
 from research.app.research_handler import run_grounded_search
-from research.config.constants import NOVA_FOLDER, RESEARCH_RESULTS_FILE
+from research.config.constants import MEMORY_FOLDER, RESEARCH_RESULTS_FILE
 from research.utils.file_utils import (
-    ensure_nova_dir,
+    ensure_memory_dir,
     load_json,
     save_json,
     validate_directory,
@@ -20,7 +20,7 @@ async def run_research_tool(working_dir: str, queries: list[str]) -> dict[str, A
     """Run Gemini grounded search for a list of research queries.
 
     Executes each query using Gemini with Google Search grounding and appends
-    results to .nova/research_results.json.
+    results to .memory/research_results.json.
 
     Args:
         working_dir: Path to the working directory.
@@ -31,7 +31,7 @@ async def run_research_tool(working_dir: str, queries: list[str]) -> dict[str, A
     """
 
     validate_directory(working_dir)
-    nova_path = ensure_nova_dir(working_dir)
+    memory_path = ensure_memory_dir(working_dir)
 
     if not queries:
         return {
@@ -40,7 +40,7 @@ async def run_research_tool(working_dir: str, queries: list[str]) -> dict[str, A
             "queries_processed": 0,
         }
 
-    results_path = nova_path / RESEARCH_RESULTS_FILE
+    results_path = memory_path / RESEARCH_RESULTS_FILE
 
     # Load existing results
     existing_results = load_json(results_path, default=[])
@@ -73,6 +73,6 @@ async def run_research_tool(working_dir: str, queries: list[str]) -> dict[str, A
         "message": (
             f"Completed {successful}/{len(queries)} research queries. "
             f"Found {total_sources} sources. "
-            f"Results saved to {NOVA_FOLDER}/{RESEARCH_RESULTS_FILE}"
+            f"Results saved to {MEMORY_FOLDER}/{RESEARCH_RESULTS_FILE}"
         ),
     }

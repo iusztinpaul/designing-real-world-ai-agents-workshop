@@ -75,8 +75,8 @@ async def run_workflow(client: Client, working_dir: str, iterations: int) -> Non
         print_step("2", f"Transcribe YouTube videos ({youtube_count} found)")
 
         # Read the seed extraction to get the actual URLs
-        nova_dir = Path(working_dir) / ".nova"
-        seed_extraction_path = nova_dir / "seed_extraction.json"
+        memory_dir = Path(working_dir) / ".memory"
+        seed_extraction_path = memory_dir / "seed_extraction.json"
         seed_data = json.loads(seed_extraction_path.read_text(encoding="utf-8"))
         youtube_urls = seed_data.get("youtube_urls", [])
 

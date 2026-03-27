@@ -13,6 +13,20 @@
       "env": {
         "ENV_FILE_PATH": ".env"
       }
+    },
+    "linkedin-writer": {
+      "command": "uv",
+      "args": [
+        "run",
+        "--directory",
+        "/Users/pauliusztin/Documents/01-Projects/Agentic-AI-Engineering-Course/designing-real-world-ai-agents-workshop",
+        "fastmcp",
+        "run",
+        "src/writing/server.py"
+      ],
+      "env": {
+        "ENV_FILE_PATH": ".env"
+      }
     }
   }
 }

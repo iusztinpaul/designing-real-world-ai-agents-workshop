@@ -15,8 +15,16 @@ project-root/
 │   │   ├── tools/             # MCP tool implementations
 │   │   ├── routers/           # MCP tool, resource, and prompt registration
 │   │   └── utils/             # Gemini client, file I/O, markdown helpers
-│   └── writing/               # Writing Workflow MCP server
-├── inputs/                    # Seed files for research
+│   └── writing/               # LinkedIn Writer MCP server
+│       ├── server.py          # FastMCP entry point
+│       ├── profiles/          # Shipped markdown profiles (structure, terminology, character)
+│       ├── config/            # Settings, constants, prompt templates
+│       ├── models/            # Pydantic schemas (Post, Review, Profiles)
+│       ├── app/               # Business logic handlers (writer, reviewer, image, profile loader)
+│       ├── tools/             # MCP tool implementations
+│       ├── routers/           # MCP tool, resource, and prompt registration
+│       └── utils/             # Gemini client helpers (text + Imagen)
+├── inputs/                    # Seed and guideline files
 ├── scripts/                   # Entrypoints and test scripts
 └── .env.example               # All supported env vars
 ```

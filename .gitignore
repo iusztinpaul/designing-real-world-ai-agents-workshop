@@ -206,6 +206,6 @@ marimo/_static/
 marimo/_lsp/
 __marimo__/
 
-# Research working directories
-test_research/
-.nova/
+# Test working directories
+test_logic/
+.memory/

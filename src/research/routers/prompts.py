@@ -21,13 +21,13 @@ If the user doesn't provide it, ask for it before executing any tool.
 
     1.3. Call the `extract_seed` tool with the working_dir (and optionally a custom
     seed_filename). This reads the seed file and extracts YouTube URLs, topics, and
-    research questions. Results are saved to .nova/seed_extraction.json.
+    research questions. Results are saved to .memory/seed_extraction.json.
 
 2. **Transcribe YouTube videos (if applicable):**
 
     If Step 1 found YouTube URLs, call the `transcribe_youtube` tool with the
     working_dir and the list of YouTube URLs. Transcriptions are saved to
-    .nova/transcripts/.
+    .memory/transcripts/.
 
     Note: Video transcription can be time-consuming. A 30-minute video may take
     approximately 4 minutes.
@@ -42,11 +42,11 @@ If the user doesn't provide it, ask for it before executing any tool.
 
     3.2. Call `run_research` with the working_dir and the list of query strings
     from step 3.1. This executes Gemini grounded search for each query and appends
-    results to .nova/research_results.json.
+    results to .memory/research_results.json.
 
     3.3. Call `select_sources` with the working_dir. This filters the research
     sources for quality, trustworthiness, and relevance. Selected sources are saved
-    to .nova/selected_sources.json.
+    to .memory/selected_sources.json.
 
 4. **Create the final research file:**
 
@@ -59,7 +59,7 @@ If the user doesn't provide it, ask for it before executing any tool.
 ```
 working_dir/
 ├── seed.md                             # Input: Seed document
-├── .nova/                              # Working directory for intermediate files
+├── .memory/                              # Working directory for intermediate files
 │   ├── seed_extraction.json            # Extracted topics, questions, YouTube URLs
 │   ├── transcripts/                    # YouTube video transcripts
 │   │   └── [video_id].md

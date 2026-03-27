@@ -14,11 +14,11 @@ logger = logging.getLogger(__name__)
 def create_research_file_tool(working_dir: str) -> dict[str, Any]:
     """Generate the final comprehensive research.md file.
 
-    Combines all research data from .nova/ into a structured markdown file
+    Combines all research data from .memory/ into a structured markdown file
     with collapsible sections for easy navigation.
 
     Args:
-        working_dir: Path to the working directory containing .nova/ data.
+        working_dir: Path to the working directory containing .memory/ data.
 
     Returns:
         Dict with status, generated file path, and summary.

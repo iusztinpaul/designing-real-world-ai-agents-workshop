@@ -4,7 +4,7 @@ import logging
 from pathlib import Path
 
 from research.config.constants import (
-    NOVA_FOLDER,
+    MEMORY_FOLDER,
     RESEARCH_RESULTS_FILE,
     SELECTED_SOURCES_FILE,
     TRANSCRIPTS_FOLDER,
@@ -22,7 +22,7 @@ logger = logging.getLogger(__name__)
 def compile_research_file(working_dir: str) -> str:
     """Compile all research data into a final markdown document.
 
-    Reads all intermediate files from .nova/ and assembles them into a
+    Reads all intermediate files from .memory/ and assembles them into a
     structured research.md with collapsible sections.
 
     Args:
@@ -32,16 +32,16 @@ def compile_research_file(working_dir: str) -> str:
         The complete markdown document as a string.
     """
 
-    nova_path = Path(working_dir) / NOVA_FOLDER
+    memory_path = Path(working_dir) / MEMORY_FOLDER
 
     # Load research results
-    research_results = load_json(nova_path / RESEARCH_RESULTS_FILE, default=[])
+    research_results = load_json(memory_path / RESEARCH_RESULTS_FILE, default=[])
 
     # Load selected sources
-    selected_sources = load_json(nova_path / SELECTED_SOURCES_FILE, default=[])
+    selected_sources = load_json(memory_path / SELECTED_SOURCES_FILE, default=[])
 
     # Load YouTube transcripts
-    transcripts_dir = nova_path / TRANSCRIPTS_FOLDER
+    transcripts_dir = memory_path / TRANSCRIPTS_FOLDER
     youtube_sources: list[tuple[str, str]] = []
     if transcripts_dir.exists():
         for md_file in sorted(transcripts_dir.glob("*.md")):

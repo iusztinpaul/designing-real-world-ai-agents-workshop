@@ -31,7 +31,20 @@ lint-check: # Check code for linting issues without fixing them using ruff linte
 run-research-server: # Run the Deep Research MCP server (stdio transport).
 	uv run fastmcp run src/research/server.py
 
-test-research-workflow: # Test the full research workflow via MCP client against inputs/seed.md.
-	@mkdir -p test_research
-	@cp inputs/seed.md test_research/seed.md
-	uv run python scripts/test_research_workflow.py --working-dir test_research --iterations 2
+run-writing-server: # Run the LinkedIn Writer MCP server (stdio transport).
+	uv run fastmcp run src/writing/server.py
+
+test-research-workflow: # Test the research workflow via MCP client.
+	@mkdir -p test_logic
+	@cp inputs/seed.md test_logic/seed.md
+	uv run python scripts/test_research_workflow.py --working-dir test_logic --iterations 2
+
+test-writing-workflow: # Test the writing workflow via MCP client (requires research.md in test_logic/).
+	@mkdir -p test_logic
+	@cp inputs/guideline.md test_logic/guideline.md
+	@test -f test_logic/research.md || (echo "ERROR: test_logic/research.md not found. Run test-research-workflow first." && exit 1)
+	uv run python scripts/test_writing_workflow.py --working-dir test_logic
+
+test-end-to-end: # Test research + writing workflows end-to-end.
+	make test-research-workflow
+	make test-writing-workflow

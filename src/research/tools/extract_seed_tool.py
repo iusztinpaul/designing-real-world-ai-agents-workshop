@@ -5,8 +5,8 @@ from pathlib import Path
 from typing import Any
 
 from research.app.seed_handler import extract_seed_content
-from research.config.constants import NOVA_FOLDER, SEED_EXTRACTION_FILE, SEED_FILE
-from research.utils.file_utils import ensure_nova_dir, save_json, validate_directory
+from research.config.constants import MEMORY_FOLDER, SEED_EXTRACTION_FILE, SEED_FILE
+from research.utils.file_utils import ensure_memory_dir, save_json, validate_directory
 
 logger = logging.getLogger(__name__)
 
@@ -17,7 +17,7 @@ async def extract_seed_tool(
     """Extract topics, questions, and YouTube URLs from a seed file.
 
     Reads the seed file in the working directory and uses Gemini to extract
-    structured research information. Results are saved to .nova/seed_extraction.json.
+    structured research information. Results are saved to .memory/seed_extraction.json.
 
     Args:
         working_dir: Path to the working directory containing the seed file.
@@ -28,7 +28,7 @@ async def extract_seed_tool(
     """
 
     validate_directory(working_dir)
-    nova_path = ensure_nova_dir(working_dir)
+    memory_path = ensure_memory_dir(working_dir)
 
     seed_path = Path(working_dir) / seed_filename
     if not seed_path.exists():
@@ -46,7 +46,7 @@ async def extract_seed_tool(
     extraction_data = extraction.model_dump()
     extraction_data["raw_context"] = seed_text
 
-    output_path = nova_path / SEED_EXTRACTION_FILE
+    output_path = memory_path / SEED_EXTRACTION_FILE
     save_json(output_path, extraction_data)
 
     return {
@@ -60,6 +60,6 @@ async def extract_seed_tool(
             f"{len(extraction.youtube_urls)} YouTube URLs, "
             f"{len(extraction.topics)} topics, "
             f"{len(extraction.research_questions)} research questions. "
-            f"Results saved to {NOVA_FOLDER}/{SEED_EXTRACTION_FILE}"
+            f"Results saved to {MEMORY_FOLDER}/{SEED_EXTRACTION_FILE}"
         ),
     }

@@ -9,7 +9,7 @@ SELECTED_SOURCES_FILE = "selected_sources.json"
 QUERIES_FILE = "queries.json"
 
 # Folder names
-NOVA_FOLDER = ".nova"
+MEMORY_FOLDER = ".memory"
 TRANSCRIPTS_FOLDER = "transcripts"
 
 # YouTube operation constants

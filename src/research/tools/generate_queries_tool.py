@@ -5,14 +5,14 @@ from typing import Any
 
 from research.app.query_handler import generate_queries
 from research.config.constants import (
-    NOVA_FOLDER,
+    MEMORY_FOLDER,
     QUERIES_FILE,
     RESEARCH_RESULTS_FILE,
     SEED_EXTRACTION_FILE,
     TRANSCRIPTS_FOLDER,
 )
 from research.utils.file_utils import (
-    ensure_nova_dir,
+    ensure_memory_dir,
     load_json,
     read_file,
     save_json,
@@ -29,7 +29,7 @@ async def generate_queries_tool(working_dir: str, n_queries: int = 3) -> dict[st
     to identify gaps and propose new web-search questions.
 
     Args:
-        working_dir: Path to the working directory containing .nova/ data.
+        working_dir: Path to the working directory containing .memory/ data.
         n_queries: Number of queries to generate (default: 3).
 
     Returns:
@@ -37,14 +37,14 @@ async def generate_queries_tool(working_dir: str, n_queries: int = 3) -> dict[st
     """
 
     validate_directory(working_dir)
-    nova_path = ensure_nova_dir(working_dir)
+    memory_path = ensure_memory_dir(working_dir)
 
     # Load seed context
-    seed_data = load_json(nova_path / SEED_EXTRACTION_FILE)
+    seed_data = load_json(memory_path / SEED_EXTRACTION_FILE)
     seed_context = seed_data.get("raw_context", "")
 
     # Load past research results
-    research_results = load_json(nova_path / RESEARCH_RESULTS_FILE, default=[])
+    research_results = load_json(memory_path / RESEARCH_RESULTS_FILE, default=[])
     past_research = ""
     if research_results:
         parts = []
@@ -53,7 +53,7 @@ async def generate_queries_tool(working_dir: str, n_queries: int = 3) -> dict[st
         past_research = "\n\n---\n\n".join(parts)
 
     # Load YouTube transcripts
-    transcripts_dir = nova_path / TRANSCRIPTS_FOLDER
+    transcripts_dir = memory_path / TRANSCRIPTS_FOLDER
     youtube_transcripts = ""
     if transcripts_dir.exists():
         transcript_parts = []
@@ -72,7 +72,7 @@ async def generate_queries_tool(working_dir: str, n_queries: int = 3) -> dict[st
 
     # Save queries
     queries_data = [q.model_dump() for q in queries]
-    output_path = nova_path / QUERIES_FILE
+    output_path = memory_path / QUERIES_FILE
     save_json(output_path, queries_data)
 
     # Format for display
@@ -88,6 +88,6 @@ async def generate_queries_tool(working_dir: str, n_queries: int = 3) -> dict[st
         "output_path": str(output_path.resolve()),
         "message": (
             f"Generated {len(queries)} research queries. "
-            f"Saved to {NOVA_FOLDER}/{QUERIES_FILE}\n\n{queries_display}"
+            f"Saved to {MEMORY_FOLDER}/{QUERIES_FILE}\n\n{queries_display}"
         ),
     }

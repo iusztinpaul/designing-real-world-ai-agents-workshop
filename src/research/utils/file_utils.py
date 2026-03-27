@@ -5,18 +5,18 @@ import logging
 from pathlib import Path
 from typing import Any
 
-from research.config.constants import NOVA_FOLDER
+from research.config.constants import MEMORY_FOLDER
 
 logger = logging.getLogger(__name__)
 
 
-def ensure_nova_dir(working_dir: str) -> Path:
-    """Create the .nova/ directory if it doesn't exist and return its path."""
+def ensure_memory_dir(working_dir: str) -> Path:
+    """Create the .memory/ directory if it doesn't exist and return its path."""
 
-    nova_path = Path(working_dir) / NOVA_FOLDER
-    nova_path.mkdir(parents=True, exist_ok=True)
+    memory_path = Path(working_dir) / MEMORY_FOLDER
+    memory_path.mkdir(parents=True, exist_ok=True)
 
-    return nova_path
+    return memory_path
 
 
 def validate_directory(working_dir: str) -> Path:
