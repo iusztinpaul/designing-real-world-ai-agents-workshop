@@ -22,7 +22,7 @@ from research.utils.file_utils import (
 logger = logging.getLogger(__name__)
 
 
-async def generate_queries_tool(working_dir: str, n_queries: int = 3) -> dict[str, Any]:
+async def generate_queries_tool(working_dir: str, n_queries: int = 2) -> dict[str, Any]:
     """Generate research queries that fill knowledge gaps.
 
     Analyzes the seed context, past research results, and YouTube transcripts
@@ -30,7 +30,7 @@ async def generate_queries_tool(working_dir: str, n_queries: int = 3) -> dict[st
 
     Args:
         working_dir: Path to the working directory containing .memory/ data.
-        n_queries: Number of queries to generate (default: 3).
+        n_queries: Number of queries to generate (default: 2).
 
     Returns:
         Dict with status, generated queries, and output file path.

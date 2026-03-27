@@ -14,7 +14,7 @@ async def generate_queries(
     seed_context: str,
     past_research: str,
     youtube_transcripts: str,
-    n_queries: int = 3,
+    n_queries: int = 2,
 ) -> list[QueryAndReason]:
     """Generate research queries that fill knowledge gaps.
 

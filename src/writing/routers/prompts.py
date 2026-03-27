@@ -37,7 +37,16 @@ The working directory must contain:
 
     Present the final post to the user.
 
-3. **Edit with feedback (optional, repeat as needed):**
+3. **Generate an image:**
+
+    Call the `generate_image` tool with the working_dir.
+
+    This generates a professional LinkedIn-appropriate image based on the post
+    content and saves it as post_image.png.
+
+    Present both the final post and the image to the user.
+
+4. **Edit with feedback (optional, repeat as needed):**
 
     If the user wants changes, call the `edit_post` tool with the working_dir
     and their feedback.
@@ -46,14 +55,6 @@ The working directory must contain:
     highest priority over all other constraints.
 
     Present the edited post to the user.
-
-4. **Generate an image (optional):**
-
-    Once the user is happy with the post, call the `generate_image` tool with
-    the working_dir.
-
-    This generates a professional LinkedIn-appropriate image based on the post
-    content and saves it as post_image.png.
 
 **File Structure After Completion:**
 
@@ -68,7 +69,7 @@ working_dir/
 ├── post_1.md                   # Post after review/edit iteration 1
 ├── post_2.md                   # Post after review/edit iteration 2
 ├── post.md                     # Final LinkedIn post (same as latest version)
-└── post_image.png              # Generated image (if requested)
+└── post_image.png              # Generated image
 ```
 
 **Critical Failure Policy:**

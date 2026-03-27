@@ -71,7 +71,7 @@ def register_mcp_tools(mcp: FastMCP) -> None:
     @mcp.tool()
     @opik.track(type="tool")
     async def generate_next_queries(
-        working_dir: str, n_queries: int = 3
+        working_dir: str, n_queries: int = 2
     ) -> dict[str, Any]:
         """Generate research queries that fill knowledge gaps.
 
@@ -80,7 +80,7 @@ def register_mcp_tools(mcp: FastMCP) -> None:
 
         Args:
             working_dir: Path to the working directory containing .memory/ data.
-            n_queries: Number of queries to generate (default: 3).
+            n_queries: Number of queries to generate (default: 2).
         """
 
         opik_context.update_thread_id()

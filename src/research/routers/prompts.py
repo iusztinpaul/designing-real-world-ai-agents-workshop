@@ -35,12 +35,12 @@ If the user doesn't provide it, ask for it before executing any tool.
     Note: Video transcription can be time-consuming. A 30-minute video may take
     approximately 4 minutes.
 
-3. **Research loop (repeat for 3 rounds):**
+3. **Research loop (repeat for 2 rounds):**
 
     For each iteration:
 
     3.1. Call `generate_next_queries` with the working_dir and optionally n_queries
-    (default: 3). This analyzes the seed context, past research, and YouTube
+    (default: 2). This analyzes the seed context, past research, and YouTube
     transcripts to identify knowledge gaps and propose new search queries.
 
     3.2. Call `run_research` with the working_dir and the list of query strings
