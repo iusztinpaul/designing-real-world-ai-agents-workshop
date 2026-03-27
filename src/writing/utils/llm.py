@@ -10,17 +10,19 @@ from google.genai import types
 from pydantic import BaseModel
 
 from writing.config.settings import get_settings
+from writing.utils.opik_utils import track_genai_client
 
 logger = logging.getLogger(__name__)
 
 
 @lru_cache
 def get_client() -> genai.Client:
-    """Create and cache a Gemini client."""
+    """Create and cache a Gemini client, with Opik tracking if configured."""
 
     settings = get_settings()
+    client = genai.Client(api_key=settings.google_api_key.get_secret_value())
 
-    return genai.Client(api_key=settings.google_api_key.get_secret_value())
+    return track_genai_client(client)
 
 
 async def call_gemini(

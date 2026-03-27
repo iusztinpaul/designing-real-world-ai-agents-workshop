@@ -1,6 +1,9 @@
 """MCP Prompts registration for workflow instructions."""
 
+import opik
 from fastmcp import FastMCP
+
+from research.utils.opik_utils import opik_context
 
 
 WORKFLOW_INSTRUCTIONS = """
@@ -86,11 +89,14 @@ def register_mcp_prompts(mcp: FastMCP) -> None:
     """Register all MCP prompts with the server instance."""
 
     @mcp.prompt()
+    @opik.track(type="general")
     async def deep_research_workflow() -> str:
         """Complete deep research agent workflow instructions.
 
         Returns the full workflow instructions for conducting a deep research
         session using the available tools.
         """
+
+        opik_context.initialize_thread_id()
 
         return WORKFLOW_INSTRUCTIONS

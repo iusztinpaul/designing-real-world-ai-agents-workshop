@@ -1,6 +1,9 @@
 """MCP Prompts registration for workflow instructions."""
 
+import opik
 from fastmcp import FastMCP
+
+from writing.utils.opik_utils import opik_context
 
 
 WORKFLOW_INSTRUCTIONS = """
@@ -80,11 +83,14 @@ def register_mcp_prompts(mcp: FastMCP) -> None:
     """Register all MCP prompts with the server instance."""
 
     @mcp.prompt()
+    @opik.track(type="general")
     async def linkedin_post_workflow() -> str:
         """Complete LinkedIn post writing workflow instructions.
 
         Returns the full workflow instructions for generating a LinkedIn post
         using the available tools.
         """
+
+        opik_context.initialize_thread_id()
 
         return WORKFLOW_INSTRUCTIONS

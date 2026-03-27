@@ -2,6 +2,7 @@
 
 from typing import Any
 
+import opik
 from fastmcp import FastMCP
 
 from research.tools.create_research_file_tool import create_research_file_tool
@@ -10,6 +11,7 @@ from research.tools.generate_queries_tool import generate_queries_tool
 from research.tools.run_research_tool import run_research_tool
 from research.tools.select_sources_tool import select_sources_tool
 from research.tools.transcribe_youtube_tool import transcribe_youtube_tool
+from research.utils.opik_utils import opik_context
 
 
 def register_mcp_tools(mcp: FastMCP) -> None:
@@ -20,6 +22,7 @@ def register_mcp_tools(mcp: FastMCP) -> None:
     # ========================================================================
 
     @mcp.tool()
+    @opik.track(type="tool")
     async def extract_seed(
         working_dir: str, seed_filename: str = "seed.md"
     ) -> dict[str, Any]:
@@ -34,6 +37,8 @@ def register_mcp_tools(mcp: FastMCP) -> None:
             seed_filename: Name of the seed file (default: seed.md).
         """
 
+        opik_context.update_thread_id()
+
         return await extract_seed_tool(working_dir, seed_filename)
 
     # ========================================================================
@@ -41,6 +46,7 @@ def register_mcp_tools(mcp: FastMCP) -> None:
     # ========================================================================
 
     @mcp.tool()
+    @opik.track(type="tool")
     async def transcribe_youtube(
         working_dir: str, youtube_urls: list[str]
     ) -> dict[str, Any]:
@@ -54,6 +60,8 @@ def register_mcp_tools(mcp: FastMCP) -> None:
             youtube_urls: List of YouTube video URLs to transcribe.
         """
 
+        opik_context.update_thread_id()
+
         return await transcribe_youtube_tool(working_dir, youtube_urls)
 
     # ========================================================================
@@ -61,6 +69,7 @@ def register_mcp_tools(mcp: FastMCP) -> None:
     # ========================================================================
 
     @mcp.tool()
+    @opik.track(type="tool")
     async def generate_next_queries(
         working_dir: str, n_queries: int = 3
     ) -> dict[str, Any]:
@@ -74,6 +83,8 @@ def register_mcp_tools(mcp: FastMCP) -> None:
             n_queries: Number of queries to generate (default: 3).
         """
 
+        opik_context.update_thread_id()
+
         return await generate_queries_tool(working_dir, n_queries)
 
     # ========================================================================
@@ -81,6 +92,7 @@ def register_mcp_tools(mcp: FastMCP) -> None:
     # ========================================================================
 
     @mcp.tool()
+    @opik.track(type="tool")
     async def run_research(working_dir: str, queries: list[str]) -> dict[str, Any]:
         """Run Gemini grounded search for a list of research queries.
 
@@ -92,6 +104,8 @@ def register_mcp_tools(mcp: FastMCP) -> None:
             queries: List of research queries to execute.
         """
 
+        opik_context.update_thread_id()
+
         return await run_research_tool(working_dir, queries)
 
     # ========================================================================
@@ -99,6 +113,7 @@ def register_mcp_tools(mcp: FastMCP) -> None:
     # ========================================================================
 
     @mcp.tool()
+    @opik.track(type="tool")
     async def select_sources(working_dir: str) -> dict[str, Any]:
         """Filter and select high-quality sources from research results.
 
@@ -109,6 +124,8 @@ def register_mcp_tools(mcp: FastMCP) -> None:
             working_dir: Path to the working directory.
         """
 
+        opik_context.update_thread_id()
+
         return await select_sources_tool(working_dir)
 
     # ========================================================================
@@ -116,6 +133,7 @@ def register_mcp_tools(mcp: FastMCP) -> None:
     # ========================================================================
 
     @mcp.tool()
+    @opik.track(type="tool")
     async def create_research_file(working_dir: str) -> dict[str, Any]:
         """Generate the final comprehensive research.md file.
 
@@ -125,5 +143,7 @@ def register_mcp_tools(mcp: FastMCP) -> None:
         Args:
             working_dir: Path to the working directory containing .memory/ data.
         """
+
+        opik_context.update_thread_id()
 
         return create_research_file_tool(working_dir)

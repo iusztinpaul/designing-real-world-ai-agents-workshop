@@ -8,37 +8,9 @@ from writing.config.settings import get_settings
 from writing.routers.prompts import register_mcp_prompts
 from writing.routers.resources import register_mcp_resources
 from writing.routers.tools import register_mcp_tools
+from writing.utils.opik_utils import configure_opik
 
 logger = logging.getLogger(__name__)
-
-
-def configure_opik() -> bool:
-    """Configure Opik monitoring if credentials are available.
-
-    Returns:
-        True if Opik was configured, False otherwise.
-    """
-
-    settings = get_settings()
-    if settings.opik_api_key is None or settings.opik_workspace is None:
-        return False
-
-    try:
-        import opik
-
-        opik.configure(
-            api_key=settings.opik_api_key.get_secret_value(),
-            workspace=settings.opik_workspace,
-            use_local=False,
-            force=True,
-        )
-
-        return True
-    except Exception:
-        logger.warning(
-            "Could not configure Opik. Check your OPIK_* environment variables."
-        )
-        return False
 
 
 def create_mcp_server() -> FastMCP:

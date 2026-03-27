@@ -57,7 +57,7 @@ class Settings(BaseSettings):
         default=None, alias="OPIK_WORKSPACE", description="The Opik workspace name"
     )
     opik_project_name: str = Field(
-        default="linkedin-writer",
+        default="writing-workflow",
         alias="OPIK_PROJECT_NAME",
         description="Opik project name",
     )
