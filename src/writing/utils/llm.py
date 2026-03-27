@@ -65,15 +65,21 @@ async def call_gemini(
     return response.text
 
 
-async def call_gemini_image(prompt: str, output_path: Path) -> Path:
+async def call_gemini_image(
+    prompt: str,
+    output_path: Path,
+    reference_images: list[Path] | None = None,
+) -> Path:
     """Generate an image using Gemini Flash Image (native generation) and save to disk.
 
     Uses the gemini-2.5-flash-image model with response_modalities=["IMAGE"]
-    for native image generation.
+    for native image generation. Optionally includes reference images as
+    few-shot style examples.
 
     Args:
         prompt: The image generation prompt.
         output_path: Path to save the generated image.
+        reference_images: Optional list of image paths to include as reference.
 
     Returns:
         The path to the saved image.
@@ -86,9 +92,27 @@ async def call_gemini_image(prompt: str, output_path: Path) -> Path:
         response_modalities=["IMAGE"],
     )
 
+    # Build contents with optional reference images
+    contents: list[types.Part] = []
+    if reference_images:
+        for img_path in reference_images:
+            if img_path.exists():
+                img_bytes = img_path.read_bytes()
+                suffix = img_path.suffix.lower()
+                mime = {
+                    ".jpg": "image/jpeg",
+                    ".jpeg": "image/jpeg",
+                    ".png": "image/png",
+                    ".gif": "image/gif",
+                }.get(suffix, "image/png")
+                contents.append(
+                    types.Part(inline_data=types.Blob(mime_type=mime, data=img_bytes))
+                )
+    contents.append(types.Part(text=prompt))
+
     response = await client.aio.models.generate_content(
         model=settings.image_model,
-        contents=prompt,
+        contents=contents,
         config=config,
     )
 

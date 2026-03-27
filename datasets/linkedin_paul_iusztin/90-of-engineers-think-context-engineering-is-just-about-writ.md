@@ -1,16 +1,3 @@
-# 90% of engineers think context engineering is just about writing better prompts.
-
-**Published:** 2025-11-01T13:30:07.135Z
-**Content Type:** Image
-**Reactions:** 687 | **Comments:** 52 | **Shares:** 86
-**LinkedIn:** https://www.linkedin.com/feed/update/urn:li:activity:7390379616282169344
-
-## Media
-
-![90-of-engineers-think-context-engineering-is-just-about-writ.gif](./90-of-engineers-think-context-engineering-is-just-about-writ.gif)
-
-## Content
-
 90% of engineers think context engineering is just about writing better prompts.
 
 Newsflash: It's not.

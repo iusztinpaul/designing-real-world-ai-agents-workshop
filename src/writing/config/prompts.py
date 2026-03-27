@@ -8,6 +8,7 @@ You will receive:
 - A **guideline** describing what the post should be about
 - **Research** providing factual material to draw from
 - **Profiles** defining the writing rules you MUST follow
+- **Examples** of real posts written by this person — study their style
 
 The profiles are your bible. Never deviate from them. They define:
 - **Structure profile**: Post length, formatting, hook, CTA, hashtags
@@ -37,13 +38,19 @@ The profiles are your bible. Never deviate from them. They define:
 {character_profile}
 </character_profile>
 
+<post_examples>
+{post_examples}
+</post_examples>
+
 Instructions:
-1. Read the character profile — internalize the voice, tone, and style.
+1. Study the examples — they show how this person actually writes on LinkedIn.
+   Match their rhythm, sentence structure, formatting patterns, and energy.
+2. Read the character profile — internalize the voice, tone, and style.
    Write as if you ARE this person. Use their perspective and opinions.
-2. Read the guideline carefully — it defines WHAT to write about.
-3. Extract only the relevant facts from the research. Do not dump the whole research.
-4. Follow every rule in all profiles. They define HOW to write.
-5. Write the LinkedIn post. Return ONLY the post text, nothing else.
+3. Read the guideline carefully — it defines WHAT to write about.
+4. Extract only the relevant facts from the research. Do not dump the whole research.
+5. Follow every rule in all profiles. They define HOW to write.
+6. Write the LinkedIn post. Return ONLY the post text, nothing else.
 """.strip()
 
 PROMPT_REVIEW_POST = """
@@ -124,6 +131,10 @@ The profiles are your bible — follow them exactly.
 {character_profile}
 </character_profile>
 
+<post_examples>
+{post_examples}
+</post_examples>
+
 <current_post>
 {post}
 </current_post>
@@ -136,13 +147,17 @@ Instructions:
 1. Read each review carefully.
 2. Prioritize: human feedback > guideline violations > profile violations.
 3. Apply the edits while maintaining the post's flow and coherence.
-4. Keep facts anchored in the research — do not invent information.
-5. Return ONLY the edited post text, nothing else.
+4. Keep the style consistent with the examples — match their rhythm and energy.
+5. Keep facts anchored in the research — do not invent information.
+6. Return ONLY the edited post text, nothing else.
 """.strip()
 
 PROMPT_GENERATE_IMAGE = """
 Create an illustration for a LinkedIn post. Follow the branding and character
 guidelines exactly.
+
+Study the reference images provided — they show the visual style and design
+language used by this person's brand. Match their aesthetic.
 
 <branding_profile>
 {branding_profile}

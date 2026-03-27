@@ -1,16 +1,3 @@
-# 6 months ago, I never imagined I’d be hosting my own AI event in San Francisco.
-
-**Published:** 2025-11-23T13:30:21.262Z
-**Content Type:** Image
-**Reactions:** 179 | **Comments:** 38 | **Shares:** 4
-**LinkedIn:** https://www.linkedin.com/feed/update/urn:li:activity:7398352208578355200
-
-## Media
-
-![6-months-ago-i-never-imagined-id-be-hosting-my-own-ai-event.jpg](./6-months-ago-i-never-imagined-id-be-hosting-my-own-ai-event.jpg)
-
-## Content
-
 6 months ago, I never imagined I’d be hosting my own AI event in San Francisco.
 
 Yesterday, it happened...

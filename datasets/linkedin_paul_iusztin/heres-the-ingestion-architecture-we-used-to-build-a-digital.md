@@ -1,16 +1,3 @@
-# Here’s the ingestion architecture we used to build a Digital Twin agent:
-
-**Published:** 2026-02-24T13:30:34.735Z
-**Content Type:** Image
-**Reactions:** 167 | **Comments:** 31 | **Shares:** 16
-**LinkedIn:** https://www.linkedin.com/feed/update/urn:li:activity:7432054336589021184
-
-## Media
-
-![heres-the-ingestion-architecture-we-used-to-build-a-digital.gif](./heres-the-ingestion-architecture-we-used-to-build-a-digital.gif)
-
-## Content
-
 Here’s the ingestion architecture we used to build a Digital Twin agent:
 
 (Steal it to build your own)

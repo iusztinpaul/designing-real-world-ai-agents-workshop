@@ -1,16 +1,3 @@
-# Stop wiring APIs directly into your LLM.
-
-**Published:** 2025-11-22T13:30:18.807Z
-**Content Type:** Image
-**Reactions:** 301 | **Comments:** 34 | **Shares:** 35
-**LinkedIn:** https://www.linkedin.com/feed/update/urn:li:activity:7397989810415587328
-
-## Media
-
-![stop-wiring-apis-directly-into-your-llm.gif](./stop-wiring-apis-directly-into-your-llm.gif)
-
-## Content
-
 Stop wiring APIs directly into your LLM.
 
 Use MCP to route the right tool at the right time.

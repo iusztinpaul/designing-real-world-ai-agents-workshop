@@ -1,16 +1,3 @@
-# My LinkedIn tells you that I'm a successful AI engineer and bestselling author, but here's what it doesn't tell you:
-
-**Published:** 2026-01-26T13:30:08.308Z
-**Content Type:** Image
-**Reactions:** 206 | **Comments:** 66 | **Shares:** 7
-**LinkedIn:** https://www.linkedin.com/feed/update/urn:li:activity:7421544977643704321
-
-## Media
-
-![my-linkedin-tells-you-that-im-a-successful-ai-engineer-and-b.jpg](./my-linkedin-tells-you-that-im-a-successful-ai-engineer-and-b.jpg)
-
-## Content
-
 My LinkedIn tells you that I'm a successful AI engineer and bestselling author, but here's what it doesn't tell you:
 
 ► The 2008 financial crisis crushed my dad's jewelry business. We even lost our home.

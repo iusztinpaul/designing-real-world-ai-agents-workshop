@@ -1,16 +1,3 @@
-# If there’s one thing that’s helped me more than anything as an engineer...
-
-**Published:** 2026-02-20T13:30:28.397Z
-**Content Type:** Image
-**Reactions:** 142 | **Comments:** 21 | **Shares:** 12
-**LinkedIn:** https://www.linkedin.com/feed/update/urn:li:activity:7430604758542860289
-
-## Media
-
-![if-theres-one-thing-thats-helped-me-more-than-anything-as-an.jpg](./if-theres-one-thing-thats-helped-me-more-than-anything-as-an.jpg)
-
-## Content
-
 If there’s one thing that’s helped me more than anything as an engineer...
 
 It has to be this:

@@ -1,16 +1,3 @@
-# I was a true believer in clean architecture.
-
-**Published:** 2026-01-21T13:30:10.281Z
-**Content Type:** Image
-**Reactions:** 123 | **Comments:** 34 | **Shares:** 14
-**LinkedIn:** https://www.linkedin.com/feed/update/urn:li:activity:7419733046591000576
-
-## Media
-
-![i-was-a-true-believer-in-clean-architecture.gif](./i-was-a-true-believer-in-clean-architecture.gif)
-
-## Content
-
 I was a true believer in clean architecture.
 
 I honestly thought it would help me structure my Python AI projects.

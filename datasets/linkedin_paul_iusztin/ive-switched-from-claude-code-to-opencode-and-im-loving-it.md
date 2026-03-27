@@ -1,12 +1,3 @@
-# I've switched from Claude Code to OpenCode, and I'm loving it! 
-
-**Published:** 2026-03-18T19:13:24.896Z
-**Content Type:** Text
-**Reactions:** 194 | **Comments:** 37 | **Shares:** 2
-**LinkedIn:** https://www.linkedin.com/feed/update/urn:li:activity:7440113143810396160
-
-## Content
-
 I've switched from Claude Code to OpenCode, and I'm loving it! 
 
 With the same Claude Pro subscription, OpenCode has nailed a better harness of the agents. It feels like it's getting your ideas even in more depth than Claude Code usually one-shotting all your tasks. 

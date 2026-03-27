@@ -5,6 +5,7 @@ import logging
 from pathlib import Path
 from typing import Any
 
+from writing.app.dataset_loader import load_examples
 from writing.app.post_reviewer_handler import review_post
 from writing.app.post_writer_handler import edit_post
 from writing.app.profile_loader import load_profiles
@@ -53,6 +54,8 @@ async def edit_post_tool(working_dir: str, human_feedback: str) -> dict[str, Any
         research_path.read_text(encoding="utf-8") if research_path.exists() else ""
     )
     profiles = load_profiles()
+    examples = load_examples()
+    post_examples_text = examples.format_post_examples()
     post = Post(content=post_content)
 
     # Create .memory/ for intermediate files
@@ -85,7 +88,9 @@ async def edit_post_tool(working_dir: str, human_feedback: str) -> dict[str, Any
     logger.info(f"Found {len(reviews)} review(s). Editing post...")
 
     # Edit
-    edited_post = await edit_post(post, reviews, guideline, research, profiles)
+    edited_post = await edit_post(
+        post, reviews, guideline, research, profiles, post_examples_text
+    )
 
     # Determine next version number
     existing_versions = sorted(working_path.glob("post_*.md"))

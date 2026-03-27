@@ -1,16 +1,3 @@
-# I've spent the past 2 years productionizing AI agents.
-
-**Published:** 2026-02-19T13:30:27.809Z
-**Content Type:** LinkedInVideo
-**Reactions:** 145 | **Comments:** 33 | **Shares:** 14
-**LinkedIn:** https://www.linkedin.com/feed/update/urn:li:activity:7430242368211066881
-
-## Media
-
-![ive-spent-the-past-2-years-productionizing-ai-agents.jpg](./ive-spent-the-past-2-years-productionizing-ai-agents.jpg)
-
-## Content
-
 I've spent the past 2 years productionizing AI agents.
 
 Here's an unpopular opinion I've developed over time:

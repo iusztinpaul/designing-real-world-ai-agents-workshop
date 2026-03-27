@@ -1,16 +1,3 @@
-# 99% of engineers skip the most important part of building agents:
-
-**Published:** 2026-01-10T13:30:01.758Z
-**Content Type:** Image
-**Reactions:** 158 | **Comments:** 19 | **Shares:** 22
-**LinkedIn:** https://www.linkedin.com/feed/update/urn:li:activity:7415746744321552384
-
-## Media
-
-![99-of-engineers-skip-the-most-important-part-of-building-age.gif](./99-of-engineers-skip-the-most-important-part-of-building-age.gif)
-
-## Content
-
 99% of engineers skip the most important part of building agents:
 
 Which pattern to use and why?

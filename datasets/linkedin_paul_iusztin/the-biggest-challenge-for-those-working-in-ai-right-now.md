@@ -1,16 +1,3 @@
-# The biggest challenge for those working in AI right now?
-
-**Published:** 2025-10-23T12:30:12.747Z
-**Content Type:** Image
-**Reactions:** 114 | **Comments:** 31 | **Shares:** 7
-**LinkedIn:** https://www.linkedin.com/feed/update/urn:li:activity:7387103049535709184
-
-## Media
-
-![the-biggest-challenge-for-those-working-in-ai-right-now.jpg](./the-biggest-challenge-for-those-working-in-ai-right-now.jpg)
-
-## Content
-
 The biggest challenge for those working in AI right now?
 
 No, it's not building models...

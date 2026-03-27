@@ -1,16 +1,3 @@
-# Last week, Liquid AI CTO Mathias Lechner made a huge announcement.
-
-**Published:** 2025-12-09T13:30:39.366Z
-**Content Type:** Image
-**Reactions:** 201 | **Comments:** 22 | **Shares:** 14
-**LinkedIn:** https://www.linkedin.com/feed/update/urn:li:activity:7404150490361507840
-
-## Media
-
-![last-week-liquid-ai-cto-mathias-lechner-made-a-huge-announce.gif](./last-week-liquid-ai-cto-mathias-lechner-made-a-huge-announce.gif)
-
-## Content
-
 Last week, Liquid AI CTO Mathias Lechner made a huge announcement.
 
 Their playbook for building small, efficient, on-device models is now open-source.

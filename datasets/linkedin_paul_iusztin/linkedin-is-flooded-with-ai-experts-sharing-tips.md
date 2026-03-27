@@ -1,16 +1,3 @@
-# LinkedIn is flooded with AI experts sharing tips.
-
-**Published:** 2025-11-09T13:30:05.796Z
-**Content Type:** Image
-**Reactions:** 647 | **Comments:** 60 | **Shares:** 32
-**LinkedIn:** https://www.linkedin.com/feed/update/urn:li:activity:7393278713590784000
-
-## Media
-
-![linkedin-is-flooded-with-ai-experts-sharing-tips.jpg](./linkedin-is-flooded-with-ai-experts-sharing-tips.jpg)
-
-## Content
-
 LinkedIn is flooded with AI experts sharing tips.
 
 My advice? Take most of what you read with a pinch of salt.

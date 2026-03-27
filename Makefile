@@ -11,6 +11,8 @@ export PYTHONPATH = ./src/
 # --- Default Values ---
 
 QA_FOLDERS := src/ scripts/
+TEST_SLUG := im-currently-designing-a-second-brain-ai-agent
+DATASET_DIR := datasets/linkedin_paul_iusztin
 
 # --- QA ---
 
@@ -34,18 +36,18 @@ run-research-server: # Run the Deep Research MCP server (stdio transport).
 run-writing-server: # Run the LinkedIn Writer MCP server (stdio transport).
 	uv run fastmcp run src/writing/server.py
 
-test-research-workflow: # Test the research workflow via MCP client.
+test-research-workflow: # Test the research workflow using the dataset seed.
 	@mkdir -p test_logic
-	@cp inputs/seed.md test_logic/seed.md
+	@cp $(DATASET_DIR)/$(TEST_SLUG)_seed.md test_logic/seed.md
 	uv run python scripts/test_research_workflow.py --working-dir test_logic --iterations 2
 
-test-writing-workflow: # Test the writing workflow via MCP client (requires research.md in test_logic/).
+test-writing-workflow: # Test the writing workflow using the dataset guideline (requires research.md in test_logic/).
 	@mkdir -p test_logic
-	@cp inputs/guideline.md test_logic/guideline.md
+	@cp $(DATASET_DIR)/$(TEST_SLUG)_guideline.md test_logic/guideline.md
 	@test -f test_logic/research.md || (echo "ERROR: test_logic/research.md not found. Run test-research-workflow first." && exit 1)
 	uv run python scripts/test_writing_workflow.py --working-dir test_logic
 
-test-end-to-end: # Test research + writing workflows end-to-end.
+test-end-to-end: # Test research + writing end-to-end using the dataset sample.
 	make test-research-workflow
 	make test-writing-workflow
 

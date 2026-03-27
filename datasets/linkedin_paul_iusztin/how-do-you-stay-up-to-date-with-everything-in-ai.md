@@ -1,16 +1,3 @@
-# "How do you stay up to date with everything in AI?"
-
-**Published:** 2025-11-04T13:30:01.590Z
-**Content Type:** Image
-**Reactions:** 168 | **Comments:** 24 | **Shares:** 8
-**LinkedIn:** https://www.linkedin.com/feed/update/urn:li:activity:7391466756621451264
-
-## Media
-
-![how-do-you-stay-up-to-date-with-everything-in-ai.jpg](./how-do-you-stay-up-to-date-with-everything-in-ai.jpg)
-
-## Content
-
 "How do you stay up to date with everything in AI?"
 
 (I get this question all the time)

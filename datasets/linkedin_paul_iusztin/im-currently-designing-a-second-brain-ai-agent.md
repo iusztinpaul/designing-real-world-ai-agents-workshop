@@ -1,16 +1,3 @@
-# I'm currently designing a second brain AI agent.
-
-**Published:** 2026-01-27T13:30:16.133Z
-**Content Type:** Image
-**Reactions:** 781 | **Comments:** 96 | **Shares:** 80
-**LinkedIn:** https://www.linkedin.com/feed/update/urn:li:activity:7421907398329667585
-
-## Media
-
-![im-currently-designing-a-second-brain-ai-agent.gif](./im-currently-designing-a-second-brain-ai-agent.gif)
-
-## Content
-
 I'm currently designing a second brain AI agent.
 
 Here's a high-level architecture (steal it and build your own):

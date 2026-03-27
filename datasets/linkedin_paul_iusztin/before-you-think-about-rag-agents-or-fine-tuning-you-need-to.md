@@ -1,16 +1,3 @@
-# Before you think about RAG, agents, or fine-tuning, you need to get one thing right:
-
-**Published:** 2026-01-24T13:30:02.854Z
-**Content Type:** Image
-**Reactions:** 127 | **Comments:** 17 | **Shares:** 9
-**LinkedIn:** https://www.linkedin.com/feed/update/urn:li:activity:7420820179036581888
-
-## Media
-
-![before-you-think-about-rag-agents-or-fine-tuning-you-need-to.gif](./before-you-think-about-rag-agents-or-fine-tuning-you-need-to.gif)
-
-## Content
-
 Before you think about RAG, agents, or fine-tuning, you need to get one thing right:
 
 Your data pipeline architecture.

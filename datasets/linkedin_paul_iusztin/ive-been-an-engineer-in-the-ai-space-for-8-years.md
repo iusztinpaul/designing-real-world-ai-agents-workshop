@@ -1,16 +1,3 @@
-# I've been an engineer in the AI space for 8+ years.
-
-**Published:** 2025-10-11T12:30:23.044Z
-**Content Type:** Image
-**Reactions:** 285 | **Comments:** 34 | **Shares:** 24
-**LinkedIn:** https://www.linkedin.com/feed/update/urn:li:activity:7382754438337327104
-
-## Media
-
-![ive-been-an-engineer-in-the-ai-space-for-8-years.jpg](./ive-been-an-engineer-in-the-ai-space-for-8-years.jpg)
-
-## Content
-
 I've been an engineer in the AI space for 8+ years.
 
 If I could go back in time, here are 3 things I wouldn't waste my time on again:

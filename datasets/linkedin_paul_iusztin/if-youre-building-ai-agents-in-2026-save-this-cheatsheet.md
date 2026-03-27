@@ -1,16 +1,3 @@
-# If you're building AI agents in 2026, save this cheatsheet...
-
-**Published:** 2026-03-17T13:30:23.978Z
-**Content Type:** Image
-**Reactions:** 163 | **Comments:** 146 | **Shares:** 16
-**LinkedIn:** https://www.linkedin.com/feed/update/urn:li:activity:7439664436648374272
-
-## Media
-
-![if-youre-building-ai-agents-in-2026-save-this-cheatsheet.gif](./if-youre-building-ai-agents-in-2026-save-this-cheatsheet.gif)
-
-## Content
-
 If you're building AI agents in 2026, save this cheatsheet...
 
 (It might save you weeks of bad architecture decisions)

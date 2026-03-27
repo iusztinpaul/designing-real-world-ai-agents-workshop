@@ -5,6 +5,7 @@ import logging
 from pathlib import Path
 from typing import Any
 
+from writing.app.dataset_loader import load_examples
 from writing.app.post_reviewer_handler import review_post
 from writing.app.post_writer_handler import edit_post, write_post
 from writing.app.profile_loader import load_profiles
@@ -49,6 +50,8 @@ async def generate_post_tool(working_dir: str) -> dict[str, Any]:
     guideline = guideline_path.read_text(encoding="utf-8")
     research = research_path.read_text(encoding="utf-8")
     profiles = load_profiles()
+    examples = load_examples()
+    post_examples_text = examples.format_post_examples()
 
     # Create .memory/ for intermediate files
     memory_path = working_path / MEMORY_FOLDER
@@ -56,7 +59,7 @@ async def generate_post_tool(working_dir: str) -> dict[str, Any]:
 
     # Step 1: Generate initial post
     logger.info("Generating initial LinkedIn post...")
-    post = await write_post(guideline, research, profiles)
+    post = await write_post(guideline, research, profiles, post_examples_text)
 
     # Save initial version (version 0)
     version = 0
@@ -86,7 +89,9 @@ async def generate_post_tool(working_dir: str) -> dict[str, Any]:
         )
 
         # Edit
-        post = await edit_post(post, reviews, guideline, research, profiles)
+        post = await edit_post(
+            post, reviews, guideline, research, profiles, post_examples_text
+        )
 
         # Save new version
         version = iteration

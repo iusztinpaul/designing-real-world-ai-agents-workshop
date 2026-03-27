@@ -1,16 +1,3 @@
-# In 2023, it was predicted that AI would replace up to 80% of developers by 2025.
-
-**Published:** 2026-02-12T13:30:56.651Z
-**Content Type:** LinkedInVideo
-**Reactions:** 109 | **Comments:** 53 | **Shares:** 12
-**LinkedIn:** https://www.linkedin.com/feed/update/urn:li:activity:7427705774124167169
-
-## Media
-
-![in-2023-it-was-predicted-that-ai-would-replace-up-to-80-of-d.jpg](./in-2023-it-was-predicted-that-ai-would-replace-up-to-80-of-d.jpg)
-
-## Content
-
 In 2023, it was predicted that AI would replace up to 80% of developers by 2025.
 
 Here's what happened in reality:

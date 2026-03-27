@@ -13,13 +13,15 @@ async def write_post(
     guideline: str,
     research: str,
     profiles: Profiles,
+    post_examples: str = "<none>",
 ) -> Post:
-    """Generate a LinkedIn post from guideline, research, and profiles.
+    """Generate a LinkedIn post from guideline, research, profiles, and examples.
 
     Args:
         guideline: The post guideline content.
         research: The research material content.
         profiles: The writing profiles to follow.
+        post_examples: Formatted few-shot post examples.
 
     Returns:
         A Post with the generated content.
@@ -31,6 +33,7 @@ async def write_post(
         structure_profile=profiles.structure.content,
         terminology_profile=profiles.terminology.content,
         character_profile=profiles.character.content,
+        post_examples=post_examples,
     )
 
     response = await call_gemini(prompt)
@@ -56,6 +59,7 @@ async def edit_post(
     guideline: str,
     research: str,
     profiles: Profiles,
+    post_examples: str = "<none>",
 ) -> Post:
     """Edit a LinkedIn post based on reviewer feedback.
 
@@ -65,6 +69,7 @@ async def edit_post(
         guideline: The post guideline content.
         research: The research material content.
         profiles: The writing profiles to follow.
+        post_examples: Formatted few-shot post examples.
 
     Returns:
         A Post with the edited content.
@@ -80,6 +85,7 @@ async def edit_post(
         character_profile=profiles.character.content,
         post=post.content,
         reviews=reviews_text,
+        post_examples=post_examples,
     )
 
     response = await call_gemini(prompt)

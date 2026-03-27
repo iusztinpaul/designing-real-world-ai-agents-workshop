@@ -1,16 +1,3 @@
-# In the early days of LLMs, "context" just meant plugging a few docs into RAG.
-
-**Published:** 2025-11-15T13:30:19.961Z
-**Content Type:** Image
-**Reactions:** 482 | **Comments:** 29 | **Shares:** 56
-**LinkedIn:** https://www.linkedin.com/feed/update/urn:li:activity:7395453100196614144
-
-## Media
-
-![in-the-early-days-of-llms-context-just-meant-plugging-a-few.jpg](./in-the-early-days-of-llms-context-just-meant-plugging-a-few.jpg)
-
-## Content
-
 In the early days of LLMs, "context" just meant plugging a few docs into RAG.
 
 Now, you need a context optimization strategy.
