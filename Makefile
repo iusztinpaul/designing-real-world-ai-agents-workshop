@@ -48,3 +48,14 @@ test-writing-workflow: # Test the writing workflow via MCP client (requires rese
 test-end-to-end: # Test research + writing workflows end-to-end.
 	make test-research-workflow
 	make test-writing-workflow
+
+# --- Dataset ---
+
+generate-dataset: # Generate seed and guideline files for the LinkedIn dataset.
+	uv run python scripts/generate_dataset.py
+
+run-dataset-writing: # Run the writing workflow on all dataset posts (with images).
+	uv run python scripts/run_dataset_writing.py
+
+run-dataset-writing-no-image: # Run the writing workflow on all dataset posts (skip images).
+	uv run python scripts/run_dataset_writing.py --skip-image

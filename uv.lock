@@ -381,6 +381,7 @@ dependencies = [
     { name = "opik" },
     { name = "pydantic" },
     { name = "pydantic-settings" },
+    { name = "pyyaml" },
     { name = "tenacity" },
 ]
 
@@ -397,6 +398,7 @@ requires-dist = [
     { name = "opik", specifier = ">=1.10.52" },
     { name = "pydantic", specifier = ">=2.12.5" },
     { name = "pydantic-settings", specifier = ">=2.13.1" },
+    { name = "pyyaml", specifier = ">=6.0.3" },
     { name = "tenacity", specifier = ">=9.1.2" },
 ]
 
