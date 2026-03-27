@@ -209,5 +209,5 @@ __marimo__/
 # Test working directories
 test_logic/
 test_all/
-test_sk
+test_skill
 .memory/
