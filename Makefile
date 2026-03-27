@@ -64,3 +64,14 @@ run-dataset-writing-no-image: # Run the writing workflow on all dataset posts wi
 
 label-dataset: # Label dataset by comparing generated posts to ground truth.
 	uv run python scripts/label_dataset.py
+
+# --- Evaluation ---
+
+upload-eval-dataset: # Upload evaluation datasets to Opik.
+	uv run python scripts/upload_eval_dataset.py
+
+eval-dev: # Run LLM judge on dev split (alignment check).
+	uv run python scripts/run_evaluation.py --split dev_evaluator
+
+eval-test: # Run LLM judge on test split (final evaluation).
+	uv run python scripts/run_evaluation.py --split test_evaluator

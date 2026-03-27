@@ -34,9 +34,9 @@ class DatasetEntry(BaseModel):
     shares: int | None = None
     local_guideline: str | None = None
     local_seed: str | None = None
+    local_research: str | None = None
     scope: list[str] | None = None
     local_generated_post: str | None = None
-    local_generated_media: str | None = None
     label: Label | None = None
     critique: str | None = None
 
@@ -68,6 +68,11 @@ class DatasetEntry(BaseModel):
         """Read the seed text."""
 
         return self._read_file("local_seed", base_dir)
+
+    def research_content(self, base_dir: Path) -> str:
+        """Read the research text."""
+
+        return self._read_file("local_research", base_dir)
 
     def media_paths(self, base_dir: Path) -> list[Path]:
         """Resolve media file paths."""
