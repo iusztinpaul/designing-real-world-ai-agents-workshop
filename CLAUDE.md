@@ -7,10 +7,18 @@ We are building an educative workshop teaching people how to build AI systems by
 ```
 project-root/
 ├── src/
-│   ├── research/   # research workflow module
-│   └── writing/    # writing workflow module
-├── scripts/                         # Entrypoints
-└── .env.example                     # All supported env vars
+│   ├── research/              # Deep Research Agent MCP server
+│   │   ├── server.py          # FastMCP entry point
+│   │   ├── config/            # Settings, constants, prompt templates
+│   │   ├── models/            # Pydantic schemas for structured LLM output
+│   │   ├── app/               # Business logic handlers
+│   │   ├── tools/             # MCP tool implementations
+│   │   ├── routers/           # MCP tool, resource, and prompt registration
+│   │   └── utils/             # Gemini client, file I/O, markdown helpers
+│   └── writing/               # Writing Workflow MCP server
+├── inputs/                    # Seed files for research
+├── scripts/                   # Entrypoints and test scripts
+└── .env.example               # All supported env vars
 ```
 
 # Tech Stack

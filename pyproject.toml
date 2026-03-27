@@ -13,10 +13,12 @@ authors = [
 requires-python = ">=3.14"
 dependencies = [
     "click>=8.3.1",
+    "fastmcp>=2.0.0",
     "google-genai>=1.68.0",
     "opik>=1.10.52",
     "pydantic>=2.12.5",
     "pydantic-settings>=2.13.1",
+    "tenacity>=9.1.2",
 ]
 
 [dependency-groups]
