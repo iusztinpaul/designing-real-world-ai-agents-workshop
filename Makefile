@@ -75,3 +75,6 @@ eval-dev: # Run LLM judge on dev split (alignment check).
 
 eval-test: # Run LLM judge on test split (final evaluation).
 	uv run python scripts/run_evaluation.py --split test_evaluator
+
+eval-online: # Run online evaluation: generate posts on the fly + judge them.
+	uv run python scripts/run_online_evaluation.py --split test_evaluator

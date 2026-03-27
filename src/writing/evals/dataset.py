@@ -65,3 +65,53 @@ def upload_dataset_to_opik(split: str) -> opik.Dataset:
     logger.info(f"Uploaded {len(items)} items to Opik dataset '{dataset_full_name}'")
 
     return dataset
+
+
+def upload_online_dataset_to_opik(split: str) -> opik.Dataset:
+    """Upload a dataset split for online evaluation (generate posts on the fly).
+
+    Only includes guideline and research — no pre-generated post.
+    The evaluation task will generate the post using the writing workflow.
+
+    Args:
+        split: The scope/split to upload.
+
+    Returns:
+        The Opik Dataset object.
+    """
+
+    entries = load_by_scope(split)
+    if not entries:
+        msg = f"No entries found for split '{split}'"
+        raise ValueError(msg)
+
+    items: list[dict] = []
+    for entry in entries:
+        guideline = entry.guideline_content(DATASET_DIR)
+        research = entry.research_content(DATASET_DIR)
+
+        if not guideline:
+            logger.warning(f"Skipping {entry.slug}: missing guideline")
+            continue
+
+        items.append(
+            {
+                "name": entry.slug,
+                "slug": entry.slug,
+                "guideline": guideline,
+                "research": research,
+            }
+        )
+
+    dataset_full_name = f"{DATASET_NAME}-online-{split}"
+    client = opik.Opik()
+    dataset = client.get_or_create_dataset(
+        name=dataset_full_name,
+        description=f"{DATASET_DESCRIPTION} (online, {split})",
+    )
+    dataset.clear()
+    dataset.insert(items)
+
+    logger.info(f"Uploaded {len(items)} items to Opik dataset '{dataset_full_name}'")
+
+    return dataset

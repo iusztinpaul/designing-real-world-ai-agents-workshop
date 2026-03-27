@@ -1,17 +1,12 @@
 """LinkedIn post generation tool with evaluate-optimize loop."""
 
-import json
 import logging
 from pathlib import Path
 from typing import Any
 
-from writing.app.dataset_loader import load_examples
-from writing.app.post_reviewer_handler import review_post
-from writing.app.post_writer_handler import edit_post, write_post
-from writing.app.profile_loader import load_profiles
+from writing.app.generate_post import generate_post
 from writing.config.constants import (
     GUIDELINE_FILE,
-    MEMORY_FOLDER,
     POST_FILE,
     RESEARCH_FILE,
 )
@@ -23,9 +18,8 @@ logger = logging.getLogger(__name__)
 async def generate_post_tool(working_dir: str) -> dict[str, Any]:
     """Generate a LinkedIn post with an evaluate-optimize loop.
 
-    Reads guideline.md and research.md, generates an initial post, then runs
-    N rounds of review + edit to refine it. All intermediate versions are
-    saved in .memory/.
+    Reads guideline.md and research.md, then delegates to the shared
+    generate_post() function for the full write -> [review -> edit] x N loop.
 
     Args:
         working_dir: Path to the working directory with guideline.md and research.md.
@@ -49,57 +43,11 @@ async def generate_post_tool(working_dir: str) -> dict[str, Any]:
 
     guideline = guideline_path.read_text(encoding="utf-8")
     research = research_path.read_text(encoding="utf-8")
-    profiles = load_profiles()
-    examples = load_examples()
-    post_examples_text = examples.format_post_examples()
 
-    # Create .memory/ for intermediate files
-    memory_path = working_path / MEMORY_FOLDER
-    memory_path.mkdir(parents=True, exist_ok=True)
+    # Use the shared generate_post function (same logic as evals)
+    post = await generate_post(guideline, research)
 
-    # Step 1: Generate initial post
-    logger.info("Generating initial LinkedIn post...")
-    post = await write_post(guideline, research, profiles, post_examples_text)
-
-    # Save initial version (version 0)
-    version = 0
-    version_path = working_path / f"post_{version}.md"
-    version_path.write_text(post.content, encoding="utf-8")
-    logger.info(f"Initial post saved to post_{version}.md")
-
-    # Step 2: Review/edit loop
-    for i in range(settings.num_reviews):
-        iteration = i + 1
-        logger.info(f"Review/edit iteration {iteration}/{settings.num_reviews}...")
-
-        # Review
-        reviews_result = await review_post(post, guideline, profiles)
-        reviews = reviews_result.reviews
-
-        if not reviews:
-            logger.info(f"Iteration {iteration}: No issues found. Skipping edit.")
-            continue
-
-        logger.info(f"Iteration {iteration}: {len(reviews)} review(s) found.")
-
-        # Save reviews to .memory/
-        reviews_data = [r.model_dump() for r in reviews]
-        (memory_path / f"reviews_{iteration}.json").write_text(
-            json.dumps(reviews_data, indent=2), encoding="utf-8"
-        )
-
-        # Edit
-        post = await edit_post(
-            post, reviews, guideline, research, profiles, post_examples_text
-        )
-
-        # Save new version
-        version = iteration
-        version_path = working_path / f"post_{version}.md"
-        version_path.write_text(post.content, encoding="utf-8")
-        logger.info(f"Edited post saved to post_{version}.md")
-
-    # Save final version as post.md
+    # Save final version
     output_path = working_path / POST_FILE
     output_path.write_text(post.content, encoding="utf-8")
     logger.info(f"Final post saved to {output_path}")
