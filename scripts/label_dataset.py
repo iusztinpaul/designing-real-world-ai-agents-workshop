@@ -18,6 +18,8 @@ from google.genai import types
 from pydantic import BaseModel, Field, SecretStr
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
+from writing.utils.logging import setup_logging
+
 logger = logging.getLogger(__name__)
 
 DATASET_DIR = Path(__file__).parent.parent / "datasets" / "linkedin_paul_iusztin"
@@ -135,10 +137,7 @@ def load_profiles() -> dict[str, str]:
 def main(slug: str | None) -> None:
     """Label the dataset by comparing generated posts to ground truth."""
 
-    logging.basicConfig(
-        level=logging.INFO,
-        format="%(asctime)s - %(levelname)s - %(message)s",
-    )
+    setup_logging()
 
     settings = ScriptSettings()
     client = genai.Client(api_key=settings.google_api_key.get_secret_value())

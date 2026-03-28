@@ -16,6 +16,8 @@ from pathlib import Path
 import click
 from fastmcp import Client
 
+from writing.utils.logging import setup_logging
+
 logger = logging.getLogger(__name__)
 
 # Number of separator chars for visual output
@@ -176,10 +178,7 @@ def ensure_seed_file(working_dir: str, seed_filename: str) -> None:
 def main(working_dir: str, iterations: int) -> None:
     """Run the full deep research workflow as an MCP client test."""
 
-    logging.basicConfig(
-        level=logging.INFO,
-        format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-    )
+    setup_logging()
 
     # Resolve working directory
     working_path = Path(working_dir).resolve()

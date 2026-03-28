@@ -15,6 +15,8 @@ from pathlib import Path
 import click
 from fastmcp import Client
 
+from writing.utils.logging import setup_logging
+
 logger = logging.getLogger(__name__)
 
 SEP_WIDTH = 70
@@ -129,10 +131,7 @@ def ensure_inputs(working_dir: str) -> None:
 def main(working_dir: str) -> None:
     """Run the full LinkedIn post writing workflow as an MCP client test."""
 
-    logging.basicConfig(
-        level=logging.INFO,
-        format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-    )
+    setup_logging()
 
     working_path = Path(working_dir).resolve()
     working_path.mkdir(parents=True, exist_ok=True)

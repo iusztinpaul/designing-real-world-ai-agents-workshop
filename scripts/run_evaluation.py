@@ -4,11 +4,10 @@ Usage:
     uv run python scripts/run_evaluation.py [--split SPLIT] [--workers N]
 """
 
-import logging
-
 import click
 
 from writing.evals.evaluation import run_evaluation
+from writing.utils.logging import setup_logging
 from writing.utils.opik_utils import configure_opik
 
 
@@ -34,10 +33,7 @@ from writing.utils.opik_utils import configure_opik
 def main(split: str, workers: int, nb_samples: int | None) -> None:
     """Run LLM judge evaluation and report results to Opik."""
 
-    logging.basicConfig(
-        level=logging.INFO,
-        format="%(asctime)s - %(levelname)s - %(message)s",
-    )
+    setup_logging()
 
     configure_opik()
     run_evaluation(split=split, workers=workers, nb_samples=nb_samples)

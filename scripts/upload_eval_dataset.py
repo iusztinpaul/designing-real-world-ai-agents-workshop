@@ -4,11 +4,10 @@ Usage:
     uv run python scripts/upload_eval_dataset.py [--split SPLIT]
 """
 
-import logging
-
 import click
 
 from writing.evals.dataset import upload_dataset_to_opik
+from writing.utils.logging import setup_logging
 from writing.utils.opik_utils import configure_opik
 
 
@@ -22,10 +21,7 @@ from writing.utils.opik_utils import configure_opik
 def main(split: str) -> None:
     """Upload evaluation dataset to Opik."""
 
-    logging.basicConfig(
-        level=logging.INFO,
-        format="%(asctime)s - %(levelname)s - %(message)s",
-    )
+    setup_logging()
 
     configure_opik()
 

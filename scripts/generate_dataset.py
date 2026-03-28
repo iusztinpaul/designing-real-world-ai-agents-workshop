@@ -20,6 +20,8 @@ from google import genai
 from pydantic import SecretStr
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
+from writing.utils.logging import setup_logging
+
 logger = logging.getLogger(__name__)
 
 DATASET_DIR = Path(__file__).parent.parent / "datasets" / "linkedin_paul_iusztin"
@@ -131,10 +133,7 @@ async def process_post(
 
 
 async def main() -> None:
-    logging.basicConfig(
-        level=logging.INFO,
-        format="%(asctime)s - %(levelname)s - %(message)s",
-    )
+    setup_logging()
 
     settings = ScriptSettings()
     client = genai.Client(api_key=settings.google_api_key.get_secret_value())

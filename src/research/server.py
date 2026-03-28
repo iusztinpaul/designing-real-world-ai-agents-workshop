@@ -8,6 +8,7 @@ from research.config.settings import get_settings
 from research.routers.prompts import register_mcp_prompts
 from research.routers.resources import register_mcp_resources
 from research.routers.tools import register_mcp_tools
+from research.utils.logging import setup_logging
 from research.utils.opik_utils import configure_opik
 
 logger = logging.getLogger(__name__)
@@ -35,10 +36,7 @@ def create_mcp_server() -> FastMCP:
 
 
 # Configure logging
-logging.basicConfig(
-    level=get_settings().log_level,
-    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-)
+setup_logging(level=get_settings().log_level)
 
 # Configure Opik if available
 if configure_opik():

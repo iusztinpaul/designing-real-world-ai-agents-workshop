@@ -53,14 +53,14 @@ test-end-to-end: # Test research + writing end-to-end using the dataset sample.
 
 # --- Dataset ---
 
+run-dataset-writing: # Run the full research + writing workflow on all dataset posts (output to test_all/).
+	uv run python scripts/run_dataset_writing.py --output-dir test_all --run-research
+
+run-dataset-writing-no-image: # Run the full research + writing workflow on all dataset posts without images.
+	uv run python scripts/run_dataset_writing.py --output-dir test_all --run-research --skip-image
+
 generate-dataset: # Generate seed and guideline files for the LinkedIn dataset.
 	uv run python scripts/generate_dataset.py
-
-run-dataset-writing: # Run the writing workflow on all dataset posts (output to test_all/).
-	uv run python scripts/run_dataset_writing.py --output-dir test_all
-
-run-dataset-writing-no-image: # Run the writing workflow on all dataset posts without images.
-	uv run python scripts/run_dataset_writing.py --output-dir test_all --skip-image
 
 label-dataset: # Label dataset by comparing generated posts to ground truth.
 	uv run python scripts/label_dataset.py
