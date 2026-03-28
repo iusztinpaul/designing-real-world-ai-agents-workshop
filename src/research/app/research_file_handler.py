@@ -6,7 +6,6 @@ from pathlib import Path
 from research.config.constants import (
     MEMORY_FOLDER,
     RESEARCH_RESULTS_FILE,
-    SELECTED_SOURCES_FILE,
     TRANSCRIPTS_FOLDER,
 )
 from research.utils.file_utils import load_json, read_file
@@ -37,9 +36,6 @@ def compile_research_file(working_dir: str) -> str:
     # Load research results
     research_results = load_json(memory_path / RESEARCH_RESULTS_FILE, default=[])
 
-    # Load selected sources
-    selected_sources = load_json(memory_path / SELECTED_SOURCES_FILE, default=[])
-
     # Load YouTube transcripts
     transcripts_dir = memory_path / TRANSCRIPTS_FOLDER
     youtube_sources: list[tuple[str, str]] = []
@@ -53,21 +49,6 @@ def compile_research_file(working_dir: str) -> str:
     # Build sections
     research_results_section = build_research_results_section(research_results)
 
-    # Build selected sources section
-    selected_source_items: list[tuple[str, str]] = []
-    for src in selected_sources:
-        title = src.get("title", src.get("url", "Unknown"))
-        snippet = src.get("snippet", "")
-        url = src.get("url", "")
-        body = f"**URL:** {url}\n\n{snippet}" if snippet else f"**URL:** {url}"
-        selected_source_items.append((title, body))
-
-    selected_sources_section = build_sources_section(
-        "## Selected Sources",
-        selected_source_items,
-        "No selected sources found.",
-    )
-
     youtube_section = build_sources_section(
         "## YouTube Video Transcripts",
         youtube_sources,
@@ -76,6 +57,5 @@ def compile_research_file(working_dir: str) -> str:
 
     return combine_research_sections(
         research_results_section,
-        selected_sources_section,
         youtube_section,
     )

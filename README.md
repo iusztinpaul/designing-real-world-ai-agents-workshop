@@ -6,10 +6,10 @@ Built as a lightweight companion to the [Agentic AI Engineering Course](https://
 
 ## What You'll Build
 
-**Deep Research Agent** — An MCP server that runs iterative deep research using Gemini with Google Search grounding:
+**Deep Research Agent** — An MCP server that runs deep research using Gemini with Google Search grounding and native YouTube video analysis:
 
 ```
-seed file → extract context → transcribe YouTube → [generate queries → search → select sources] × N → research.md
+user topic → [deep_research queries] × N → analyze_youtube_video → compile_research → research.md
 ```
 
 **LinkedIn Writing Workflow** — An MCP server that generates LinkedIn posts with an evaluator-optimizer loop:
@@ -71,10 +71,10 @@ All commands go through `make`. Run `make` to see available targets.
 
 The `.mcp.json` file is pre-configured with both servers. In Cursor or Claude Code, the servers will be available automatically:
 
-- **deep-research** — 6 tools, 1 resource, 1 prompt
+- **deep-research** — 3 tools, 1 resource, 1 prompt
 - **linkedin-writer** — 3 tools, 2 resources, 1 prompt
 
-To use: invoke the MCP prompt (`deep_research_workflow` or `linkedin_post_workflow`) and let the harness orchestrate the tools.
+To use: invoke the MCP prompt (`research_workflow` or `linkedin_post_workflow`) and let the harness orchestrate the tools.
 
 ### Run Servers Standalone
 

@@ -5,7 +5,7 @@
       "args": [
         "run",
         "--directory",
-        "/Users/pauliusztin/Documents/01-Projects/Agentic-AI-Engineering-Course/designing-real-world-ai-agents-workshop",
+        "/Users/samridhivaid/Desktop/aie-workshop/designing-real-world-ai-agents-workshop",
         "fastmcp",
         "run",
         "src/research/server.py"
@@ -19,7 +19,7 @@
       "args": [
         "run",
         "--directory",
-        "/Users/pauliusztin/Documents/01-Projects/Agentic-AI-Engineering-Course/designing-real-world-ai-agents-workshop",
+        "/Users/samridhivaid/Desktop/aie-workshop/designing-real-world-ai-agents-workshop",
         "fastmcp",
         "run",
         "src/writing/server.py"

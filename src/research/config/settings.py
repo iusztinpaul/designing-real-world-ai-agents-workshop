@@ -29,14 +29,8 @@ class Settings(BaseSettings):
     gemini_model: str = Field(
         default="gemini-2.5-flash", description="Default Gemini model for general use"
     )
-    query_generation_model: str = Field(
-        default="gemini-2.5-flash", description="Model for query generation"
-    )
     youtube_transcription_model: str = Field(
-        default="gemini-2.5-flash", description="Model for YouTube transcription"
-    )
-    source_selection_model: str = Field(
-        default="gemini-2.5-flash", description="Model for source selection"
+        default="gemini-2.5-flash", description="Model for YouTube video analysis"
     )
 
     # API Keys

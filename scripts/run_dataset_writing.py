@@ -32,57 +32,43 @@ RESEARCH_SERVER_PATH = str(
     Path(__file__).parent.parent / "src" / "research" / "server.py"
 )
 
+# Default research queries when no seed context is available
+DEFAULT_QUERIES = [
+    "What are the key concepts and best practices for this topic?",
+    "What are the latest developments and trends in this area?",
+]
 
-async def run_research_workflow(
-    working_dir: str, n_rounds: int = 2, n_queries: int = 2
-) -> dict[str, str]:
+
+async def run_research_workflow(working_dir: str, n_queries: int = 2) -> dict[str, str]:
     """Run the deep research workflow for a single post."""
 
     client = Client(RESEARCH_SERVER_PATH)
     results = {}
 
     async with client:
-        # Step 1: Extract seed
-        result = await client.call_tool("extract_seed", {"working_dir": working_dir})
-        data = getattr(result, "data", {})
-        if isinstance(data, dict) and data.get("status") != "success":
-            return {"status": "failed", "step": "extract_seed", "detail": str(data)}
+        # Read seed file for context
+        seed_path = Path(working_dir) / "seed.md"
+        seed_text = seed_path.read_text(encoding="utf-8") if seed_path.exists() else ""
 
-        youtube_urls = data.get("youtube_urls", []) if isinstance(data, dict) else []
+        # Generate queries from seed content or use defaults
+        queries = DEFAULT_QUERIES[:n_queries]
+        if seed_text:
+            # Use seed content as the basis for queries
+            queries = [f"Research: {seed_text[:200]}"]
 
-        # Step 2: Transcribe YouTube videos (if any)
-        if youtube_urls:
-            await client.call_tool(
-                "transcribe_youtube",
-                {"working_dir": working_dir, "urls": youtube_urls},
-            )
-
-        # Step 3: Research loop
-        for round_i in range(n_rounds):
-            logger.info(f"    Research round {round_i + 1}/{n_rounds}")
-
+        # Run deep research for each query
+        for query in queries:
             result = await client.call_tool(
-                "generate_next_queries",
-                {"working_dir": working_dir, "n_queries": n_queries},
+                "deep_research",
+                {"working_dir": working_dir, "query": query},
             )
             data = getattr(result, "data", {})
-            queries = data.get("queries", []) if isinstance(data, dict) else []
-            query_strings = [q["query"] if isinstance(q, dict) else q for q in queries]
+            if isinstance(data, dict) and data.get("status") != "success":
+                logger.warning(f"Research query failed: {query[:50]}...")
 
-            if not query_strings:
-                logger.warning(f"    No queries generated in round {round_i + 1}")
-                continue
-
-            await client.call_tool(
-                "run_research",
-                {"working_dir": working_dir, "queries": query_strings},
-            )
-
-            await client.call_tool("select_sources", {"working_dir": working_dir})
-
-        # Step 4: Create research file
+        # Compile research file
         result = await client.call_tool(
-            "create_research_file", {"working_dir": working_dir}
+            "compile_research", {"working_dir": working_dir}
         )
         data = getattr(result, "data", {})
         results["status"] = (
@@ -244,7 +230,7 @@ async def run_all(
 @click.option(
     "--run-research",
     is_flag=True,
-    help="Run the research agent to produce research.md from seed.md",
+    help="Run the research agent to produce research.md",
 )
 @click.option("--slug", default=None, help="Process only this slug (default: all)")
 @click.option(

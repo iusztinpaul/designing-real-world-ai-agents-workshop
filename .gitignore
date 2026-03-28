@@ -211,3 +211,6 @@ test_logic/
 test_all/
 test_skill
 .memory/
+
+# Workshop personal notes
+workshop.md

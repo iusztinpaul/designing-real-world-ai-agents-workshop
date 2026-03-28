@@ -1,7 +1,7 @@
 """Manual end-to-end test of the Deep Research MCP server workflow.
 
 Connects to the research MCP server as a client and runs the full
-deep research workflow against a sample seed.md file.
+deep research workflow against a sample topic.
 
 Usage:
     uv run python scripts/test_research_workflow.py [--working-dir PATH] [--iterations N]
@@ -10,7 +10,6 @@ Usage:
 import asyncio
 import json
 import logging
-import sys
 from pathlib import Path
 
 import click
@@ -22,6 +21,13 @@ logger = logging.getLogger(__name__)
 
 # Number of separator chars for visual output
 SEP_WIDTH = 70
+
+# Sample queries to research
+SAMPLE_QUERIES = [
+    "What are AI agent architectures and design patterns in 2025?",
+    "How do autonomous AI agents use tools and skills to complete tasks?",
+    "What is the Model Context Protocol (MCP) and how does it work?",
+]
 
 
 def print_step(step: str, description: str) -> None:
@@ -46,96 +52,50 @@ def print_result(result: object) -> None:
         try:
             parsed = json.loads(data)
             print(f"  {json.dumps(parsed, indent=2)}")
-        except json.JSONDecodeError, TypeError:
+        except (json.JSONDecodeError, TypeError):
             print(f"  {data}")
     else:
         print(f"  {data}")
 
 
-async def run_workflow(client: Client, working_dir: str, iterations: int) -> None:
+async def run_workflow(
+    client: Client, working_dir: str, iterations: int, youtube_url: str | None
+) -> None:
     """Execute the full deep research workflow via MCP tool calls."""
 
     # ------------------------------------------------------------------
-    # Step 1: Extract seed
+    # Step 1: Deep research queries
     # ------------------------------------------------------------------
-    print_step("1", "Extract seed file")
-
-    result = await client.call_tool(
-        "extract_seed",
-        {"working_dir": working_dir, "seed_filename": "seed.md"},
-    )
-    print_result(result)
-
-    # Check for YouTube URLs in the extraction
-    data = getattr(result, "data", {})
-    youtube_count = data.get("youtube_urls_count", 0) if isinstance(data, dict) else 0
-
-    # ------------------------------------------------------------------
-    # Step 2: Transcribe YouTube (if any)
-    # ------------------------------------------------------------------
-    if youtube_count > 0:
-        print_step("2", f"Transcribe YouTube videos ({youtube_count} found)")
-
-        # Read the seed extraction to get the actual URLs
-        memory_dir = Path(working_dir) / ".memory"
-        seed_extraction_path = memory_dir / "seed_extraction.json"
-        seed_data = json.loads(seed_extraction_path.read_text(encoding="utf-8"))
-        youtube_urls = seed_data.get("youtube_urls", [])
+    for i, query in enumerate(SAMPLE_QUERIES[:iterations], 1):
+        print_step(f"1.{i}", f"Deep research: {query[:50]}...")
 
         result = await client.call_tool(
-            "transcribe_youtube",
-            {"working_dir": working_dir, "youtube_urls": youtube_urls},
+            "deep_research",
+            {"working_dir": working_dir, "query": query},
+        )
+        print_result(result)
+
+    # ------------------------------------------------------------------
+    # Step 2: Analyze YouTube video (if provided)
+    # ------------------------------------------------------------------
+    if youtube_url:
+        print_step("2", f"Analyze YouTube video: {youtube_url}")
+
+        result = await client.call_tool(
+            "analyze_youtube_video",
+            {"working_dir": working_dir, "youtube_url": youtube_url},
         )
         print_result(result)
     else:
-        print_step("2", "Transcribe YouTube videos (SKIPPED — none found)")
+        print_step("2", "Analyze YouTube video (SKIPPED — none provided)")
 
     # ------------------------------------------------------------------
-    # Step 3: Research loop
+    # Step 3: Compile research
     # ------------------------------------------------------------------
-    for i in range(1, iterations + 1):
-        print_step(f"3.{i}a", f"Generate research queries (iteration {i}/{iterations})")
-
-        result = await client.call_tool(
-            "generate_next_queries",
-            {"working_dir": working_dir, "n_queries": 3},
-        )
-        print_result(result)
-
-        # Extract queries from the result
-        data = getattr(result, "data", {})
-        queries_data = data.get("queries", []) if isinstance(data, dict) else []
-        query_strings = [
-            q["query"] if isinstance(q, dict) else str(q) for q in queries_data
-        ]
-
-        if not query_strings:
-            print("  WARNING: No queries generated, skipping research and selection.")
-            continue
-
-        print_step(f"3.{i}b", f"Run grounded research ({len(query_strings)} queries)")
-
-        result = await client.call_tool(
-            "run_research",
-            {"working_dir": working_dir, "queries": query_strings},
-        )
-        print_result(result)
-
-        print_step(f"3.{i}c", "Select high-quality sources")
-
-        result = await client.call_tool(
-            "select_sources",
-            {"working_dir": working_dir},
-        )
-        print_result(result)
-
-    # ------------------------------------------------------------------
-    # Step 4: Create research file
-    # ------------------------------------------------------------------
-    print_step("4", "Create final research.md")
+    print_step("3", "Compile final research.md")
 
     result = await client.call_tool(
-        "create_research_file",
+        "compile_research",
         {"working_dir": working_dir},
     )
     print_result(result)
@@ -152,30 +112,27 @@ async def run_workflow(client: Client, working_dir: str, iterations: int) -> Non
         print(f"\n  WARNING: {output_path} was not created.")
 
 
-def ensure_seed_file(working_dir: str, seed_filename: str) -> None:
-    """Check that the seed file exists in the working directory."""
-
-    seed_path = Path(working_dir) / seed_filename
-    if not seed_path.exists():
-        print(f"ERROR: {seed_filename} not found in {working_dir}")
-        sys.exit(1)
-
-
 @click.command()
 @click.option(
     "--working-dir",
     "-d",
     default="test_research",
-    help="Working directory containing seed.md (default: test_research)",
+    help="Working directory for output (default: test_research)",
 )
 @click.option(
     "--iterations",
     "-n",
     default=2,
     type=int,
-    help="Number of research loop iterations (default: 2)",
+    help="Number of research queries to run (default: 2, max: 3)",
 )
-def main(working_dir: str, iterations: int) -> None:
+@click.option(
+    "--youtube-url",
+    "-y",
+    default=None,
+    help="Optional YouTube URL to analyze",
+)
+def main(working_dir: str, iterations: int, youtube_url: str | None) -> None:
     """Run the full deep research workflow as an MCP client test."""
 
     setup_logging()
@@ -183,11 +140,10 @@ def main(working_dir: str, iterations: int) -> None:
     # Resolve working directory
     working_path = Path(working_dir).resolve()
     working_path.mkdir(parents=True, exist_ok=True)
-    ensure_seed_file(str(working_path), "seed.md")
 
     print("Deep Research MCP Server — Workflow Test")
     print(f"Working directory: {working_path}")
-    print(f"Research iterations: {iterations}")
+    print(f"Research queries: {iterations}")
 
     # Connect to the server via stdio (launches it as a subprocess)
     server_path = str(Path(__file__).parent.parent / "src" / "research" / "server.py")
@@ -202,7 +158,7 @@ def main(working_dir: str, iterations: int) -> None:
                 print(f"  - {tool.name}")
             print()
 
-            await run_workflow(client, str(working_path), iterations)
+            await run_workflow(client, str(working_path), iterations, youtube_url)
 
     asyncio.run(_run())
 

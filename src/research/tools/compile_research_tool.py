@@ -1,4 +1,4 @@
-"""Research file creation tool implementation."""
+"""Research compilation tool implementation."""
 
 import logging
 from pathlib import Path
@@ -11,11 +11,11 @@ from research.utils.file_utils import validate_directory, write_file
 logger = logging.getLogger(__name__)
 
 
-def create_research_file_tool(working_dir: str) -> dict[str, Any]:
-    """Generate the final comprehensive research.md file.
+def compile_research_tool(working_dir: str) -> dict[str, Any]:
+    """Aggregate all collected research into a single markdown research brief.
 
-    Combines all research data from .memory/ into a structured markdown file
-    with collapsible sections for easy navigation.
+    Combines all research data (search results and YouTube transcripts)
+    from .memory/ into a structured research.md file.
 
     Args:
         working_dir: Path to the working directory containing .memory/ data.

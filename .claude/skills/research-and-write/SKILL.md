@@ -10,29 +10,13 @@ End-to-end workflow: research a topic, then write a LinkedIn post from it. Chain
 ## Input Preparation
 
 Gather from the user:
-1. **Topic** — what to research (becomes `seed.md`)
+1. **Topic** — what to research
 2. **Guideline** — how the post should be written (becomes `guideline.md`)
 
 If the user only gives a topic, ask for the guideline details (angle, audience, key points, tone) or suggest a default based on the topic.
 
-Create both files in the working directory:
+Create `guideline.md` in the working directory:
 
-**`seed.md`:**
-```markdown
-# Research Topic: [topic]
-
-[Description]
-
-## Key Questions
-
-[3-5 research questions]
-
-## References
-
-[URLs or "- "]
-```
-
-**`guideline.md`:**
 ```markdown
 # LinkedIn Post Guideline
 
@@ -58,7 +42,12 @@ Default working directory: current directory. Create it if needed.
 
 ### Phase 1: Research
 
-Read the `WORKFLOW_INSTRUCTIONS` from `src/research/routers/prompts.py` and follow those steps exactly, using the `deep-research` MCP tools. This produces `research.md`.
+Load the `research_workflow` MCP prompt from the `deep-research` server and follow the workflow instructions using the available tools:
+- `deep_research` — for web research queries
+- `analyze_youtube_video` — for any YouTube URLs the user provides
+- `compile_research` — to produce the final research.md
+
+Use the current working directory as the `working_dir` for all tool calls. This produces `research.md`.
 
 Tell the user when research is complete.
 
