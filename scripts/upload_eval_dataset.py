@@ -6,16 +6,20 @@ Usage:
 
 import click
 
-from writing.evals.dataset import upload_dataset_to_opik
+from writing.evals.dataset import upload_dataset_to_opik, upload_online_dataset_to_opik
 from writing.utils.logging import setup_logging
 from writing.utils.opik_utils import configure_opik
+
+OFFLINE_SPLITS = ["dev_evaluator", "test_evaluator"]
+ONLINE_SPLITS = ["online_test"]
+ALL_SPLITS = OFFLINE_SPLITS + ONLINE_SPLITS
 
 
 @click.command()
 @click.option(
     "--split",
     default="all",
-    type=click.Choice(["dev_evaluator", "test_evaluator", "all"]),
+    type=click.Choice(ALL_SPLITS + ["all"]),
     help="Which split to upload (default: all)",
 )
 def main(split: str) -> None:
@@ -25,10 +29,13 @@ def main(split: str) -> None:
 
     configure_opik()
 
-    splits = ["dev_evaluator", "test_evaluator"] if split == "all" else [split]
+    splits = ALL_SPLITS if split == "all" else [split]
 
     for s in splits:
-        dataset = upload_dataset_to_opik(s)
+        if s in ONLINE_SPLITS:
+            dataset = upload_online_dataset_to_opik(s)
+        else:
+            dataset = upload_dataset_to_opik(s)
         print(f"Uploaded: {dataset.name} ({len(dataset.get_items())} items)")
 
 

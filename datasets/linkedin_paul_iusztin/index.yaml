@@ -140,7 +140,7 @@
   local_guideline: ./my-linkedin-tells-you-that-im-a-successful-ai-engineer-and-b_guideline.md
   local_seed: ./my-linkedin-tells-you-that-im-a-successful-ai-engineer-and-b_seed.md
   scope:
-  - test_evaluator
+  - online_test
   local_generated_post: ./my-linkedin-tells-you-that-im-a-successful-ai-engineer-and-b_generated.md
   label: pass
   critique: The generated post perfectly captures the ground truth's core message
@@ -202,7 +202,7 @@
   local_guideline: ./the-biggest-challenge-for-those-working-in-ai-right-now_guideline.md
   local_seed: ./the-biggest-challenge-for-those-working-in-ai-right-now_seed.md
   scope:
-  - test_evaluator
+  - online_test
   local_generated_post: ./the-biggest-challenge-for-those-working-in-ai-right-now_generated.md
   label: fail
   critique: The generated post misses critical elements of Paul's personal endorsement
@@ -307,7 +307,7 @@
   local_guideline: ./if-youre-building-ai-agents-in-2026-save-this-cheatsheet_guideline.md
   local_seed: ./if-youre-building-ai-agents-in-2026-save-this-cheatsheet_seed.md
   scope:
-  - test_evaluator
+  - online_test
   local_generated_post: ./if-youre-building-ai-agents-in-2026-save-this-cheatsheet_generated.md
   label: fail
   critique: The generated post fundamentally misattributes the authorship of the "AI
@@ -369,7 +369,7 @@
   local_guideline: ./6-months-ago-i-never-imagined-id-be-hosting-my-own-ai-event_guideline.md
   local_seed: ./6-months-ago-i-never-imagined-id-be-hosting-my-own-ai-event_seed.md
   scope:
-  - test_evaluator
+  - online_test
   local_generated_post: ./6-months-ago-i-never-imagined-id-be-hosting-my-own-ai-event_generated.md
   label: pass
   critique: The generated post effectively captures the core message of personal growth
@@ -390,7 +390,7 @@
   local_guideline: ./how-do-you-stay-up-to-date-with-everything-in-ai_guideline.md
   local_seed: ./how-do-you-stay-up-to-date-with-everything-in-ai_seed.md
   scope:
-  - test_evaluator
+  - online_test
   local_generated_post: ./how-do-you-stay-up-to-date-with-everything-in-ai_generated.md
   label: fail
   critique: The generated post contains critical factual errors regarding the event

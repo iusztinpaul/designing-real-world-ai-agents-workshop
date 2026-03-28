@@ -36,7 +36,8 @@ def main(split: str, workers: int, nb_samples: int | None) -> None:
     setup_logging()
 
     configure_opik()
-    run_evaluation(split=split, workers=workers, nb_samples=nb_samples)
+    f1 = run_evaluation(split=split, workers=workers, nb_samples=nb_samples)
+    click.echo(f"F1 score (judge vs expert labels): {f1:.3f}")
 
 
 if __name__ == "__main__":

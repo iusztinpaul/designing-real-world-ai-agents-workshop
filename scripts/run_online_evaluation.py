@@ -17,9 +17,9 @@ from writing.utils.opik_utils import configure_opik
 @click.command()
 @click.option(
     "--split",
-    default="test_evaluator",
-    type=click.Choice(["dev_evaluator", "test_evaluator"]),
-    help="Which split to evaluate (default: test_evaluator)",
+    default="online_test",
+    type=click.Choice(["dev_evaluator", "test_evaluator", "online_test"]),
+    help="Which split to evaluate (default: online_test)",
 )
 @click.option(
     "--workers",
@@ -39,7 +39,11 @@ def main(split: str, workers: int, nb_samples: int | None) -> None:
     setup_logging()
 
     configure_opik()
-    run_online_evaluation(split=split, workers=workers, nb_samples=nb_samples)
+    f1 = run_online_evaluation(split=split, workers=workers, nb_samples=nb_samples)
+    if f1 is not None:
+        click.echo(f"F1 score (judge vs expert labels): {f1:.3f}")
+    else:
+        click.echo("Online evaluation complete (no F1 — simulating real-world usage).")
 
 
 if __name__ == "__main__":

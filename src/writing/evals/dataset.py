@@ -94,14 +94,15 @@ def upload_online_dataset_to_opik(split: str) -> opik.Dataset:
             logger.warning(f"Skipping {entry.slug}: missing guideline")
             continue
 
-        items.append(
-            {
-                "name": entry.slug,
-                "slug": entry.slug,
-                "guideline": guideline,
-                "research": research,
-            }
-        )
+        item: dict = {
+            "name": entry.slug,
+            "slug": entry.slug,
+            "guideline": guideline,
+            "research": research,
+        }
+        if entry.label is not None:
+            item["label"] = entry.label.value
+        items.append(item)
 
     dataset_full_name = f"{DATASET_NAME}-online-{split}"
     client = opik.Opik()

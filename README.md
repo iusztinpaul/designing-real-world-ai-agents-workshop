@@ -96,6 +96,32 @@ make test-writing-workflow
 make test-end-to-end
 ```
 
+### Dataset
+
+```bash
+# Run research + writing workflow on all dataset posts
+make run-dataset-writing
+
+# Same as above but skip image generation
+make run-dataset-writing-no-image
+```
+
+### Evaluation
+
+```bash
+# Upload all evaluation splits (dev, test, online) to Opik
+make upload-eval-dataset
+
+# Run LLM judge on dev split (alignment check, reports F1)
+make eval-dev
+
+# Run LLM judge on test split (final evaluation, reports F1)
+make eval-test
+
+# Run online evaluation: generate posts on the fly + judge them (no F1)
+make eval-online
+```
+
 ### QA
 
 ```bash
@@ -123,11 +149,13 @@ make lint-check             # Check linting
 │       ├── config/            # Settings, constants, prompt templates
 │       ├── models/            # Pydantic schemas (Post, Review, Profiles)
 │       ├── app/               # Business logic handlers
+│       ├── evals/             # LLM judge metric, dataset upload, evaluation harness
 │       ├── tools/             # MCP tool implementations
 │       ├── routers/           # MCP tool, resource, and prompt registration
 │       └── utils/             # Gemini client, Imagen, Opik helpers
+├── datasets/                  # LinkedIn posts dataset with labels and splits
 ├── inputs/                    # Seed and guideline files
-├── scripts/                   # Test scripts (MCP client workflows)
+├── scripts/                   # Entrypoints and test scripts
 ├── .mcp.json                  # MCP server configuration for harnesses
 ├── Makefile                   # Command center
 └── .env.example               # Environment variable template
