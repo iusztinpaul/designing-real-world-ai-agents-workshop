@@ -33,96 +33,177 @@ Both servers expose tools, resources, and prompts via the [Model Context Protoco
 | QA | Ruff |
 | Package Manager | uv |
 
-## Setup
+## Quick Start
 
-### Prerequisites
-
-- Python 3.14+
-- [uv](https://docs.astral.sh/uv/) package manager
-- [GNU Make](https://www.gnu.org/software/make/) (pre-installed on macOS/Linux; if unavailable, just copy the commands from the [Makefile](Makefile) directly)
-- A [Google AI Studio](https://aistudio.google.com/) API key
-
-### Install
+Already have Python 3.14+, uv, and Make installed? Get running in 60 seconds:
 
 ```bash
 git clone https://github.com/decodingml/designing-real-world-ai-agents-workshop.git
 cd designing-real-world-ai-agents-workshop
-cp .env.example .env   # Fill in your API keys
+cp .env.example .env          # add your GOOGLE_API_KEY
 uv sync
+make test-end-to-end          # verify everything works
 ```
 
-### Environment Variables
+## Prerequisites
 
-Edit `.env` with your keys:
+### 1. Python 3.14+
 
 ```bash
-# Mandatory
-GOOGLE_API_KEY=...          # Google AI Studio API key (Gemini)
-
-# Optional
-OPIK_API_KEY=...            # Opik API key for observability
+python --version   # should print 3.14.x
 ```
 
-## Running
+> **Note:** Python 3.14 is required (not 3.13 or earlier). If using pyenv: `pyenv install 3.14.0`. Download from [python.org](https://www.python.org/downloads/) if needed.
 
-All commands go through `make`. Run `make` to see available targets.
-
-### Connect to a Harness (Claude Code / Cursor)
-
-The `.mcp.json` file is pre-configured with both servers. In Cursor or Claude Code, the servers will be available automatically:
-
-- **deep-research** — 3 tools, 1 resource, 1 prompt
-- **linkedin-writer** — 3 tools, 2 resources, 1 prompt
-
-To use: invoke the MCP prompt (`research_workflow` or `linkedin_post_workflow`) and let the harness orchestrate the tools.
-
-### Run Servers Standalone
+### 2. uv package manager
 
 ```bash
-make run-research-server    # Deep Research Agent (stdio)
-make run-writing-server     # LinkedIn Writer (stdio)
+uv --version   # should print 0.7.x or later
 ```
 
-### Test Workflows
+Install: `curl -LsSf https://astral.sh/uv/install.sh | sh` — see [uv docs](https://docs.astral.sh/uv/getting-started/installation/) for other methods.
+
+### 3. GNU Make
 
 ```bash
-# Run research workflow (uses inputs/seed.md)
-make test-research-workflow
-
-# Run writing workflow (uses inputs/guideline.md + research.md from above)
-make test-writing-workflow
-
-# Run both end-to-end
-make test-end-to-end
+make --version   # pre-installed on macOS/Linux
 ```
 
-### Dataset
+Windows users: install via [chocolatey](https://chocolatey.org/) (`choco install make`) or copy the commands from the [Makefile](Makefile) directly.
+
+### 4. Google AI Studio API Key
+
+Get one at [aistudio.google.com/apikey](https://aistudio.google.com/apikey). This is **required** — all LLM calls use Gemini.
+
+### 5. Opik Account (optional)
+
+For observability and evaluation tracking. Get a key at [comet.com/site/products/opik](https://www.comet.com/site/products/opik/).
+
+## Installation
+
+1. **Clone the repository:**
+
+   ```bash
+   git clone https://github.com/decodingml/designing-real-world-ai-agents-workshop.git
+   cd designing-real-world-ai-agents-workshop
+   ```
+
+2. **Configure environment variables:**
+
+   ```bash
+   cp .env.example .env
+   ```
+
+   Edit `.env` and set at minimum:
+
+   ```bash
+   GOOGLE_API_KEY=your-key-here
+   ```
+
+   Optional (for observability and evals):
+
+   ```bash
+   OPIK_API_KEY=your-key-here
+   OPIK_WORKSPACE=your-workspace-name
+   ```
+
+3. **Install dependencies:**
+
+   ```bash
+   uv sync
+   ```
+
+4. **Verify the setup:**
+
+   ```bash
+   make test-research-workflow
+   ```
+
+   This runs a research query using Gemini. If it completes without errors, you're good to go.
+
+## Running the Code
+
+There are three ways to run the workflows:
+
+| Mode | Best for | Requires |
+|------|----------|----------|
+| **Scripts** | Verify setup works, quick smoke tests | Terminal only |
+| **MCP Servers** | Interactive use with AI harness | Claude Code or Cursor |
+| **Skills** | Guided slash-command workflows | Claude Code only |
+
+### Scripts
+
+Run workflows directly from the terminal via `make`. Useful for verifying your setup works and running quick smoke tests.
+
+**Test workflows:**
 
 ```bash
-# Run research + writing workflow on all dataset posts
-make run-dataset-writing
-
-# Same as above but skip image generation
-make run-dataset-writing-no-image
+make test-research-workflow    # Research on a sample topic → test_logic/research.md
+make test-writing-workflow     # Generate post from research → test_logic/post.md
+make test-end-to-end           # Both steps sequentially
 ```
 
-### Evaluation
+> **Note:** `test-writing-workflow` requires `test_logic/research.md` to exist. Run `test-research-workflow` first, or use `test-end-to-end`.
+
+**Full dataset run:**
 
 ```bash
-# Upload all evaluation splits (dev, test, online) to Opik
-make upload-eval-dataset
-
-# Run LLM judge on dev split (alignment check, reports F1)
-make eval-dev
-
-# Run LLM judge on test split (final evaluation, reports F1)
-make eval-test
-
-# Run online evaluation: generate posts on the fly + judge them (no F1)
-make eval-online
+make run-dataset-writing           # Research + write for all dataset posts (with images)
+make run-dataset-writing-no-image  # Same, skip image generation (faster)
 ```
 
-### QA
+**Evaluation (requires Opik):**
+
+```bash
+make upload-eval-dataset    # Upload evaluation splits to Opik
+make eval-dev               # LLM judge on dev split
+make eval-test              # LLM judge on test split
+make eval-online            # Generate + judge posts on the fly
+```
+
+### MCP Servers
+
+Connect the servers to an MCP-compatible harness (Claude Code, Cursor) for interactive use.
+
+**Setup:** The `.mcp.json` file is pre-configured. Both servers start automatically when you open the project in Claude Code or Cursor.
+
+| Server | Tools | Prompt |
+|--------|-------|--------|
+| `deep-research` | `deep_research`, `analyze_youtube_video`, `compile_research` | `research_workflow` |
+| `linkedin-writer` | `generate_post`, `edit_post`, `generate_image` | `linkedin_post_workflow` |
+
+**Usage:**
+
+1. Open the project in Claude Code or Cursor
+2. Invoke an MCP prompt (e.g., `research_workflow`) to get guided through the full workflow
+3. Or call individual tools directly for fine-grained control
+
+**Manual server start (advanced):**
+
+```bash
+make run-research-server    # stdio transport
+make run-writing-server     # stdio transport
+```
+
+### Skills (Claude Code only)
+
+Pre-built slash commands that orchestrate the MCP tools with sensible defaults. All output goes to `outputs/{topic-slug}/`.
+
+| Command | What it does |
+|---------|-------------|
+| `/research` | Deep research on a topic → `research.md` |
+| `/write-post` | Generate LinkedIn post from existing research → `post.md` + `post_image.png` |
+| `/research-and-write` | Full pipeline: research a topic, then write a post from it |
+
+Example:
+
+```
+/research-and-write
+```
+
+The skill will ask you for a topic and guideline, then run the full pipeline end-to-end.
+
+## QA
 
 ```bash
 make format-fix             # Auto-format with ruff
