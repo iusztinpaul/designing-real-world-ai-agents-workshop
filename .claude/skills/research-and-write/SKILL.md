@@ -15,6 +15,14 @@ Gather from the user:
 
 If the user only gives a topic, ask for the guideline details (angle, audience, key points, tone) or suggest a default based on the topic.
 
+## Working Directory
+
+All output goes into `outputs/{slug}/` relative to the project root. Derive the slug from:
+- The dataset seed/guideline filename if the user references one (e.g., `my-topic_seed.md` → `my-topic`)
+- Otherwise, slugify the topic (lowercase, hyphens, no special chars, max 60 chars)
+
+Create the directory if it doesn't exist.
+
 Create `guideline.md` in the working directory:
 
 ```markdown
@@ -36,8 +44,6 @@ Create `guideline.md` in the working directory:
 [How it should sound]
 ```
 
-Default working directory: current directory. Create it if needed.
-
 ## Execution
 
 ### Phase 1: Research
@@ -47,14 +53,14 @@ Load the `research_workflow` MCP prompt from the `deep-research` server and foll
 - `analyze_youtube_video` — for any YouTube URLs the user provides
 - `compile_research` — to produce the final research.md
 
-Use the current working directory as the `working_dir` for all tool calls. This produces `research.md`.
+Use `outputs/{slug}/` as the `working_dir` for all tool calls. This produces `research.md`.
 
 Tell the user when research is complete.
 
 ### Phase 2: Write
 
-Read the `WORKFLOW_INSTRUCTIONS` from `src/writing/routers/prompts.py` and follow those steps exactly, using the `linkedin-writer` MCP tools. The working directory already has `guideline.md` and `research.md` from Phase 1.
+Read the `WORKFLOW_INSTRUCTIONS` from `src/writing/routers/prompts.py` and follow those steps exactly, using the `linkedin-writer` MCP tools. The working directory `outputs/{slug}/` already has `guideline.md` and `research.md` from Phase 1.
 
 ## After Completion
 
-Present the final `post.md` and `post_image.png` to the user. Offer to edit with feedback.
+Present the final `outputs/{slug}/post.md` and `outputs/{slug}/post_image.png` to the user. Offer to edit with feedback.

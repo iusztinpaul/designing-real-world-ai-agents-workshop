@@ -75,7 +75,6 @@
   local_guideline: ./ive-been-an-engineer-in-the-ai-space-for-8-years_guideline.md
   local_seed: ./ive-been-an-engineer-in-the-ai-space-for-8-years_seed.md
   scope:
-  - train_image_generator
   - train_evaluator
   local_generated_post: ./ive-been-an-engineer-in-the-ai-space-for-8-years_generated.md
   label: pass
@@ -362,7 +361,7 @@
   linkedin_url: https://www.linkedin.com/feed/update/urn:li:activity:7398352208578355200
   local_post: ./6-months-ago-i-never-imagined-id-be-hosting-my-own-ai-event.md
   local_media:
-  - ./6-months-ago-i-never-imagined-id-be-hosting-my-own-ai-event.jpg
+  - ./6-months-ago-i-never-imagined-id-be-hosting-my-own-ai-event_generated.png
   reactions: 179
   comments: 38
   shares: 4
@@ -370,6 +369,7 @@
   local_seed: ./6-months-ago-i-never-imagined-id-be-hosting-my-own-ai-event_seed.md
   scope:
   - online_test
+  - train_image_generator
   local_generated_post: ./6-months-ago-i-never-imagined-id-be-hosting-my-own-ai-event_generated.md
   label: pass
   critique: The generated post effectively captures the core message of personal growth

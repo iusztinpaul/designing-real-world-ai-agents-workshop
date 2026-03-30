@@ -4,8 +4,6 @@
       "command": "uv",
       "args": [
         "run",
-        "--directory",
-        "/Users/samridhivaid/Desktop/aie-workshop/designing-real-world-ai-agents-workshop",
         "fastmcp",
         "run",
         "src/research/server.py"
@@ -18,8 +16,6 @@
       "command": "uv",
       "args": [
         "run",
-        "--directory",
-        "/Users/samridhivaid/Desktop/aie-workshop/designing-real-world-ai-agents-workshop",
         "fastmcp",
         "run",
         "src/writing/server.py"

@@ -7,6 +7,14 @@ description: "Run deep research on any topic using the Deep Research MCP server.
 
 Research a topic using the `deep-research` MCP server.
 
+## Working Directory
+
+All output goes into `outputs/{slug}/` relative to the project root. Derive the slug from:
+- The dataset seed filename if the user references one (e.g., `my-topic_seed.md` → `my-topic`)
+- Otherwise, slugify the topic (lowercase, hyphens, no special chars, max 60 chars)
+
+Create the directory if it doesn't exist.
+
 ## Execution
 
 1. Load the `research_workflow` MCP prompt from the `deep-research` server.
@@ -14,8 +22,8 @@ Research a topic using the `deep-research` MCP server.
    - `deep_research` — for web research queries
    - `analyze_youtube_video` — for any YouTube URLs the user provides
    - `compile_research` — to produce the final research.md
-3. Use the current working directory as the `working_dir` for all tool calls.
+3. Use `outputs/{slug}/` as the `working_dir` for all tool calls.
 
 ## After Completion
 
-Show the user the path to `research.md` and a brief summary of what was found.
+Show the user the path to `outputs/{slug}/research.md` and a brief summary of what was found.

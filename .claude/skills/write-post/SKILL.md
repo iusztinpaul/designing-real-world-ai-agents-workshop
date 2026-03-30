@@ -7,6 +7,14 @@ description: "Generate a LinkedIn post using the LinkedIn Writer MCP server. Use
 
 Generate a LinkedIn post using the `linkedin-writer` MCP server.
 
+## Working Directory
+
+All output goes into `outputs/{slug}/` relative to the project root. Derive the slug from:
+- The dataset seed/guideline filename if the user references one (e.g., `my-topic_seed.md` → `my-topic`)
+- Otherwise, slugify the topic (lowercase, hyphens, no special chars, max 60 chars)
+
+Create the directory if it doesn't exist.
+
 ## Input Preparation
 
 The working directory needs `guideline.md` and `research.md`.
@@ -34,12 +42,10 @@ If the user provides raw text for the guideline, create `guideline.md` in the wo
 
 If `research.md` is in a different location, copy it into the working directory.
 
-Default working directory: current directory. Create it if needed.
-
 ## Execution
 
-Read the `WORKFLOW_INSTRUCTIONS` from `src/writing/routers/prompts.py` and follow those steps exactly, using the `linkedin-writer` MCP tools. Pass the working directory path to each tool.
+Read the `WORKFLOW_INSTRUCTIONS` from `src/writing/routers/prompts.py` and follow those steps exactly, using the `linkedin-writer` MCP tools. Pass `outputs/{slug}/` as the working directory path to each tool.
 
 ## After Completion
 
-Present the final `post.md` content to the user. If an image was generated, mention `post_image.png`.
+Present the final `outputs/{slug}/post.md` content to the user. If an image was generated, mention `outputs/{slug}/post_image.png`.
