@@ -20,15 +20,24 @@ from writing.models.schemas import Post
 logger = logging.getLogger(__name__)
 
 
-async def edit_post_tool(working_dir: str, human_feedback: str) -> dict[str, Any]:
+async def edit_post_tool(
+    working_dir: str,
+    human_feedback: str,
+    delete_iterations: bool = False,
+) -> dict[str, Any]:
     """Edit an existing LinkedIn post with one review+edit pass guided by human feedback.
 
     Reads the existing post.md, runs a review pass with the human feedback
     as highest priority, then edits the post accordingly.
 
+    By default, saves a versioned copy (post_N.md) and reviews to .memory/.
+    Pass delete_iterations=True to skip saving versioned files and reviews.
+
     Args:
         working_dir: Path to the working directory with post.md, guideline.md, research.md.
         human_feedback: The user's feedback on what to change.
+        delete_iterations: If True, only update post.md and discard
+            versioned copies and reviews.
 
     Returns:
         Dict with status, reviews summary, and output file path.
@@ -58,10 +67,6 @@ async def edit_post_tool(working_dir: str, human_feedback: str) -> dict[str, Any
     post_examples_text = examples.format_post_examples()
     post = Post(content=post_content)
 
-    # Create .memory/ for intermediate files
-    memory_path = working_path / MEMORY_FOLDER
-    memory_path.mkdir(parents=True, exist_ok=True)
-
     # Review with human feedback
     logger.info("Reviewing post with human feedback...")
     reviews_result = await review_post(
@@ -69,11 +74,14 @@ async def edit_post_tool(working_dir: str, human_feedback: str) -> dict[str, Any
     )
     reviews = reviews_result.reviews
 
-    # Save reviews
-    reviews_data = [r.model_dump() for r in reviews]
-    (memory_path / "reviews_edit.json").write_text(
-        json.dumps(reviews_data, indent=2), encoding="utf-8"
-    )
+    # Save reviews (unless delete_iterations is set)
+    if not delete_iterations:
+        memory_path = working_path / MEMORY_FOLDER
+        memory_path.mkdir(parents=True, exist_ok=True)
+        reviews_data = [r.model_dump() for r in reviews]
+        (memory_path / "reviews_edit.json").write_text(
+            json.dumps(reviews_data, indent=2), encoding="utf-8"
+        )
 
     if not reviews:
         logger.info("No issues found. Post unchanged.")
@@ -92,14 +100,15 @@ async def edit_post_tool(working_dir: str, human_feedback: str) -> dict[str, Any
         post, reviews, guideline, research, profiles, post_examples_text
     )
 
-    # Determine next version number
-    existing_versions = sorted(working_path.glob("post_*.md"))
-    next_version = len(existing_versions)
-    version_path = working_path / f"post_{next_version}.md"
-    version_path.write_text(edited_post.content, encoding="utf-8")
-    logger.info(f"Versioned post saved to {version_path.name}")
+    # Save versioned copy (unless delete_iterations is set)
+    if not delete_iterations:
+        existing_versions = sorted(working_path.glob("post_*.md"))
+        next_version = len(existing_versions)
+        version_path = working_path / f"post_{next_version}.md"
+        version_path.write_text(edited_post.content, encoding="utf-8")
+        logger.info(f"Versioned post saved to {version_path.name}")
 
-    # Also update post.md
+    # Update post.md
     post_path.write_text(edited_post.content, encoding="utf-8")
     logger.info(f"Updated {POST_FILE}")
 

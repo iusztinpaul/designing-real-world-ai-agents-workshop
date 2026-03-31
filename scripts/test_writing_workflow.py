@@ -50,7 +50,9 @@ def print_result(result: object) -> None:
         print(f"  {data}")
 
 
-async def run_workflow(client: Client, working_dir: str) -> None:
+async def run_workflow(
+    client: Client, working_dir: str, delete_iterations: bool = False
+) -> None:
     """Execute the full LinkedIn post writing workflow via MCP tool calls."""
 
     # ------------------------------------------------------------------
@@ -60,7 +62,7 @@ async def run_workflow(client: Client, working_dir: str) -> None:
 
     result = await client.call_tool(
         "generate_post",
-        {"working_dir": working_dir},
+        {"working_dir": working_dir, "delete_iterations": delete_iterations},
     )
     print_result(result)
 
@@ -74,6 +76,7 @@ async def run_workflow(client: Client, working_dir: str) -> None:
         {
             "working_dir": working_dir,
             "human_feedback": "Make the hook more provocative. Add a stronger call-to-action at the end.",
+            "delete_iterations": delete_iterations,
         },
     )
     print_result(result)
@@ -128,7 +131,12 @@ def ensure_inputs(working_dir: str) -> None:
     default="test_writing",
     help="Working directory containing guideline.md and research.md (default: test_writing)",
 )
-def main(working_dir: str) -> None:
+@click.option(
+    "--delete-iterations",
+    is_flag=True,
+    help="Delete intermediate post versions and reviews, keeping only the final post.md",
+)
+def main(working_dir: str, delete_iterations: bool) -> None:
     """Run the full LinkedIn post writing workflow as an MCP client test."""
 
     setup_logging()
@@ -151,7 +159,7 @@ def main(working_dir: str) -> None:
                 print(f"  - {tool.name}")
             print()
 
-            await run_workflow(client, str(working_path))
+            await run_workflow(client, str(working_path), delete_iterations)
 
     asyncio.run(_run())
 

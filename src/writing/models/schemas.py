@@ -43,3 +43,17 @@ class PostReviews(BaseModel):
     reviews: list[Review] = Field(
         default_factory=list, description="List of review items"
     )
+
+
+class GeneratePostResult(BaseModel):
+    """Result of the generate post pipeline, including all intermediate versions."""
+
+    post: Post = Field(description="The final post after all iterations")
+    versions: list[Post] = Field(
+        default_factory=list,
+        description="All intermediate post versions (initial + each edit)",
+    )
+    reviews: list[PostReviews] = Field(
+        default_factory=list,
+        description="Review results from each iteration",
+    )

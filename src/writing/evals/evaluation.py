@@ -127,8 +127,8 @@ def _online_task(sample: dict[str, Any]) -> dict[str, Any]:
     research = sample.get("research", "")
 
     logger.info(f"Generating post for: {sample.get('slug', 'unknown')}...")
-    post = asyncio.run(generate_post(guideline, research))
-    generated_post = post.content
+    result = asyncio.run(generate_post(guideline, research))
+    generated_post = result.post.content
     logger.info(f"Generated {len(generated_post)} chars")
 
     return {

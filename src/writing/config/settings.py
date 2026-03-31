@@ -39,7 +39,7 @@ class Settings(BaseSettings):
 
     # Workflow Configuration
     num_reviews: int = Field(
-        default=2, description="Number of review/edit iterations in generate_post"
+        default=4, description="Number of review/edit iterations in generate_post"
     )
 
     # API Keys

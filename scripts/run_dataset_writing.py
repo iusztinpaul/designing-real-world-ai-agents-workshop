@@ -79,7 +79,9 @@ async def run_research_workflow(working_dir: str, n_queries: int = 2) -> dict[st
 
 
 async def run_writing_workflow(
-    working_dir: str, skip_image: bool = False
+    working_dir: str,
+    skip_image: bool = False,
+    delete_iterations: bool = False,
 ) -> dict[str, str]:
     """Run the writing workflow for a single post."""
 
@@ -87,7 +89,10 @@ async def run_writing_workflow(
     results = {}
 
     async with client:
-        result = await client.call_tool("generate_post", {"working_dir": working_dir})
+        result = await client.call_tool(
+            "generate_post",
+            {"working_dir": working_dir, "delete_iterations": delete_iterations},
+        )
         data = getattr(result, "data", {})
         results["status"] = (
             data.get("status", "unknown") if isinstance(data, dict) else "unknown"
@@ -116,6 +121,7 @@ async def process_entry(
     run_research: bool,
     skip_image: bool,
     semaphore: asyncio.Semaphore,
+    delete_iterations: bool = False,
 ) -> bool:
     """Process a single dataset entry. Returns True on success."""
 
@@ -159,7 +165,11 @@ async def process_entry(
                 )
                 return False
 
-            results = await run_writing_workflow(str(work_dir), skip_image=skip_image)
+            results = await run_writing_workflow(
+                str(work_dir),
+                skip_image=skip_image,
+                delete_iterations=delete_iterations,
+            )
 
             if results.get("status") != "success":
                 logger.warning(f"[{entry_slug}] Failed: {results.get('status')}")
@@ -182,6 +192,7 @@ async def run_all(
     run_research: bool,
     slug: str | None,
     max_concurrent: int = 5,
+    delete_iterations: bool = False,
 ) -> None:
     """Run the writing workflow on all dataset entries in parallel."""
 
@@ -207,7 +218,14 @@ async def run_all(
     semaphore = asyncio.Semaphore(max_concurrent)
 
     tasks = [
-        process_entry(entry["slug"], output_path, run_research, skip_image, semaphore)
+        process_entry(
+            entry["slug"],
+            output_path,
+            run_research,
+            skip_image,
+            semaphore,
+            delete_iterations=delete_iterations,
+        )
         for entry in entries
     ]
     results = await asyncio.gather(*tasks)
@@ -238,18 +256,33 @@ async def run_all(
     default=5,
     help="Maximum number of posts to process in parallel (default: 5)",
 )
+@click.option(
+    "--delete-iterations",
+    is_flag=True,
+    help="Delete intermediate post versions and reviews, keeping only the final post.md",
+)
 def main(
     output_dir: str,
     skip_image: bool,
     run_research: bool,
     slug: str | None,
     max_concurrent: int,
+    delete_iterations: bool,
 ) -> None:
     """Run the writing workflow on the dataset."""
 
     setup_logging()
 
-    asyncio.run(run_all(output_dir, skip_image, run_research, slug, max_concurrent))
+    asyncio.run(
+        run_all(
+            output_dir,
+            skip_image,
+            run_research,
+            slug,
+            max_concurrent,
+            delete_iterations,
+        )
+    )
 
 
 if __name__ == "__main__":
