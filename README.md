@@ -2,7 +2,7 @@
 
 A hands-on workshop building a hybrid AI system with two MCP servers: a **Deep Research Agent** and a **LinkedIn Writing Workflow** — both connected to a harness like Claude Code or Cursor.
 
-Built as a lightweight companion to the [Agentic AI Engineering Course](https://academy.towardsai.net/courses/agent-engineeringad). The course covers ~40 hours of material; this workshop distills the core patterns into ~2 hours of building.
+Built as a lightweight companion to the [Agentic AI Engineering Course](https://academy.towardsai.net/courses/agent-engineering), which covers 34 lessons and three end-to-end portfolio projects. This workshop distills the core patterns into ~2 hours of building.
 
 ## Example Output
 
