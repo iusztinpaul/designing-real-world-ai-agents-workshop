@@ -2,7 +2,7 @@
 
 A hands-on workshop building a hybrid AI system with two MCP servers: a **Deep Research Agent** and a **LinkedIn Writing Workflow** — both connected to a harness like Claude Code or Cursor.
 
-Built as a lightweight companion to the [Agentic AI Engineering Course](https://github.com/decodingml/agentic-ai-engineering-course). The course covers ~40 hours of material; this workshop distills the core patterns into ~2 hours of building.
+Built as a lightweight companion to the [Agentic AI Engineering Course](https://academy.towardsai.net/courses/agent-engineeringad). The course covers ~40 hours of material; this workshop distills the core patterns into ~2 hours of building.
 
 ## Example Output
 
@@ -297,10 +297,11 @@ make lint-check             # Check linting
 
 ## Next Steps
 
-<!-- TODO: Add links -->
-- **Full Course** — *Coming soon*
-- **Decoding AI Magazine** — *Coming soon*
-- **Community** — *Coming soon*
+| Resource | Description |
+|----------|-------------|
+| [Agentic AI Engineering Course](https://academy.towardsai.net/courses/agent-engineering) | Our full course. 34 lessons. Three end-to-end portfolio projects. A certificate. And a Discord community. |
+| [Agentic AI Engineering Guide](https://email-course.towardsai.net/) | Free 6-day email course on the mistakes that silently break AI agents in production. |
+| [AI Engineering Cheatsheets](https://github.com/louisfb01/ai-engineering-cheatsheets) | Quick-reference sheets for agents, RAG, fine-tuning, and more. Ready to be plugged into Claude Code as context. |
 
 ## License
 
