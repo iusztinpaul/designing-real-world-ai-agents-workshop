@@ -41,10 +41,10 @@ test-research-workflow: # Test the research workflow using the dataset seed.
 	@cp $(DATASET_DIR)/$(TEST_SLUG)_seed.md test_logic/seed.md
 	uv run python scripts/test_research_workflow.py --working-dir test_logic --iterations 2
 
-test-writing-workflow: # Test the writing workflow using the dataset guideline (requires research.md in test_logic/).
+test-writing-workflow: # Test the writing workflow using the dataset guideline and research.
 	@mkdir -p test_logic
 	@cp $(DATASET_DIR)/$(TEST_SLUG)_guideline.md test_logic/guideline.md
-	@test -f test_logic/research.md || (echo "ERROR: test_logic/research.md not found. Run test-research-workflow first." && exit 1)
+	@test -f test_logic/research.md || cp $(DATASET_DIR)/$(TEST_SLUG)_research.md test_logic/research.md
 	uv run python scripts/test_writing_workflow.py --working-dir test_logic
 
 test-end-to-end: # Test research + writing end-to-end using the dataset sample.
