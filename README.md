@@ -4,6 +4,56 @@ A hands-on workshop building a hybrid AI system with two MCP servers: a **Deep R
 
 Built as a lightweight companion to the [Agentic AI Engineering Course](https://github.com/decodingml/agentic-ai-engineering-course). The course covers ~40 hours of material; this workshop distills the core patterns into ~2 hours of building.
 
+## Example Output
+
+Here's what the system produces end-to-end — from a topic idea to a finished LinkedIn post with AI-generated images:
+
+<table>
+  <tr>
+    <td><img src="media/post_image_1.png" width="250"/></td>
+    <td><img src="media/post_image_2.png" width="250"/></td>
+    <td><img src="media/post_image_3.png" width="250"/></td>
+    <td><img src="media/post_image_4.png" width="250"/></td>
+  </tr>
+</table>
+
+<details>
+<summary>Generated post (click to expand)</summary>
+
+```
+I switched my paid AI coding assistant. The productivity boost is real.
+
+After months of frustration, leaving Claude Code wasn't easy, even with a Pro subscription.
+
+But OpenCode changed everything.
+
+I was skeptical at first. Another open-source tool claiming to be better?
+
+It simply performs. It's a Go-based agent with a surprisingly polished terminal UI. It's fast.
+
+The real difference? Agent orchestration.
+
+OpenCode understands complex ideas better. It analyzes the codebase in more detail.
+Its LSP integration makes a big difference for complex projects.
+
+Claude Code often felt limited to its own models. OpenCode gives me options.
+I can connect it to over 75 LLM providers, even local models.
+
+This flexibility means I can pick the best model for any task. Or optimize for cost.
+
+Even if you have a Claude Pro subscription, you're not getting the full flexibility
+OpenCode offers. You might still face high API costs if you try to push Claude Code
+too hard. OpenCode helps avoid that.
+
+I'm already planning to explore its Go codebase. That's the power of open source.
+
+What AI coding assistants are you actually using? What's your real experience been like?
+```
+
+</details>
+
+> Browse more full examples (seed, research, post drafts, reviews, final post + image) in the [`examples/`](examples/) directory.
+
 ## What You'll Build
 
 **Deep Research Agent** — An MCP server that runs deep research using Gemini with Google Search grounding and native YouTube video analysis:
@@ -133,7 +183,7 @@ There are three ways to run the workflows:
 
 ### Scripts
 
-Run workflows directly from the terminal via `make`. Useful for verifying your setup works and running quick smoke tests.
+Run workflows directly from the terminal via `make`. Useful for verifying your setup works and running quick smoke tests. See [`examples/`](examples/) for full end-to-end output samples.
 
 **Test workflows:**
 
@@ -146,6 +196,8 @@ make test-end-to-end           # Both steps sequentially
 > **Note:** `test-writing-workflow` requires `test_logic/research.md` to exist. Run `test-research-workflow` first, or use `test-end-to-end`.
 
 **Full dataset run:**
+
+The [`datasets/`](datasets/) directory contains a pre-built LinkedIn posts dataset with seeds, guidelines, research documents, ground truth posts, and generated outputs — used for both batch runs and evaluation.
 
 ```bash
 make run-dataset-writing           # Research + write for all dataset posts (with images)
@@ -201,7 +253,7 @@ Example:
 /research-and-write
 ```
 
-The skill will ask you for a topic and guideline, then run the full pipeline end-to-end.
+The skill will ask you for a topic and guideline, then run the full pipeline end-to-end. Check [`examples/`](examples/) to see what each step produces.
 
 ## QA
 
@@ -235,6 +287,7 @@ make lint-check             # Check linting
 │       ├── routers/           # MCP tool, resource, and prompt registration
 │       └── utils/             # Gemini client, Imagen, Opik helpers
 ├── datasets/                  # LinkedIn posts dataset with labels and splits
+├── examples/                  # Full end-to-end output samples (seed → research → posts → image)
 ├── inputs/                    # Seed and guideline files
 ├── scripts/                   # Entrypoints and test scripts
 ├── .mcp.json                  # MCP server configuration for harnesses

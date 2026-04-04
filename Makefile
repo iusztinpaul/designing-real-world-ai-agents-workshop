@@ -59,12 +59,6 @@ run-dataset-writing: # Run the full research + writing workflow on all dataset p
 run-dataset-writing-no-image: # Run the full research + writing workflow on all dataset posts without images.
 	uv run python scripts/run_dataset_writing.py --output-dir test_all --run-research --skip-image
 
-generate-dataset: # Generate seed and guideline files for the LinkedIn dataset.
-	uv run python scripts/generate_dataset.py
-
-label-dataset: # Label dataset by comparing generated posts to ground truth.
-	uv run python scripts/label_dataset.py
-
 # --- Evaluation ---
 
 upload-eval-dataset: # Upload evaluation datasets to Opik.

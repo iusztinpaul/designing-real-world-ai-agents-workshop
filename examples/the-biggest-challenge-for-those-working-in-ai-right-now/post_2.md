@@ -1,25 +1,27 @@
-Most AI engineers are already falling behind. The relentless pace of GenAI and Agentic AI demands constant adaptation.
+AI moves fast. The real challenge is keeping pace and shipping.
 
-Every week there’s a new framework, a new tool, a new best practice. Keeping up feels like a full-time job.
+The relentless speed of Agentic AI and GenAI development overwhelms most engineers. New tools and protocols drop daily. It's hard to separate what truly works from the noise.
 
-I hear it constantly: "How do I move past PoCs?" "Which tools actually work in production?" "How do I build agents that don't just hallucinate?"
+Many engineers get stuck in proof-of-concept limbo. They struggle to move ideas from a notebook to a working, tested product. This gap only widens with every new breakthrough.
 
-That’s why we’re bringing together **the leading engineers and architects** for GenAI Nexus.
-These are the people who have actually *shipped* advanced AI systems at scale.
-No hype. Just battle-tested methods from the people solving today's toughest LLM and agent challenges.
+That's why we built the **Agentic AI Summit.**
 
-We'll cover **practical frameworks** like LangChain and AutoGen for orchestrating agent behavior.
-You'll get **effective design patterns**: RAG, Chain-of-Thought, and multi-agent collaboration that actually work.
-You'll learn **real-world skills**: evaluating agent reliability with RAGAS, and optimizing inference with vLLM.
+This isn't another conference full of abstract theory. This is for builders. It’s a virtual event focused on practical applications and shipping real AI systems.
 
-This isn't theory. It’s about giving you the roadmap to get your projects from idea to live deployment.
+We gathered the engineers who are actually building the next generation of autonomous systems. They'll share what they know from the trenches.
 
-Future-proof your skills.
+You'll get **actionable frameworks** for developing, testing, and getting LLM and AI agent systems to production.
 
-Connect with other builders.
+We'll explore orchestration tools like LangChain and AutoGen. You'll master practical MLOps for GenAI.
 
-Stop wasting time on PoCs that go nowhere.
+Learn effective evaluation techniques. Implement AI safety and security.
 
-GenAI Nexus is [Date] to [Date]. Use code [CODE] for a discount. Link in the first comment.
+This is your chance to future-proof your skills. Connect with leaders who solve the same problems you face. Get a clear roadmap to move beyond PoCs and into production.
 
-What’s the biggest challenge keeping your AI projects from production?
+The event runs June 18-20.
+
+Use code **PAUL20** for 20% off your registration.
+
+Grab your spot and build what's next.
+
+What's your biggest challenge in shipping Agentic AI today?
