@@ -77,7 +77,7 @@ Get one at [aistudio.google.com/apikey](https://aistudio.google.com/apikey). Thi
 
 ### 5. Opik Account (optional)
 
-For observability and evaluation tracking. Get a key at [comet.com/site/products/opik](https://www.comet.com/site/products/opik/).
+For observability and evaluation tracking. Create an account at [comet.com/site/products/opik](https://www.comet.com/site/products/opik/) and get your API key from the settings page.
 
 ## Installation
 
