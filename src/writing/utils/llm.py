@@ -1,5 +1,6 @@
 """Gemini client helpers for LLM interactions."""
 
+import io
 import logging
 from functools import lru_cache
 from pathlib import Path
@@ -7,6 +8,7 @@ from typing import Any
 
 from google import genai
 from google.genai import types
+from PIL import Image
 from pydantic import BaseModel
 
 from writing.config.settings import get_settings
@@ -124,8 +126,9 @@ async def call_gemini_image(
     for part in response.candidates[0].content.parts:
         if part.inline_data is not None:
             output_path.parent.mkdir(parents=True, exist_ok=True)
-            image = part.as_image()
-            image.save(str(output_path))
+            pil_image = Image.open(io.BytesIO(part.inline_data.data))
+            pil_image = pil_image.resize((1200, 1200))
+            pil_image.save(str(output_path))
             logger.info(f"Image saved to {output_path}")
             return output_path
 

@@ -152,12 +152,42 @@ Instructions:
 6. Return ONLY the edited post text, nothing else.
 """.strip()
 
-PROMPT_GENERATE_IMAGE = """
-Create an illustration for a LinkedIn post. Follow the branding and character
-guidelines exactly.
+PROMPT_IMAGE_SCENE = """
+You are a visual art director creating abstract album-cover-style artwork.
+Read the LinkedIn post below and describe ONE visual scene that captures
+its core emotion or transformation.
 
-Study the reference images provided — they show the visual style and design
-language used by this person's brand. Match their aesthetic.
+<post>
+{post}
+</post>
+
+Your scene must use ONLY geometric shapes, spatial relationships, light, and
+color to convey meaning. Think like a painter, not a designer — no diagrams.
+
+Good metaphor examples (pick one style or invent your own):
+- Chaos-to-order: a cluster of tangled wireframe spheres on the left dissolving
+  into a single glowing crystal on the right
+- Compression: dozens of scattered geometric shards being pulled into a funnel
+  that outputs one clean prism
+- Erosion: a tall structured tower of blocks with pieces crumbling away from
+  the middle, leaving only the base and top intact
+- Simplicity: one bright orange geometric shape floating calmly above a field
+  of dim, fragmented gray shapes
+
+Constraints for the scene:
+- Black background, white/gray shapes, orange as the only accent color.
+- Square format (1:1 aspect ratio), single focal point.
+- NOTHING READABLE. No letters, numbers, labels, arrows with annotations,
+  axis labels, or anything that looks like a word. Zero text.
+- No people, faces, hands, screens, or UI elements.
+- Not a flowchart, diagram, or infographic. A single unified visual scene.
+
+Return ONLY the scene description in 2-3 sentences. No preamble, no
+explanation of what it represents.
+""".strip()
+
+PROMPT_GENERATE_IMAGE = """
+Generate an illustration matching the style of the reference images provided.
 
 <branding_profile>
 {branding_profile}
@@ -167,10 +197,14 @@ language used by this person's brand. Match their aesthetic.
 {character_profile}
 </character_profile>
 
-The image must visually represent the core concept of this post.
-CRITICAL: Do NOT include any text, labels, words, or letters in the image. The image must be purely visual — use only icons, shapes, and abstract illustrations.
+Scene to illustrate:
 
-<post>
-{post}
-</post>
+{scene}
+
+Rules:
+- Absolutely no text, letters, words, labels, or numbers anywhere in the image.
+- Not a diagram or infographic. One unified abstract scene.
+- Black background, white/gray shapes, orange accents only.
+- Square format (1:1 aspect ratio), 1200x1200 pixels.
+- No people, faces, or hands.
 """.strip()

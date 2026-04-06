@@ -13,7 +13,7 @@
 - Geometric shapes, clean icons, and subtle gradients preferred over photorealistic imagery.
 
 ## Composition
-- Landscape orientation (LinkedIn feed standard).
+- Square orientation 1200x1200 pixels (LinkedIn feed standard).
 - Single focal point — one clear visual concept per image.
 - No text overlay on the image — the post provides the text.
 - No stock photo aesthetics. No corporate handshake imagery.

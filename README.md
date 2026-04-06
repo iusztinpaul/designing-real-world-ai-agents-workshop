@@ -1,56 +1,156 @@
 # Designing Real-World AI Agents Workshop
 
-A hands-on workshop building a hybrid AI system with two MCP servers: a **Deep Research Agent** and a **LinkedIn Writing Workflow** — both connected to a harness like Claude Code or Cursor.
+A hands-on workshop building a multi-agent AI system with two MCP servers: a **Deep Research Agent** and a **LinkedIn Writing Workflow**. Both connected to a harness like Claude Code or Cursor.
 
-Built as a lightweight companion to the [Agentic AI Engineering Course](https://academy.towardsai.net/courses/agent-engineering), which covers 34 lessons and three end-to-end portfolio projects. This workshop distills the core patterns into ~2 hours of building.
+Built as a lightweight companion to the [Agentic AI Engineering Course](https://academy.towardsai.net/courses/agent-engineering), which covers 34 lessons and three end-to-end portfolio projects. This workshop distills the core agentic patterns into ~2 hours of building.
 
-## Example Output
+## Example: End-to-End Workflow
 
-Here's what the system produces end-to-end — from a topic idea to a finished LinkedIn post with AI-generated images:
+Here's a real run through the full pipeline — from a topic seed to a published-ready LinkedIn post with an AI-generated image.
+
+<img src="media/architecture.png" alt="End-to-end workflow architecture" width="800"/>
+
+### 1. Start with a seed
+
+A short research brief with 2-3 questions and reference links:
+
+```markdown
+# Research Topic: AI Agent Architecture — When Less Is More
+
+## Key Questions
+1. Why do single-agent architectures with smart tools outperform multi-agent systems?
+2. What are the only legitimate reasons to adopt a multi-agent architecture?
+
+## References
+- Stop Overengineering: Workflows vs AI Agents Explained (YouTube)
+- From 12 Agents to 1 (DecodingAI article)
+```
+
+### 2. Deep Research Agent produces `research.md`
+
+The agent runs multiple Gemini-grounded search queries and analyzes YouTube videos, then compiles everything into a structured research brief with sources.
+
+> The full research.md for this example is ~20k tokens across 2 queries and 1 video transcript.
+
+### 3. Write a guideline
+
+A short brief describing the post angle, audience, and key points:
+
+```markdown
+# LinkedIn Post Guideline
+
+## Topic
+Why most AI teams should use 1 agent instead of 12.
+
+## Angle
+Open with the counterintuitive "12 agents → 1" hook. Introduce the complexity
+spectrum. End with a clear mental model.
+
+## Target Audience
+AI engineers and technical leads building LLM-powered applications.
+
+## Key Points
+- A team planned 12 agents but shipped 1 — it worked better.
+- The spectrum: workflows → single agent + tools → multi-agent. Stay left.
+- "Context rot": past ~10-20 tools, LLMs degrade at tool selection.
+- Only 4 valid reasons for multi-agent.
+
+## Tone
+Direct, opinionated, engineer-to-engineer. No fluff.
+```
+
+### 4. Writing Workflow refines the post
+
+The evaluator-optimizer loop generates a draft, then runs 3 rounds of review + edit:
+
+<table>
+<tr>
+<td width="50%">
+
+**v0 — Initial draft**
+
+> We planned 12 AI agents. We shipped 1.
+>
+> Sounds crazy, right? But it's a common story.
+>
+> A client wanted an AI chatbot for marketing content: emails, SMS, promos. Their initial design had dozens of specialized agents: orchestrator, analyzers, validators, spam prevention.
+>
+> In practice? A single agent with tools won. Tasks were tightly coupled, sequential. Splitting it created information silos and handoff errors. [...]
+>
+> **The simplest system that reliably solves the problem is always the best system.**
+
+</td>
+<td width="50%">
+
+**v3 — After 3 review/edit cycles**
+
+> We planned 12 AI agents and shipped 1. It worked better.
+>
+> A client built an AI marketing chatbot. Their initial design had dozens of agents: orchestrator, validators, spam prevention. It failed.
+>
+> A single agent with tools won. Tasks were tightly coupled. One brain maintained context. Tools were still specialized.
+>
+> **Stay as far left as possible.** Move right only when forced. [...]
+>
+> **The simplest system that reliably solves the problem is always the best system.**
+
+</td>
+</tr>
+<tr>
+<td align="center"><em>Verbose, redundant phrasing, weak hook</em></td>
+<td align="center"><em>Tighter, punchier, stronger structure</em></td>
+</tr>
+</table>
+
+### 5. Final output
+
+<table>
+<tr>
+<td width="55%">
+
+```
+We planned 12 AI agents and shipped 1. It worked better.
+
+A client built an AI marketing chatbot. Their initial
+design had dozens of agents. It failed.
+
+A single agent with tools won. Tasks were tightly
+coupled. One brain maintained context.
+
+Think AI system design as a spectrum:
+  Workflows → Single Agent + Tools → Multi-Agent
+
+Stay as far left as possible.
+
+Only 4 valid reasons for multi-agent:
+1. True Parallelism
+2. Context Overload
+3. Modularity
+4. Security Boundaries
+
+The simplest system that reliably solves the problem
+is always the best system.
+```
+
+</td>
+<td width="45%">
+<img src="media/post_image.png" width="400"/>
+</td>
+</tr>
+</table>
 
 <table>
   <tr>
-    <td><img src="media/post_image_1.png" width="250"/></td>
-    <td><img src="media/post_image_2.png" width="250"/></td>
-    <td><img src="media/post_image_3.png" width="250"/></td>
-    <td><img src="media/post_image_4.png" width="250"/></td>
+    <td><img src="media/post_image_2.png" width="280"/></td>
+    <td><img src="media/post_image_3.png" width="280"/></td>
+    <td><img src="media/post_image_4.png" width="280"/></td>
+  </tr>
+  <tr>
+    <td align="center"><em>Alternative image 1</em></td>
+    <td align="center"><em>Alternative image 2</em></td>
+    <td align="center"><em>Alternative image 3</em></td>
   </tr>
 </table>
-
-<details>
-<summary>Generated post (click to expand)</summary>
-
-```
-I switched my paid AI coding assistant. The productivity boost is real.
-
-After months of frustration, leaving Claude Code wasn't easy, even with a Pro subscription.
-
-But OpenCode changed everything.
-
-I was skeptical at first. Another open-source tool claiming to be better?
-
-It simply performs. It's a Go-based agent with a surprisingly polished terminal UI. It's fast.
-
-The real difference? Agent orchestration.
-
-OpenCode understands complex ideas better. It analyzes the codebase in more detail.
-Its LSP integration makes a big difference for complex projects.
-
-Claude Code often felt limited to its own models. OpenCode gives me options.
-I can connect it to over 75 LLM providers, even local models.
-
-This flexibility means I can pick the best model for any task. Or optimize for cost.
-
-Even if you have a Claude Pro subscription, you're not getting the full flexibility
-OpenCode offers. You might still face high API costs if you try to push Claude Code
-too hard. OpenCode helps avoid that.
-
-I'm already planning to explore its Go codebase. That's the power of open source.
-
-What AI coding assistants are you actually using? What's your real experience been like?
-```
-
-</details>
 
 > Browse more full examples (seed, research, post drafts, reviews, final post + image) in the [`examples/`](examples/) directory.
 

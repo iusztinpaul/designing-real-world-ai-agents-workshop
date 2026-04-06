@@ -3,11 +3,26 @@
 import logging
 from pathlib import Path
 
-from writing.config.prompts import PROMPT_GENERATE_IMAGE
+from writing.config.prompts import PROMPT_GENERATE_IMAGE, PROMPT_IMAGE_SCENE
 from writing.models.schemas import Profiles
-from writing.utils.llm import call_gemini_image
+from writing.utils.llm import call_gemini, call_gemini_image
 
 logger = logging.getLogger(__name__)
+
+
+async def _extract_visual_scene(post_content: str) -> str:
+    """Use a text LLM to distill a post into a text-free visual scene description.
+
+    This prevents the image model from reading the raw post and rendering
+    its bullet points and labels as text in the image.
+    """
+
+    prompt = PROMPT_IMAGE_SCENE.format(post=post_content)
+    scene = await call_gemini(prompt)
+
+    logger.info(f"Extracted visual scene: {scene}")
+
+    return scene
 
 
 async def generate_post_image(
@@ -18,9 +33,9 @@ async def generate_post_image(
 ) -> Path:
     """Generate a LinkedIn post image using Gemini Flash Image.
 
-    The image is anchored to the character and branding profiles for
-    consistent visual identity, with optional reference images as
-    few-shot style examples.
+    First extracts a text-free visual scene description from the post,
+    then generates an image anchored to the branding profiles, with
+    optional reference images as few-shot style examples.
 
     Args:
         post_content: The post text to base the image on.
@@ -32,10 +47,12 @@ async def generate_post_image(
         The path to the saved image.
     """
 
+    scene = await _extract_visual_scene(post_content)
+
     prompt = PROMPT_GENERATE_IMAGE.format(
         branding_profile=profiles.branding.content,
         character_profile=profiles.character.content,
-        post=post_content,
+        scene=scene,
     )
 
     return await call_gemini_image(prompt, output_path, reference_images)
