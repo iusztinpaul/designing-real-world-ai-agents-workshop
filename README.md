@@ -4,11 +4,13 @@ A hands-on workshop building a multi-agent AI system with two MCP servers: a **D
 
 Built as a lightweight companion to the [Agentic AI Engineering Course](https://academy.towardsai.net/courses/agent-engineering), which covers 34 lessons and three end-to-end portfolio projects. This workshop distills the core agentic patterns into ~2 hours of building.
 
+# What You'll Build
+
+<img src="media/architecture.png" alt="End-to-end workflow architecture" width="800"/>
+
 ## Example: End-to-End Workflow
 
 Here's a real run through the full pipeline — from a topic seed to a published-ready LinkedIn post with an AI-generated image.
-
-<img src="media/architecture.png" alt="End-to-end workflow architecture" width="800"/>
 
 ### Final output
 
@@ -20,7 +22,7 @@ Here's a real run through the full pipeline — from a topic seed to a published
 
 <div>
 <strong>Paul Iusztin</strong><br/>
-<sub>AI Engineer | Building in Public</sub>
+<sub>AI Engineer | I ship AI products and teach you about the process.</sub>
 </div>
 
 ---
