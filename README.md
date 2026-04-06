@@ -4,9 +4,23 @@ A hands-on workshop building a multi-agent AI system with two MCP servers: a **D
 
 Built as a lightweight companion to the [Agentic AI Engineering Course](https://academy.towardsai.net/courses/agent-engineering), which covers 34 lessons and three end-to-end portfolio projects. This workshop distills the core agentic patterns into ~2 hours of building.
 
-# What You'll Build
+## What You'll Build
 
 <img src="media/architecture.png" alt="End-to-end workflow architecture" width="800"/>
+
+**Deep Research Agent** — An MCP server that runs deep research using Gemini with Google Search grounding and native YouTube video analysis:
+
+```
+user topic → [deep_research queries] × N → analyze_youtube_video → compile_research → research.md
+```
+
+**LinkedIn Writing Workflow** — An MCP server that generates LinkedIn posts with an evaluator-optimizer loop:
+
+```
+research.md + guideline → generate post → [review → edit] × N → post.md → generate image
+```
+
+Both servers expose tools, resources, and prompts via the [Model Context Protocol](https://modelcontextprotocol.io/), letting any MCP-compatible harness orchestrate the workflow.
 
 ## Example: End-to-End Workflow
 
@@ -41,25 +55,15 @@ Think AI system design as a spectrum:
 *   Single Agent + Tools: Model decides flow.
 *   Multi-Agent: Multiple decision-makers.
 
-**Stay as far left as possible.** Move right only when forced.
-Each step right increases cost, latency, and debugging. More LLM calls mean more tokens and more failure points.
+...
 
 A single agent works for most cases. But it has limits.
 Too many tools? You hit "context rot."
 Past ~10-20 tools, LLMs degrade at tool selection. They get overwhelmed. Information gets lost in the middle.
 
 So, when do you actually need multi-agent?
-**Only 4 valid reasons:**
-1.  True Parallelism: Tasks are independent.
-2.  Context Overload: Single agent context is packed.
-3.  Modularity: Reusable or third-party agents.
-4.  Security Boundaries: Strict data isolation.
 
-We built an article generator. We started with one agent for research and writing. It broke.
-
-Research is exploratory. Writing is constrained.
-
-We needed two agents with a clear handoff. Each had its own focused context.
+...
 
 **The simplest system that reliably solves the problem is always the best system.**
 Don't overengineer your AI agents. Build simple first.
@@ -173,22 +177,6 @@ The evaluator-optimizer loop generates a draft, then runs 3 rounds of review + e
 </details>
 
 > Browse more full examples (seed, research, post drafts, reviews, final post + image) in the [`examples/`](examples/) directory.
-
-## What You'll Build
-
-**Deep Research Agent** — An MCP server that runs deep research using Gemini with Google Search grounding and native YouTube video analysis:
-
-```
-user topic → [deep_research queries] × N → analyze_youtube_video → compile_research → research.md
-```
-
-**LinkedIn Writing Workflow** — An MCP server that generates LinkedIn posts with an evaluator-optimizer loop:
-
-```
-research.md + guideline → generate post → [review → edit] × N → post.md → generate image
-```
-
-Both servers expose tools, resources, and prompts via the [Model Context Protocol](https://modelcontextprotocol.io/), letting any MCP-compatible harness orchestrate the workflow.
 
 ## Tech Stack
 
