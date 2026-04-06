@@ -2,7 +2,7 @@
 
 A hands-on workshop building a multi-agent AI system with two MCP servers: a **Deep Research Agent** and a **LinkedIn Writing Workflow**. Both connected to a harness like Claude Code or Cursor.
 
-Built as a lightweight companion to the [Agentic AI Engineering Course](https://academy.towardsai.net/courses/agent-engineering), which covers 34 lessons and three end-to-end portfolio projects. This workshop distills the core agentic patterns into ~2 hours of building.
+Built as a lightweight companion to the [Agentic AI Engineering Course](https://academy.towardsai.net/courses/agent-engineering), which covers 34 lessons and three end-to-end portfolio projects. This workshop distills the core agentic patterns into a ~2-hour hands-on build.
 
 ## What You'll Build
 
@@ -11,7 +11,7 @@ Built as a lightweight companion to the [Agentic AI Engineering Course](https://
 **Deep Research Agent** — An MCP server that runs deep research using Gemini with Google Search grounding and native YouTube video analysis:
 
 ```
-user topic → [deep_research queries] × N → analyze_youtube_video → compile_research → research.md
+user topic → [deep_research] × N → analyze_youtube_video (if URLs) → [deep_research gap-fill] → compile_research → research.md
 ```
 
 **LinkedIn Writing Workflow** — An MCP server that generates LinkedIn posts with an evaluator-optimizer loop:
@@ -21,6 +21,15 @@ research.md + guideline → generate post → [review → edit] × N → post.md
 ```
 
 Both servers expose tools, resources, and prompts via the [Model Context Protocol](https://modelcontextprotocol.io/), letting any MCP-compatible harness orchestrate the workflow.
+
+**Patterns and concepts you'll learn:**
+
+- **Tool-use agents** — letting the LLM decide which tools to call and when
+- **Evaluator-optimizer loop** — generate, review, edit in cycles
+- **Grounded search** — Gemini with Google Search grounding for factual research
+- **Structured LLM output** — Pydantic schemas for type-safe model responses
+- **MCP server design** — registering tools, resources, and prompts with FastMCP
+- **LLM-as-judge evaluation** — automated quality scoring with Opik
 
 ## Example: End-to-End Workflow
 
@@ -35,7 +44,7 @@ Here's a real run through the full pipeline — from a topic seed to a published
 <td>
 
 <div>
-<strong>Paul Iusztin</strong><br/>
+<strong>Phil Tobaloo</strong><br/>
 <sub>AI Engineer | I ship AI products and teach you about the process.</sub>
 </div>
 
@@ -193,105 +202,107 @@ The evaluator-optimizer loop generates a draft, then runs 3 rounds of review + e
 | QA | Ruff |
 | Package Manager | uv |
 
-## Quick Start
+## Getting Started
 
-Already have Python 3.14+, uv, and Make installed? Get running in 60 seconds:
+> **Assumes** working Python knowledge and basic familiarity with LLMs.
 
-```bash
-git clone https://github.com/decodingml/designing-real-world-ai-agents-workshop.git
-cd designing-real-world-ai-agents-workshop
-cp .env.example .env          # add your GOOGLE_API_KEY
-uv sync
-make test-end-to-end          # verify everything works
-```
+| Section | Estimated Time |
+|---------|---------------|
+| Setup | ~15 min |
+| Deep Research Agent | ~40 min |
+| LinkedIn Writing Workflow | ~40 min |
+| Evaluation & Polish | ~25 min |
 
-## Prerequisites
+### Prerequisites
 
-### 1. Python 3.14+
+| Requirement | Check | Install |
+|-------------|-------|---------|
+| Python 3.14+ | `python --version` | [python.org](https://www.python.org/downloads/) or `pyenv install 3.14.0` |
+| uv 0.7+ | `uv --version` | `curl -LsSf https://astral.sh/uv/install.sh \| sh` ([docs](https://docs.astral.sh/uv/getting-started/installation/)) |
+| GNU Make | `make --version` | Pre-installed on macOS/Linux. Windows: `choco install make` |
+| Google API Key | — | [aistudio.google.com/apikey](https://aistudio.google.com/apikey) (required — all LLM calls use Gemini) |
+| Opik account | — | [comet.com/site/products/opik](https://www.comet.com/site/products/opik/) (optional, for observability and evals) |
 
-```bash
-python --version   # should print 3.14.x
-```
+### Installation
 
-> **Note:** Python 3.14 is required (not 3.13 or earlier). If using pyenv: `pyenv install 3.14.0`. Download from [python.org](https://www.python.org/downloads/) if needed.
-
-### 2. uv package manager
-
-```bash
-uv --version   # should print 0.7.x or later
-```
-
-Install: `curl -LsSf https://astral.sh/uv/install.sh | sh` — see [uv docs](https://docs.astral.sh/uv/getting-started/installation/) for other methods.
-
-### 3. GNU Make
-
-```bash
-make --version   # pre-installed on macOS/Linux
-```
-
-Windows users: install via [chocolatey](https://chocolatey.org/) (`choco install make`) or copy the commands from the [Makefile](Makefile) directly.
-
-### 4. Google AI Studio API Key
-
-Get one at [aistudio.google.com/apikey](https://aistudio.google.com/apikey). This is **required** — all LLM calls use Gemini.
-
-### 5. Opik Account (optional)
-
-For observability and evaluation tracking. Create an account at [comet.com/site/products/opik](https://www.comet.com/site/products/opik/) and get your API key from the settings page.
-
-## Installation
-
-1. **Clone the repository:**
+1. **Clone and configure:**
 
    ```bash
    git clone https://github.com/decodingml/designing-real-world-ai-agents-workshop.git
    cd designing-real-world-ai-agents-workshop
+   cp .env.example .env          # add your GOOGLE_API_KEY (+ optional OPIK_API_KEY, OPIK_WORKSPACE)
    ```
 
-2. **Configure environment variables:**
-
-   ```bash
-   cp .env.example .env
-   ```
-
-   Edit `.env` and set at minimum:
-
-   ```bash
-   GOOGLE_API_KEY=your-key-here
-   ```
-
-   Optional (for observability and evals):
-
-   ```bash
-   OPIK_API_KEY=your-key-here
-   OPIK_WORKSPACE=your-workspace-name
-   ```
-
-3. **Install dependencies:**
+2. **Install dependencies:**
 
    ```bash
    uv sync
    ```
 
-4. **Verify the setup:**
+3. **Verify the setup:**
 
    ```bash
-   make test-research-workflow
+   make test-end-to-end          # runs research + writing pipeline end-to-end
    ```
 
-   This runs a research query using Gemini. If it completes without errors, you're good to go.
+   If it completes without errors, you're good to go.
 
 ## Running the Code
 
 There are three ways to run the workflows:
 
-| Mode | Best for | Requires |
-|------|----------|----------|
-| **Scripts** | Verify setup works, quick smoke tests | Terminal only |
-| **MCP Servers** | Interactive use with AI harness | Claude Code or Cursor |
-| **Skills** | Guided slash-command workflows | Claude Code only |
+| Mode | Best for |
+|------|----------|
+| **MCP Servers** (recommended) | Interactive use with AI harness |
+| **Skills** | Guided slash-command workflows |
+| **Scripts** | Verify setup, smoke tests |
 
-### Scripts
+### MCP Servers (recommended)
+
+Connect the servers to an MCP-compatible harness (Claude Code, Cursor) for interactive use. This is the primary way to use the workshop.
+
+**Setup:** The `.mcp.json` file is pre-configured. Both servers start automatically when you open the project in Claude Code or Cursor.
+
+| Server | Tools | Prompt |
+|--------|-------|--------|
+| `deep-research` | `deep_research`, `analyze_youtube_video`, `compile_research` | `research_workflow` |
+| `linkedin-writer` | `generate_post`, `edit_post`, `generate_image` | `linkedin_post_workflow` |
+
+**Usage:**
+
+1. Open the project in Claude Code or Cursor
+2. Invoke an MCP prompt (e.g., `research_workflow`) to get guided through the full workflow
+3. Or call individual tools directly for fine-grained control
+
+**Manual server start (advanced):**
+
+```bash
+make run-research-server    # stdio transport
+make run-writing-server     # stdio transport
+```
+
+### Skills
+
+Pre-built slash commands that orchestrate the MCP tools with sensible defaults. All output goes to `outputs/{topic-slug}/`.
+
+| Command | What it does |
+|---------|-------------|
+| `/research` | Deep research on a topic → `research.md` |
+| `/write-post` | Generate LinkedIn post from existing research → `post.md` + `post_image.png` |
+| `/research-and-write` | Full pipeline: research a topic, then write a post from it |
+
+Example:
+
+```
+/research-and-write
+```
+
+The skill will ask you for a topic and guideline, then run the full pipeline end-to-end. Check [`examples/`](examples/) to see what each step produces.
+
+<details>
+<summary><strong>Scripts</strong> (terminal-only, for smoke tests)</summary>
+
+<br/>
 
 Run workflows directly from the terminal via `make`. Useful for verifying your setup works and running quick smoke tests. See [`examples/`](examples/) for full end-to-end output samples.
 
@@ -314,65 +325,19 @@ make run-dataset-writing           # Research + write for all dataset posts (wit
 make run-dataset-writing-no-image  # Same, skip image generation (faster)
 ```
 
-**Evaluation (requires Opik):**
+</details>
+
+### Evaluation (requires Opik)
+
+The workshop includes an LLM-as-judge evaluation pipeline. Instead of manually reviewing each generated post, an LLM scores them against quality criteria (structure, tone, accuracy). [Opik](https://www.comet.com/site/products/opik/) tracks these scores across runs so you can measure whether prompt or pipeline changes actually improve output quality.
 
 ```bash
-make upload-eval-dataset    # Upload evaluation splits to Opik
 make eval-dev               # LLM judge on dev split
 make eval-test              # LLM judge on test split
 make eval-online            # Generate + judge posts on the fly
 ```
 
-### MCP Servers
-
-Connect the servers to an MCP-compatible harness (Claude Code, Cursor) for interactive use.
-
-**Setup:** The `.mcp.json` file is pre-configured. Both servers start automatically when you open the project in Claude Code or Cursor.
-
-| Server | Tools | Prompt |
-|--------|-------|--------|
-| `deep-research` | `deep_research`, `analyze_youtube_video`, `compile_research` | `research_workflow` |
-| `linkedin-writer` | `generate_post`, `edit_post`, `generate_image` | `linkedin_post_workflow` |
-
-**Usage:**
-
-1. Open the project in Claude Code or Cursor
-2. Invoke an MCP prompt (e.g., `research_workflow`) to get guided through the full workflow
-3. Or call individual tools directly for fine-grained control
-
-**Manual server start (advanced):**
-
-```bash
-make run-research-server    # stdio transport
-make run-writing-server     # stdio transport
-```
-
-### Skills (Claude Code only)
-
-Pre-built slash commands that orchestrate the MCP tools with sensible defaults. All output goes to `outputs/{topic-slug}/`.
-
-| Command | What it does |
-|---------|-------------|
-| `/research` | Deep research on a topic → `research.md` |
-| `/write-post` | Generate LinkedIn post from existing research → `post.md` + `post_image.png` |
-| `/research-and-write` | Full pipeline: research a topic, then write a post from it |
-
-Example:
-
-```
-/research-and-write
-```
-
-The skill will ask you for a topic and guideline, then run the full pipeline end-to-end. Check [`examples/`](examples/) to see what each step produces.
-
-## QA
-
-```bash
-make format-fix             # Auto-format with ruff
-make lint-fix               # Auto-fix lint issues
-make format-check           # Check formatting
-make lint-check             # Check linting
-```
+> Each command automatically uploads the dataset to Opik before running. To upload without evaluating (e.g., to browse in the Opik UI), use `make upload-eval-dataset`.
 
 ## Project Structure
 
@@ -398,7 +363,6 @@ make lint-check             # Check linting
 │       └── utils/             # Gemini client, Imagen, Opik helpers
 ├── datasets/                  # LinkedIn posts dataset with labels and splits
 ├── examples/                  # Full end-to-end output samples (seed → research → posts → image)
-├── inputs/                    # Seed and guideline files
 ├── scripts/                   # Entrypoints and test scripts
 ├── .mcp.json                  # MCP server configuration for harnesses
 ├── Makefile                   # Command center
@@ -412,6 +376,21 @@ make lint-check             # Check linting
 | [Agentic AI Engineering Course](https://academy.towardsai.net/courses/agent-engineering) | Our full course. 34 lessons. Three end-to-end portfolio projects. A certificate. And a Discord community. |
 | [Agentic AI Engineering Guide](https://email-course.towardsai.net/) | Free 6-day email course on the mistakes that silently break AI agents in production. |
 | [AI Engineering Cheatsheets](https://github.com/louisfb01/ai-engineering-cheatsheets) | Quick-reference sheets for agents, RAG, fine-tuning, and more. Ready to be plugged into Claude Code as context. |
+
+## Contributors
+
+<table>
+<tr>
+<td align="center"><img src="media/contributors/paul_iusztin.png" width="150" alt="Paul Iusztin"/></td>
+<td align="center"><img src="media/contributors/louis_bouchard.png" width="150" alt="Louis-François Bouchard"/></td>
+<td align="center"><img src="media/contributors/samridhi_vaid.png" width="150" alt="Samridhi Vaid"/></td>
+</tr>
+<tr>
+<td align="center"><a href="https://github.com/iusztinpaul"><strong>Paul Iusztin</strong></a><br/><sub>AI Engineer</sub></td>
+<td align="center"><a href="https://github.com/louisfb01"><strong>Louis-François Bouchard</strong></a><br/><sub>AI Engineer</sub></td>
+<td align="center"><a href="https://github.com/sam04-ops"><strong>Samridhi Vaid</strong></a><br/><sub>AI Engineer</sub></td>
+</tr>
+</table>
 
 ## License
 
