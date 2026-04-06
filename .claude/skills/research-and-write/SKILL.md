@@ -61,6 +61,8 @@ Tell the user when research is complete.
 
 Read the `WORKFLOW_INSTRUCTIONS` from `src/writing/routers/prompts.py` and follow those steps exactly, using the `linkedin-writer` MCP tools. The working directory `outputs/{slug}/` already has `guideline.md` and `research.md` from Phase 1.
 
+The `generate_post` tool internally runs 4 evaluator-optimizer iterations (review + edit cycles) to refine the post before producing the final version.
+
 ## After Completion
 
 Present the final `outputs/{slug}/post.md` and `outputs/{slug}/post_image.png` to the user. Offer to edit with feedback.

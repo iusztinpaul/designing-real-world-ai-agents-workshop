@@ -167,7 +167,8 @@ language used by this person's brand. Match their aesthetic.
 {character_profile}
 </character_profile>
 
-The image must visually represent the core concept of this post:
+The image must visually represent the core concept of this post.
+CRITICAL: Do NOT include any text, labels, words, or letters in the image. The image must be purely visual — use only icons, shapes, and abstract illustrations.
 
 <post>
 {post}
