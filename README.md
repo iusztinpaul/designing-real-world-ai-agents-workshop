@@ -10,7 +10,54 @@ Here's a real run through the full pipeline — from a topic seed to a published
 
 <img src="media/architecture.png" alt="End-to-end workflow architecture" width="800"/>
 
-### 1. Start with a seed
+### Final output
+
+<!-- LinkedIn-style post card -->
+<div align="center">
+<table>
+<tr>
+<td>
+
+<div>
+<strong>Paul Iusztin</strong><br/>
+<sub>AI Engineer | Building in Public</sub>
+</div>
+
+---
+
+We planned 12 AI agents and shipped 1. It worked better.
+
+A client built an AI marketing chatbot. Their initial design had dozens of agents. It failed.
+
+A single agent with tools won. Tasks were tightly coupled. One brain maintained context.
+
+Think AI system design as a spectrum:
+
+&nbsp;&nbsp;&nbsp;&nbsp;Workflows → Single Agent + Tools → Multi-Agent
+
+**Stay as far left as possible.**
+
+Only 4 valid reasons for multi-agent:
+1. True Parallelism
+2. Context Overload
+3. Modularity
+4. Security Boundaries
+
+**The simplest system that reliably solves the problem is always the best system.**
+
+<img src="media/post_image.png" width="500"/>
+
+</td>
+</tr>
+</table>
+</div>
+
+<details>
+<summary><strong>Step-by-step breakdown</strong> (seed → research → guideline → drafts)</summary>
+
+<br/>
+
+#### 1. Start with a seed
 
 A short research brief with 2-3 questions and reference links:
 
@@ -26,13 +73,13 @@ A short research brief with 2-3 questions and reference links:
 - From 12 Agents to 1 (DecodingAI article)
 ```
 
-### 2. Deep Research Agent produces `research.md`
+#### 2. Deep Research Agent produces `research.md`
 
 The agent runs multiple Gemini-grounded search queries and analyzes YouTube videos, then compiles everything into a structured research brief with sources.
 
 > The full research.md for this example is ~20k tokens across 2 queries and 1 video transcript.
 
-### 3. Write a guideline
+#### 3. Write a guideline
 
 A short brief describing the post angle, audience, and key points:
 
@@ -59,7 +106,7 @@ AI engineers and technical leads building LLM-powered applications.
 Direct, opinionated, engineer-to-engineer. No fluff.
 ```
 
-### 4. Writing Workflow refines the post
+#### 4. Writing Workflow refines the post
 
 The evaluator-optimizer loop generates a draft, then runs 3 rounds of review + edit:
 
@@ -102,55 +149,7 @@ The evaluator-optimizer loop generates a draft, then runs 3 rounds of review + e
 </tr>
 </table>
 
-### 5. Final output
-
-<table>
-<tr>
-<td width="55%">
-
-```
-We planned 12 AI agents and shipped 1. It worked better.
-
-A client built an AI marketing chatbot. Their initial
-design had dozens of agents. It failed.
-
-A single agent with tools won. Tasks were tightly
-coupled. One brain maintained context.
-
-Think AI system design as a spectrum:
-  Workflows → Single Agent + Tools → Multi-Agent
-
-Stay as far left as possible.
-
-Only 4 valid reasons for multi-agent:
-1. True Parallelism
-2. Context Overload
-3. Modularity
-4. Security Boundaries
-
-The simplest system that reliably solves the problem
-is always the best system.
-```
-
-</td>
-<td width="45%">
-<img src="media/post_image.png" width="400"/>
-</td>
-</tr>
-</table>
-
-<table>
-  <tr>
-    <td><img src="media/post_image_2.png" width="280"/></td>
-    <td><img src="media/post_image_3.png" width="280"/></td>
-    <td><img src="media/post_image_4.png" width="280"/></td>
-  </tr>
-  <tr>
-    <td align="center"><em>Alternative image 1</em></td>
-    <td align="center"><em>Alternative image 2</em></td>
-    <td align="center"><em>Alternative image 3</em></td>
-  </tr>
-</table>
+</details>
 
 > Browse more full examples (seed, research, post drafts, reviews, final post + image) in the [`examples/`](examples/) directory.
 
