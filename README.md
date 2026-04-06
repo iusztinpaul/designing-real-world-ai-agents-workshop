@@ -381,13 +381,13 @@ make eval-online            # Generate + judge posts on the fly
 
 <table>
 <tr>
-<td align="center"><img src="https://github.com/iusztinpaul.png" width="150" alt="Paul Iusztin"/></td>
 <td align="center"><img src="https://github.com/louisfb01.png" width="150" alt="Louis-François Bouchard"/></td>
+<td align="center"><img src="https://github.com/iusztinpaul.png" width="150" alt="Paul Iusztin"/></td>
 <td align="center"><img src="https://github.com/sam04-ops.png" width="150" alt="Samridhi Vaid"/></td>
 </tr>
 <tr>
-<td align="center"><a href="https://github.com/iusztinpaul"><strong>Paul Iusztin</strong></a><br/><sub>AI Engineer</sub></td>
 <td align="center"><a href="https://github.com/louisfb01"><strong>Louis-François Bouchard</strong></a><br/><sub>AI Engineer</sub></td>
+<td align="center"><a href="https://github.com/iusztinpaul"><strong>Paul Iusztin</strong></a><br/><sub>AI Engineer</sub></td>
 <td align="center"><a href="https://github.com/sam04-ops"><strong>Samridhi Vaid</strong></a><br/><sub>AI Engineer</sub></td>
 </tr>
 </table>
