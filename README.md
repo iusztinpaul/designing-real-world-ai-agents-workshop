@@ -70,6 +70,8 @@ Don't overengineer your AI agents. Build simple first.
 
 What's the most complex agent architecture you've simplified? Tell me below.
 
+<sub><a href="media/post_3.md">Read the full post</a></sub>
+
 <img src="media/post_image.png" width="500"/>
 
 </td>
