@@ -187,20 +187,94 @@ The evaluator-optimizer loop generates a draft, then runs 3 rounds of review + e
 
 </details>
 
+<details>
+<summary>Example 2 — Harness Engineering (click to expand)</summary>
+
+<img src="examples/harness-engineering/post_image.png" width="300"/>
+
+```
+Harness engineering isn't just a new term for prompt engineering. It's where AI is heading.
+
+Agents got useful enough for code and tools, but they weren't reliable. They'd repeat mistakes. The bottleneck shifted from code generation to consistent, reliable behavior in real systems.
+
+Think of it this way: prompt engineering is what to ask. Context engineering is what to send the model. Harness engineering is how the whole thing operates. It's the environment around the model, beyond just tokens.
+
+Car analogy: the model is the engine. Context is the fuel. The harness is the rest of the car: steering, brakes, lane boundaries. It prevents crashes.
+
+A harness includes tools, permissions, state, tests, logs, retries, checkpoints, guardrails, and evals.
+
+Stop hoping the model improves. Engineer its environment. The burden shifts to us, the builders, to prevent repeat mistakes.
+
+I use self-reflection in my Claude Code setup. The agent learns what I liked, saving tokens and time.
+
+Real companies are already doing this. Anthropic's long-running agents externalize memory into artifacts. OpenAI built a 1M-line product with zero manual code using structured docs and agent-to-agent reviews. Stripe agents merge 1K+ PRs weekly within isolated environments. LangChain moved a coding agent from outside the top 30 to top 5 on Terminal Bench 2.0 by changing only the harness. Same model, better system.
+
+This isn't just for coding agents. This is the new way software gets built.
+
+The programmer's job is shifting: less writing code, more designing habitats for agents to work without issues. Think machine-readable docs, evals, sandboxes, permission boundaries, and structural tests.
+
+Reliability is the real work. Not just prompting.
+
+LLMs are heading into systems, workflows, harnesses. Value comes from orchestration, constraints, feedback loops—not just a single prompt. The future isn't one genius model. It's models in well-engineered environments.
+
+That's why harness engineering matters. It's what happens when you stop demoing intelligence and start shipping it.
+
+Want to learn more? I explain it all in my latest video: https://youtu.be/zYerCzIexCg What's your biggest challenge building reliable agent systems right now?
+```
+
+</details>
+
+<details>
+<summary>Example 3 — Angine de Poitrine for AI Engineers (click to expand)</summary>
+
+<img src="examples/angine-de-poitrine-ai-engineers/post_image.png" width="300"/>
+
+```
+Forget your latest AI model. There's a new system breaking the internet: Angine de Poitrine.
+
+This masked duo from Quebec, deploys a high-resolution audio architecture. It makes everything else sound low-res.
+
+Khn's custom double-necked microtonal guitar features 2x resolution: 24 notes per octave, not 12. Fine-grained frequency modulation.
+
+Klek backs him up on drums, driving rhythms that feel like O(n^2) time signatures. Pure algorithmic complexity.
+
+Their sound: "Dada Pythagorean-Cubist mantra-rock." Eastern traditions meet Frank Zappa.
+
+Their 27-minute inference run for KEXP in Feb 2026 hit 7M+ views and broke the internet. Sold-out shows in NYC, London, Rennes followed.
+
+Their anonymity adds another layer. Polka-dot costumes and papier-mâché masks are anonymous inference endpoints.
+
+They communicate in an invented language. This ensures pure signal: raw output, no artist biases. A decoupled identity art experiment.
+
+Khn's loop pedals are recursive pipelines. They stack complex guitar and bass in real-time, building dense soundscapes.
+
+Just dropped: their new album, Vol. II, on April 3, 2026.
+
+AI music is common. Angine de Poitrine proves human artistry is the ultimate non-deterministic function. Raw, complex, and deeply human.
+
+You need to hear this.
+
+What's the most complex system you've encountered recently?
+```
+
+</details>
+
 > Browse more full examples (seed, research, post drafts, reviews, final post + image) in the [`examples/`](examples/) directory.
 
 ## Tech Stack
 
-| Component | Tool |
-|-----------|------|
-| LLM API | Google Gemini (via `google-genai` SDK) |
-| MCP Framework | FastMCP |
-| Data Validation | Pydantic |
-| Settings | Pydantic Settings |
-| Observability | Opik |
-| Image Generation | Gemini Flash Image |
-| QA | Ruff |
-| Package Manager | uv |
+
+| Component        | Tool                                   |
+| ---------------- | -------------------------------------- |
+| LLM API          | Google Gemini (via `google-genai` SDK) |
+| MCP Framework    | FastMCP                                |
+| Data Validation  | Pydantic                               |
+| Settings         | Pydantic Settings                      |
+| Observability    | Opik                                   |
+| Image Generation | Gemini Flash Image                     |
+| QA               | Ruff                                   |
+| Package Manager  | uv                                     |
+
 
 ## Getting Started
 
@@ -217,7 +291,7 @@ The evaluator-optimizer loop generates a draft, then runs 3 rounds of review + e
 
 | Requirement | Check | Install |
 |-------------|-------|---------|
-| Python 3.14+ | `python --version` | [python.org](https://www.python.org/downloads/) or `pyenv install 3.14.0` |
+| Python 3.12+ | `python --version` | `uv python install 3.12` or [python.org](https://www.python.org/downloads/) |
 | uv 0.7+ | `uv --version` | `curl -LsSf https://astral.sh/uv/install.sh \| sh` ([docs](https://docs.astral.sh/uv/getting-started/installation/)) |
 | GNU Make | `make --version` | Pre-installed on macOS/Linux. Windows: `choco install make` |
 | Google API Key | — | [aistudio.google.com/apikey](https://aistudio.google.com/apikey) (required — all LLM calls use Gemini) |
@@ -238,6 +312,8 @@ The evaluator-optimizer loop generates a draft, then runs 3 rounds of review + e
    ```bash
    uv sync
    ```
+
+   > **Note:** If you don't have Python 3.12+, uv can install it for you: `uv python install 3.12`, then re-run `uv sync`.
 
 3. **Verify the setup:**
 
@@ -304,7 +380,7 @@ The skill will ask you for a topic and guideline, then run the full pipeline end
 
 <br/>
 
-Run workflows directly from the terminal via `make`. Useful for verifying your setup works and running quick smoke tests. See [`examples/`](examples/) for full end-to-end output samples.
+Run workflows directly from the terminal via `make`. Useful for verifying your setup works and running quick smoke tests. See `[examples/](examples/)` for full end-to-end output samples.
 
 **Test workflows:**
 
@@ -318,7 +394,7 @@ make test-end-to-end           # Both steps sequentially
 
 **Full dataset run:**
 
-The [`datasets/`](datasets/) directory contains a pre-built LinkedIn posts dataset with seeds, guidelines, research documents, ground truth posts, and generated outputs — used for both batch runs and evaluation.
+The `[datasets/](datasets/)` directory contains a pre-built LinkedIn posts dataset with seeds, guidelines, research documents, ground truth posts, and generated outputs — used for both batch runs and evaluation.
 
 ```bash
 make run-dataset-writing           # Research + write for all dataset posts (with images)
@@ -371,11 +447,13 @@ make eval-online            # Generate + judge posts on the fly
 
 ## Next Steps
 
-| Resource | Description |
-|----------|-------------|
-| [Agentic AI Engineering Course](https://academy.towardsai.net/courses/agent-engineering) | Our full course. 34 lessons. Three end-to-end portfolio projects. A certificate. And a Discord community. |
-| [Agentic AI Engineering Guide](https://email-course.towardsai.net/) | Free 6-day email course on the mistakes that silently break AI agents in production. |
-| [AI Engineering Cheatsheets](https://github.com/louisfb01/ai-engineering-cheatsheets) | Quick-reference sheets for agents, RAG, fine-tuning, and more. Ready to be plugged into Claude Code as context. |
+
+| Resource                                                                                 | Description                                                                                                     |
+| ---------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| [Agentic AI Engineering Course](https://academy.towardsai.net/courses/agent-engineering) | Our full course. 34 lessons. Three end-to-end portfolio projects. A certificate. And a Discord community.       |
+| [Agentic AI Engineering Guide](https://email-course.towardsai.net/)                      | Free 6-day email course on the mistakes that silently break AI agents in production.                            |
+| [AI Engineering Cheatsheets](https://github.com/louisfb01/ai-engineering-cheatsheets)    | Quick-reference sheets for agents, RAG, fine-tuning, and more. Ready to be plugged into Claude Code as context. |
+
 
 ## Contributors
 

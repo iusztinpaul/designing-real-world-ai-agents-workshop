@@ -52,7 +52,7 @@ def print_result(result: object) -> None:
         try:
             parsed = json.loads(data)
             print(f"  {json.dumps(parsed, indent=2)}")
-        except json.JSONDecodeError, TypeError:
+        except (json.JSONDecodeError, TypeError):
             print(f"  {data}")
     else:
         print(f"  {data}")
