@@ -29,20 +29,31 @@ async def deep_research_tool(working_dir: str, query: str) -> dict[str, Any]:
         Dict with status, research result, and output file path.
     """
 
+    # Step 1: Ensure the working directory is valid and .memory/ exists
     validate_directory(working_dir)
     memory_path = ensure_memory_dir(working_dir)
 
+    # Step 2: Build the path to the cumulative results JSON file
     results_path = memory_path / RESEARCH_RESULTS_FILE
 
-    # Load existing results
+    # Step 3: Load any previously saved results so we can append to them.
+    # If this is the first query, starts with an empty list.
     existing_results = load_json(results_path, default=[])
 
+    # Step 4: Send the query to Gemini with Google Search grounding.
+    # This performs a live web search and returns a structured ResearchResult
+    # containing the answer text and cited sources.
     logger.info(f"Executing research query: {query}")
     result = await run_grounded_search(query)
 
+    # Step 5: Append the new result (as a dict) and persist back to disk.
+    # This accumulates results across multiple tool invocations so that
+    # compile_research_tool can later merge them all into research.md.
     existing_results.append(result.model_dump())
     save_json(results_path, existing_results)
 
+    # Step 6: Return a response dict to the MCP caller with the answer,
+    # sources, and metadata about where results were saved.
     return {
         "status": "success",
         "query": query,
