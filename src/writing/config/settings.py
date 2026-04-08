@@ -27,13 +27,14 @@ class Settings(BaseSettings):
 
     # LLM Configuration
     writer_model: str = Field(
-        default="gemini-3.0-flash", description="Model for post generation and editing"
+        default="gemini-3-flash-preview",
+        description="Model for post generation and editing",
     )
     reviewer_model: str = Field(
-        default="gemini-3.0-flash", description="Model for post evaluation"
+        default="gemini-3-flash-preview", description="Model for post evaluation"
     )
     image_model: str = Field(
-        default="gemini-3.0-flash-image",
+        default="gemini-2.5-flash-image",
         description="Model for native image generation (Gemini Flash Image)",
     )
 
