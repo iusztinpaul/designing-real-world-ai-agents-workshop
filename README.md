@@ -304,7 +304,7 @@ What's the most complex system you've encountered recently?
 1. **Clone and configure:**
 
    ```bash
-   git clone https://github.com/decodingml/designing-real-world-ai-agents-workshop.git
+   git clone https://github.com/iusztinpaul/designing-real-world-ai-agents-workshop.git
    cd designing-real-world-ai-agents-workshop
    cp .env.example .env          # add your GOOGLE_API_KEY (+ optional OPIK_API_KEY, OPIK_WORKSPACE)
    ```
