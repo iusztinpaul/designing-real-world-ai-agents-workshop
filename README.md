@@ -4,6 +4,8 @@ A hands-on workshop building a multi-agent AI system with two MCP servers: a **D
 
 Built as a lightweight companion to the [Agentic AI Engineering Course](https://academy.towardsai.net/courses/agent-engineering), which covers 34 lessons and three end-to-end portfolio projects. This workshop distills the core agentic patterns into a ~2-hour hands-on build.
 
+Link to the slides [here](https://docs.google.com/presentation/d/1SAR_q70hmSKFcFlmurIs5tx37BDYlrISPHWY43XkVaA/edit?usp=sharing).
+
 ## What You'll Build
 
 <img src="media/architecture.png" alt="End-to-end workflow architecture" width="800"/>
