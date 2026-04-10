@@ -1,4 +1,4 @@
-# Designing Real-World AI Agents Workshop
+# Build Your Own Deep Research Agent + Technical Writer
 
 A hands-on workshop building a multi-agent AI system with two MCP servers: a **Deep Research Agent** and a **LinkedIn Writing Workflow**. Both connected to a harness like Claude Code or Cursor.
 
