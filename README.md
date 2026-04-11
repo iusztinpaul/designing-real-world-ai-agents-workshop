@@ -2,13 +2,15 @@
 
 A hands-on workshop building a multi-agent AI system with two MCP servers: a **Deep Research Agent** and a **LinkedIn Writing Workflow**. Both connected to a harness like Claude Code or Cursor.
 
+Slides [here](https://drive.google.com/file/d/1RWdS5VQYjz7a9y7NzHhAnyhGtxi6e0vt/view?usp=sharing).
+
+## From our Agentic AI Engineering Full Course
+
 Built as a lightweight companion to the [Agentic AI Engineering Course](https://academy.towardsai.net/courses/agent-engineering?utm_source=github&utm_medium=aieng&utm_campaign=2026_aieng_workshop&utm_id=researchwriter), which covers 34 lessons and three end-to-end portfolio projects. This workshop distills the core agentic patterns into a ~2-hour hands-on build.
 
 <a href="https://academy.towardsai.net/courses/agent-engineering?utm_source=github&utm_medium=aieng&utm_campaign=2026_aieng_workshop&utm_id=researchwriter"><img src="media/course_clip.gif" alt="Agentic AI Engineering Course" width="800"/></a>
 
-Slides [here](https://drive.google.com/file/d/1RWdS5VQYjz7a9y7NzHhAnyhGtxi6e0vt/view?usp=sharing).
-
-## What You'll Build
+## What You'll Build Today
 
 <img src="media/architecture.png" alt="End-to-end workflow architecture" width="800"/>
 
