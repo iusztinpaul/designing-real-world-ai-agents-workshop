@@ -12,8 +12,6 @@ Built as a lightweight companion to the [Agentic AI Engineering Course](https://
 
 ## What You'll Build Today
 
-<img src="media/architecture.png" alt="End-to-end workflow architecture" width="800"/>
-
 **Deep Research Agent** — An MCP server that runs deep research using Gemini with Google Search grounding and native YouTube video analysis:
 
 ```
@@ -27,6 +25,8 @@ research.md + guideline → generate post → [review → edit] × N → post.md
 ```
 
 Both servers expose tools, resources, and prompts via the [Model Context Protocol](https://modelcontextprotocol.io/), letting any MCP-compatible harness orchestrate the workflow.
+
+<img src="media/architecture.png" alt="End-to-end workflow architecture" width="800"/>
 
 **Patterns and concepts you'll learn:**
 
