@@ -4,7 +4,7 @@ A hands-on workshop building a multi-agent AI system with two MCP servers: a **D
 
 Built as a lightweight companion to the [Agentic AI Engineering Course](https://academy.towardsai.net/courses/agent-engineeringutm_source=github&utm_medium=aieng&utm_campaign=2026_aieng_workshop&utm_id=researchwriter), which covers 34 lessons and three end-to-end portfolio projects. This workshop distills the core agentic patterns into a ~2-hour hands-on build.
 
-Link to the slides [here](https://docs.google.com/presentation/d/1SAR_q70hmSKFcFlmurIs5tx37BDYlrISPHWY43XkVaA/edit?usp=sharing).
+Slides [here](https://github.com/iusztinpaul/designing-real-world-ai-agents-workshop/blob/main/slides_designing-real-world-ai-agents-workshop_towardsai.pdf).
 
 ## What You'll Build
 
