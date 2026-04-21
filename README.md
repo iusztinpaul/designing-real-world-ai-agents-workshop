@@ -1,6 +1,8 @@
-# Build Your Own Deep Research Agent + Technical Writer
+# Build Your Own Deep Research Agent + Technical Writer Multi-Agent System
 
-A hands-on workshop building a multi-agent AI system with two MCP servers: a **Deep Research Agent** and a **LinkedIn Writing Workflow**. Both connected to a harness like Claude Code or Cursor.
+A hands-on workshop, presented at [AI Engineering Conference Europe](https://www.ai.engineer/europe), building a multi-agent AI system with two MCP servers: a **Deep Research Agent** and a **LinkedIn Writing Workflow**. Both connected to a harness like Claude Code or Cursor.
+
+Full workshop available on [YouTube](https://www.youtube.com/watch?v=mYSRn6PC1mc) ↓
 
 <a href="https://www.youtube.com/watch?v=mYSRn6PC1mc">
   <img src="https://img.youtube.com/vi/mYSRn6PC1mc/maxresdefault.jpg" alt="Watch the video" style="width:100%; max-width:600px;">
