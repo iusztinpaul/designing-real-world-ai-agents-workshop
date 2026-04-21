@@ -2,6 +2,10 @@
 
 A hands-on workshop building a multi-agent AI system with two MCP servers: a **Deep Research Agent** and a **LinkedIn Writing Workflow**. Both connected to a harness like Claude Code or Cursor.
 
+<a href="https://www.youtube.com/watch?v=mYSRn6PC1mc">
+  <img src="https://img.youtube.com/vi/y6120QOlsfU/maxresdefault.jpg" alt="Watch the video" style="width:100%; max-width:600px;">
+</a>
+
 Slides [here](https://drive.google.com/file/d/1RWdS5VQYjz7a9y7NzHhAnyhGtxi6e0vt/view?usp=sharing).
 
 ## From our Agentic AI Engineering Full Course
@@ -13,7 +17,7 @@ Built as a lightweight companion to the [Agentic AI Engineering Course](https://
 ## What You'll Build Today
 
 **Deep Research Agent** — An MCP server that runs deep research using Gemini with Google Search grounding and native YouTube video analysis:
-
+   
 ```
 user topic → [deep_research] × N → analyze_youtube_video (if URLs) → [deep_research gap-fill] → compile_research → research.md
 ```
