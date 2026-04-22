@@ -44,7 +44,7 @@ async def run_grounded_search(query: str) -> ResearchResult:
     prompt = PROMPT_RESEARCH.format(query=query)
 
     if provider == "tavily":
-        answer_text, raw_sources = await call_tavily_search(prompt)
+        answer_text, raw_sources = await call_tavily_search(query)
     elif provider == "both":
         # Run both providers and merge results.
         gemini_answer, gemini_sources = await call_gemini_search(prompt)

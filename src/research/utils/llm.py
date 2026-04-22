@@ -2,7 +2,10 @@
 
 import logging
 from functools import lru_cache
-from typing import Any
+from typing import TYPE_CHECKING, Any
+
+if TYPE_CHECKING:
+    from tavily import AsyncTavilyClient
 
 from google import genai
 from google.genai import types
@@ -121,26 +124,38 @@ async def call_gemini_search(
     return answer_text, sources
 
 
+@lru_cache
+def get_tavily_client() -> "AsyncTavilyClient":
+    """Create and cache an async Tavily client."""
+
+    from tavily import AsyncTavilyClient
+
+    settings = get_settings()
+    if not settings.tavily_api_key:
+        raise ValueError(
+            "TAVILY_API_KEY must be set when using the tavily search provider"
+        )
+
+    return AsyncTavilyClient(api_key=settings.tavily_api_key.get_secret_value())
+
+
 async def call_tavily_search(
-    prompt: str,
+    query: str,
 ) -> tuple[str, list[dict[str, str]]]:
     """Call Tavily search API and return results in the same shape as call_gemini_search.
 
     Args:
-        prompt: The search query to send to Tavily.
+        query: The search query to send to Tavily.
 
     Returns:
         A tuple of (answer_text, sources_list) where sources_list contains
         dicts with 'url' and 'title' keys.
     """
 
-    from tavily import TavilyClient
+    client = get_tavily_client()
 
-    settings = get_settings()
-    client = TavilyClient(api_key=settings.tavily_api_key.get_secret_value())
-
-    response = client.search(
-        query=prompt,
+    response = await client.search(
+        query=query,
         max_results=10,
         search_depth="advanced",
         include_answer="advanced",
