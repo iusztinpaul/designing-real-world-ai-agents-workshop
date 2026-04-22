@@ -121,6 +121,41 @@ async def call_gemini_search(
     return answer_text, sources
 
 
+async def call_tavily_search(
+    prompt: str,
+) -> tuple[str, list[dict[str, str]]]:
+    """Call Tavily search API and return results in the same shape as call_gemini_search.
+
+    Args:
+        prompt: The search query to send to Tavily.
+
+    Returns:
+        A tuple of (answer_text, sources_list) where sources_list contains
+        dicts with 'url' and 'title' keys.
+    """
+
+    from tavily import TavilyClient
+
+    settings = get_settings()
+    client = TavilyClient(api_key=settings.tavily_api_key.get_secret_value())
+
+    response = client.search(
+        query=prompt,
+        max_results=10,
+        search_depth="advanced",
+        include_answer="advanced",
+    )
+
+    answer_text = response.get("answer", "") or ""
+    sources = [
+        {"url": r["url"], "title": r.get("title", "")}
+        for r in response.get("results", [])
+        if r.get("url")
+    ]
+
+    return answer_text, sources
+
+
 def extract_grounding_sources(
     response: types.GenerateContentResponse,
 ) -> list[dict[str, str]]:

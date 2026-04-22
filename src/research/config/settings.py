@@ -27,7 +27,8 @@ class Settings(BaseSettings):
 
     # LLM Configuration
     gemini_model: str = Field(
-        default="gemini-3-flash-preview", description="Default Gemini model for general use"
+        default="gemini-3-flash-preview",
+        description="Default Gemini model for general use",
     )
     youtube_transcription_model: str = Field(
         default="gemini-3.1-pro-preview", description="Model for YouTube video analysis"
@@ -36,6 +37,18 @@ class Settings(BaseSettings):
     # API Keys
     google_api_key: SecretStr = Field(
         alias="GOOGLE_API_KEY", description="The API key for the Google Gemini API"
+    )
+
+    # Tavily Configuration
+    tavily_api_key: SecretStr | None = Field(
+        default=None,
+        alias="TAVILY_API_KEY",
+        description="The API key for the Tavily search API",
+    )
+    research_search_provider: str = Field(
+        default="google",
+        alias="RESEARCH_SEARCH_PROVIDER",
+        description="Search provider to use: google, tavily, or both",
     )
 
     # Opik Monitoring Configuration
