@@ -43,7 +43,7 @@ Both servers expose tools, resources, and prompts via the [Model Context Protoco
 - **MCP server design** — registering tools, resources, and prompts with FastMCP
 - **LLM-as-judge evaluation** — automated quality scoring with Opik
 
-<img width="1024" height="1024" alt="variation_2_edited" src="https://github.com/user-attachments/assets/79c56d27-3d72-440e-a595-422df8bef239" />
+<img width="1400" height="1380" alt="system_architecture" src="https://github.com/user-attachments/assets/5507d5dd-5809-4e01-bcf3-a6de980bc773" />
 
 ## Example: End-to-End Workflow
 
