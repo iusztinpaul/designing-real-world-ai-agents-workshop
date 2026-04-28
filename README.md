@@ -347,12 +347,13 @@ What's the most complex system you've encountered recently?
 
 ## Running the Code
 
-There are three ways to run the workflows:
+There are four ways to run the workflows:
 
 | Mode | Best for |
 |------|----------|
 | **MCP Servers** (recommended) | Interactive use with AI harness |
 | **Skills** | Guided slash-command workflows |
+| **Streamlit UI** | Visual end-to-end demo with live progress |
 | **Scripts** | Verify setup, smoke tests |
 
 ### MCP Servers (recommended)
@@ -396,6 +397,18 @@ Example:
 ```
 
 The skill will ask you for a topic and guideline, then run the full pipeline end-to-end. Check [`examples/`](examples/) to see what each step produces.
+
+### Streamlit UI
+
+A standalone chat UI that orchestrates both MCP servers via FastMCP — no harness required. Drop in a topic (or upload a `.md` / `.txt` seed file) and watch the pipeline run end-to-end with live per-stage progress: search counters, sources collected, evaluator-optimizer loop, and image generation.
+
+```bash
+make run-ui
+```
+
+![Streamlit UI showing live deep-research progress, the writing workflow's evaluator-optimizer loop, and the generated image](media/streamlit_ui.png)
+
+Outputs land in `outputs/{topic-slug}/` (same layout as the skills).
 
 <details>
 <summary><strong>Scripts</strong> (terminal-only, for smoke tests)</summary>
