@@ -176,7 +176,7 @@ cython_debug/
 #.idea/
 
 # MacOs
-# .DS_Store
+.DS_Store
 
 # Abstra
 # Abstra is an AI-powered process automation framework.
