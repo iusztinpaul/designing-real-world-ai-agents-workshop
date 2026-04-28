@@ -10,6 +10,14 @@ A hands-on workshop, presented at [AI Engineering Conference Europe](https://www
 
 📑 Slides [here](https://drive.google.com/file/d/1RWdS5VQYjz7a9y7NzHhAnyhGtxi6e0vt/view?usp=sharing).
 
+## How to Use This Repo
+
+You'll get the most out of this workshop by working through these three modes **in order** — each one builds on the last:
+
+1. **Watch the workshop.** Start with the [YouTube recording](https://www.youtube.com/watch?v=mYSRn6PC1mc) and the [slides](https://drive.google.com/file/d/1RWdS5VQYjz7a9y7NzHhAnyhGtxi6e0vt/view?usp=sharing) above. Get the conceptual map — what the system does, why each piece exists, what the agentic patterns look like end-to-end. ~2 hours.
+2. **Run the finished code.** Follow the [Getting Started](#getting-started) and [Running the Code](#running-the-code) sections below to install the project and exercise the MCP servers, skills, and evaluation pipeline against the shipped dataset. You'll see the system behave on real inputs and inspect every artifact it produces (research briefs, post drafts, judge scores). ~30 minutes hands-on.
+3. **Implement it yourself with agentic coding.** Open [`implement_yourself/`](implement_yourself/) — a stripped-down skeleton paired with 24 pre-groomed tickets and a custom `/implement` Claude Code skill that drives a SWE↔Tester loop, ticket by ticket, until the directory is a 1:1 functional replica of `src/`. This is where the workshop turns into a live demo of how to build AI systems with AI. See [`implement_yourself/README.md`](implement_yourself/README.md) for the kickoff guide. ~2–4 hours depending on how deep you go.
+
 ## From our Agentic AI Engineering Full Course
 
 Built as a lightweight companion to the [Agentic AI Engineering Course](https://academy.towardsai.net/courses/agent-engineering?utm_source=github&utm_medium=aieng&utm_campaign=2026_aieng_workshop&utm_id=researchwriter), which covers 34 lessons and three end-to-end portfolio projects. This workshop distills the core agentic patterns into a ~2-hour hands-on build.
