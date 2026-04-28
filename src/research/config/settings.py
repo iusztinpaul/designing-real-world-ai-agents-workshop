@@ -27,7 +27,8 @@ class Settings(BaseSettings):
 
     # LLM Configuration
     gemini_model: str = Field(
-        default="gemini-3-flash-preview", description="Default Gemini model for general use"
+        default="gemini-3-flash-preview",
+        description="Default Gemini model for general use",
     )
     youtube_transcription_model: str = Field(
         default="gemini-3.1-pro-preview", description="Model for YouTube video analysis"

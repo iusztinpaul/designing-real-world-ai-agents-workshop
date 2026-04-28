@@ -4,8 +4,9 @@ import logging
 from pathlib import Path
 from typing import Any
 
+from research.app.exploration_budget import reset_exploration_budget
 from research.app.research_file_handler import compile_research_file
-from research.config.constants import RESEARCH_MD_FILE
+from research.config.constants import MEMORY_FOLDER, RESEARCH_MD_FILE
 from research.utils.file_utils import validate_directory, write_file
 
 logger = logging.getLogger(__name__)
@@ -41,7 +42,11 @@ def compile_research_tool(working_dir: str) -> dict[str, Any]:
 
     logger.info(f"Generated research file: {output_path.resolve()}")
 
-    # Step 4: Return a success response with the path to the generated file
+    # Step 4: Clear the exploration round budget so any follow-up research
+    # session in this working directory starts with a fresh cap.
+    reset_exploration_budget(Path(working_dir) / MEMORY_FOLDER)
+
+    # Step 5: Return a success response with the path to the generated file
     return {
         "status": "success",
         "output_path": str(output_path.resolve()),

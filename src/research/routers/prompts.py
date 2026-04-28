@@ -31,10 +31,21 @@ You are a deep research agent. Use the available tools to thoroughly research a 
 4. If needed, run additional `deep_research` calls to fill knowledge gaps.
 5. Call `compile_research` to generate the final research.md file.
 
+**Hard limit (enforced in code):** You may run at most **6 exploration
+calls** in total (`deep_research` + `analyze_youtube_video` combined)
+before calling `compile_research`. The server counts calls in
+`.memory/exploration_state.json` and will refuse a 7th call with
+`status: "budget_exceeded"` — at that point you MUST call `compile_research`.
+Each successful exploration response reports `call`, `max_calls`, and
+`calls_remaining` so you can self-pace. Think of this as roughly **3 rounds
+of ~2 queries each** — plan your queries up front so the budget is well
+spent on breadth-first coverage of the topic.
+
 **Notes:**
 - The `working_dir` should be the current working directory.
 - All intermediate data is stored in `.memory/` within the working directory.
-- You decide what to research and how many queries to run — use your judgment.
+- Within the 3-round budget, you decide what to research and how many queries
+  to run per round — use your judgment.
 """.strip()
 
 
