@@ -36,6 +36,9 @@ run-research-server: # Run the Deep Research MCP server (stdio transport).
 run-writing-server: # Run the LinkedIn Writer MCP server (stdio transport).
 	uv run fastmcp run src/writing/server.py
 
+run-ui: # Run the Streamlit chat UI orchestrating both MCP servers.
+	uv run streamlit run streamlit_app.py
+
 test-research-workflow: # Test the research workflow using the dataset seed.
 	@mkdir -p test_logic
 	@cp $(DATASET_DIR)/$(TEST_SLUG)_seed.md test_logic/seed.md
