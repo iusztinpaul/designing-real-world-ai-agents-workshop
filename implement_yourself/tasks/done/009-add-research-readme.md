@@ -1,6 +1,6 @@
 # Author the Deep Research Agent README
 
-Status: pending
+Status: done
 Tags: `docs`, `readme`, `research`
 Depends on: #008
 Blocks: #020
