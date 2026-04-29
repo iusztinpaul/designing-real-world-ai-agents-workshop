@@ -1,6 +1,6 @@
 # Implement the `compile_research` tool
 
-Status: pending
+Status: done
 Tags: `mcp`, `research`, `markdown`, `aggregation`
 Depends on: #004
 Blocks: #006
