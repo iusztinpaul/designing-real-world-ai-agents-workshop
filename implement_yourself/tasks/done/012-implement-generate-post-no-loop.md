@@ -1,6 +1,6 @@
 # Implement `generate_post` (no evaluator-optimizer loop yet)
 
-Status: pending
+Status: done
 Tags: `mcp`, `writing`, `gemini`, `pydantic`, `prompt-engineering`
 Depends on: #011
 Blocks: #013
