@@ -1,6 +1,6 @@
 # Bootstrap the LinkedIn Writer MCP server
 
-Status: pending
+Status: done
 Tags: `mcp`, `writing`, `bootstrap`, `pydantic-settings`, `fastmcp`
 Depends on: #001
 Blocks: #011, #017
