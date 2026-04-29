@@ -1,6 +1,6 @@
 # Implement the `analyze_youtube_video` tool
 
-Status: pending
+Status: done
 Tags: `mcp`, `research`, `gemini`, `youtube`, `video-understanding`
 Depends on: #002
 Blocks: #004, #005
