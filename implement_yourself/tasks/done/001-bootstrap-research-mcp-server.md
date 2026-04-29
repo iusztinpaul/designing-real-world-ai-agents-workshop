@@ -1,6 +1,6 @@
 # Bootstrap the Deep Research MCP server
 
-Status: pending
+Status: done
 Tags: `mcp`, `research`, `bootstrap`, `pydantic-settings`, `fastmcp`
 Depends on: None
 Blocks: #002, #007, #010

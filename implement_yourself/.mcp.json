@@ -1,3 +1,9 @@
 {
-  "mcpServers": {}
+  "mcpServers": {
+    "deep-research": {
+      "command": "uv",
+      "args": ["run", "fastmcp", "run", "src/research/server.py"],
+      "env": { "ENV_FILE_PATH": ".env" }
+    }
+  }
 }
