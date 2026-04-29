@@ -1,6 +1,6 @@
 # Add the evaluator-optimizer loop to `generate_post`
 
-Status: pending
+Status: done
 Tags: `mcp`, `writing`, `evaluator-optimizer`, `gemini`, `pydantic`, `structured-output`
 Depends on: #012
 Blocks: #014

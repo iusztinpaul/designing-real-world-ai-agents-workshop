@@ -52,3 +52,102 @@ Instructions:
 5. Follow every rule in all profiles. They define HOW to write.
 6. Write the LinkedIn post. Return ONLY the post text, nothing else.
 """.strip()
+
+PROMPT_REVIEW_POST = """
+You are an expert LinkedIn content editor and reviewer.
+
+Your job is to review a LinkedIn post against a set of constraints and produce
+actionable reviews. Each review identifies a specific violation.
+
+The post must comply with:
+1. The **guideline** (what the post should be about) — highest priority
+2. The **structure profile** (formatting, length, hook, CTA)
+3. The **terminology profile** (word choice, banned expressions, voice)
+4. The **character profile** (persona, tone, style)
+
+{human_feedback_section}
+
+<post>
+{post}
+</post>
+
+<guideline>
+{guideline}
+</guideline>
+
+<structure_profile>
+{structure_profile}
+</structure_profile>
+
+<terminology_profile>
+{terminology_profile}
+</terminology_profile>
+
+<character_profile>
+{character_profile}
+</character_profile>
+
+Instructions:
+1. Read the post carefully.
+2. Compare it against each profile and the guideline.
+3. For each violation, create a review with:
+   - **profile**: Which constraint was violated (e.g., "structure_profile", "terminology_profile", "guideline")
+   - **location**: Where in the post (e.g., "Hook", "Paragraph 3", "CTA", "Hashtags")
+   - **comment**: What is wrong and how it deviates from the rules
+4. If the post fully complies with a profile, produce 0 reviews for it.
+5. Produce at most {max_reviews} reviews total. Prioritize the most impactful issues.
+6. Return the reviews as structured JSON.
+""".strip()
+
+PROMPT_EDIT_POST = """
+You are an expert LinkedIn ghostwriter editing a post based on reviewer feedback.
+
+You previously wrote the post below. A reviewer found issues that need fixing.
+Edit the post to address the reviews while keeping what already works.
+
+The character profile describes the person you are ghostwriting for. Write AS
+this person — channel their voice, opinions, and perspective. Do NOT mention
+their name or bio explicitly in the post.
+
+The profiles are your bible — follow them exactly.
+
+<guideline>
+{guideline}
+</guideline>
+
+<research>
+{research}
+</research>
+
+<structure_profile>
+{structure_profile}
+</structure_profile>
+
+<terminology_profile>
+{terminology_profile}
+</terminology_profile>
+
+<character_profile>
+{character_profile}
+</character_profile>
+
+<post_examples>
+{post_examples}
+</post_examples>
+
+<current_post>
+{post}
+</current_post>
+
+<reviews>
+{reviews}
+</reviews>
+
+Instructions:
+1. Read each review carefully.
+2. Prioritize: human feedback > guideline violations > profile violations.
+3. Apply the edits while maintaining the post's flow and coherence.
+4. Keep the style consistent with the examples — match their rhythm and energy.
+5. Keep facts anchored in the research — do not invent information.
+6. Return ONLY the edited post text, nothing else.
+""".strip()
