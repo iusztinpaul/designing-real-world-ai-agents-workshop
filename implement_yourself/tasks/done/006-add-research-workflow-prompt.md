@@ -1,6 +1,6 @@
 # Register the `research_workflow` MCP prompt
 
-Status: pending
+Status: done
 Tags: `mcp`, `research`, `prompts`, `routers`
 Depends on: #005
 Blocks: #008
