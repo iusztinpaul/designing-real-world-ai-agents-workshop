@@ -1,6 +1,6 @@
 # Implement the `edit_post` tool
 
-Status: pending
+Status: done
 Tags: `mcp`, `writing`, `human-in-the-loop`, `gemini`
 Depends on: #013
 Blocks: #015
