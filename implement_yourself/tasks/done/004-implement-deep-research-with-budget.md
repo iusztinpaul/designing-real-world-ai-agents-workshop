@@ -1,6 +1,6 @@
 # Implement the `deep_research` tool with a shared exploration budget
 
-Status: pending
+Status: done
 Tags: `mcp`, `research`, `gemini`, `grounded-search`, `pydantic`, `budget`
 Depends on: #003
 Blocks: #005
