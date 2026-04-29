@@ -1,6 +1,6 @@
 # Register the `resource://config/research` MCP resource
 
-Status: pending
+Status: done
 Tags: `mcp`, `research`, `resources`, `routers`, `config`
 Depends on: #001
 Blocks: #009

@@ -6,6 +6,7 @@ from fastmcp import FastMCP
 
 from research.config.settings import get_settings
 from research.routers.prompts import register_mcp_prompts
+from research.routers.resources import register_mcp_resources
 from research.routers.tools import register_mcp_tools
 from research.utils.logging import setup_logging
 
@@ -26,7 +27,7 @@ def create_mcp_server() -> FastMCP:
 
     register_mcp_tools(mcp)
     register_mcp_prompts(mcp)
-    # TODO(#002): register_mcp_resources(mcp)
+    register_mcp_resources(mcp)
 
     return mcp
 
