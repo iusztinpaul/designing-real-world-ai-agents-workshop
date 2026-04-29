@@ -1,6 +1,6 @@
 # Register the three writing MCP tool shells
 
-Status: pending
+Status: done
 Tags: `mcp`, `writing`, `tools`, `routers`, `fastmcp`
 Depends on: #010
 Blocks: #012, #014, #015
