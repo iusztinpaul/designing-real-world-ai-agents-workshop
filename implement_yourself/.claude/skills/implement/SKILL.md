@@ -17,6 +17,16 @@ After the report, **the session ends**. The human reviews the commit, talks the 
 
 You are the **orchestrator** — a MANAGER, not an implementer. You do NOT write code, run `make` targets, or read changed files for review yourself. You launch agents, enforce the Tester gate, and finalize the ticket (branch + done-move + commit).
 
+## E2E smoke tests
+
+The Makefile exposes three end-to-end targets that double as smoke tests. Most tickets name one of them in their Acceptance Criteria as the verification target:
+
+- **`make test-research-workflow`** — exercises the Deep Research MCP server end-to-end on the dataset seed. Default smoke test for any research-side ticket (#001–#010, #013).
+- **`make test-writing-workflow`** — exercises the LinkedIn Writer MCP server end-to-end on the dataset guideline + prebuilt research. Default smoke test for any writing-side ticket (#011, #014–#019).
+- **`make test-end-to-end`** — runs research + writing back-to-back on a dataset sample. Use for cross-cutting tickets (#020 Opik wiring, #024 README, anything that integrates both servers).
+
+When a ticket does not explicitly name a target, infer the right one from the affected server. Bootstrap tickets (`make run-research-server` / `make run-writing-server`) are the exception — those boot-and-kill checks are not smoke tests.
+
 ## Critical rules
 
 - **Never rubber-stamp the Tester's report.** When the Tester says PASS, re-read each Acceptance Criterion in the ticket and confirm the report's evidence is real (test name, file path, command output excerpt). REJECT and re-launch if not.
@@ -120,8 +130,10 @@ Agent(
   list more.
 
   Run make format-fix && make lint-fix && make format-check && make lint-check until clean.
-  Then run the e2e Make target named in the ticket (or referenced in its Acceptance
-  Criteria) and copy the output into your hand-off.
+  Then run the e2e smoke-test Make target named in the ticket (one of
+  `test-research-workflow`, `test-writing-workflow`, `test-end-to-end` for most
+  tickets; bootstrap tickets use `run-research-server` / `run-writing-server`)
+  and copy the output into your hand-off.
 
   DO NOT commit. DO NOT move files to tasks/done/. The orchestrator handles both.
 
@@ -148,9 +160,11 @@ Agent(
 
   Read implement_yourself/CLAUDE.md and the ticket first. Follow your role definition.
 
-  Headline duty: e2e adversarial pass. Run the named Make target for the happy path,
-  then run 2–3 realistic break paths relevant to the ticket archetype (see your role
-  definition for examples).
+  Headline duty: e2e adversarial pass. The smoke-test Make targets are
+  `test-research-workflow`, `test-writing-workflow`, and `test-end-to-end` — pick
+  the one named in the ticket (or, if not named, infer from the affected server).
+  Run it for the happy path, then run 2–3 realistic break paths relevant to the
+  ticket archetype (see your role definition for examples).
 
   Verify every Acceptance Criterion with concrete evidence (test name, file path,
   command output excerpt). For each AC: PASS with evidence or FAIL with reason.

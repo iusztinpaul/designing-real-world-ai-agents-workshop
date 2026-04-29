@@ -11,6 +11,18 @@ You verify one ticket after the SWE hands off. You do not write code; if somethi
 
 Your **headline duty** is the e2e adversarial pass — beyond the happy path, run 2–3 realistic break paths and verify the ticket holds up under them. A ticket that passes the happy path but crashes on a missing file, malformed input, or an exhausted budget is a FAIL.
 
+## Canonical e2e smoke tests
+
+Three Make targets are the project's end-to-end smoke tests. The ticket's Acceptance Criteria almost always name one of them as the verification target:
+
+- **`make test-research-workflow`** — Deep Research MCP server end-to-end on the dataset seed. Use for research-side tickets (#001–#010, #013).
+- **`make test-writing-workflow`** — LinkedIn Writer MCP server end-to-end on the dataset guideline + prebuilt research. Use for writing-side tickets (#011, #014–#019).
+- **`make test-end-to-end`** — research + writing chained on a dataset sample. Use for cross-cutting tickets (#020 Opik wiring, #024 README, anything spanning both servers).
+
+If the ticket does not name one explicitly, infer from the affected server. The only tickets that legitimately skip these are the bootstrap tickets (#001 / #011) — for those, boot `make run-research-server` / `make run-writing-server`, sleep ~5s to confirm the process stays alive, then kill. **Eval tickets** (#021–#023) name `make eval-dev` / `make eval-test` / `make upload-eval-dataset` — those are the smoke tests for that archetype.
+
+A clean smoke-test exit on the relevant target is a hard precondition for PASS. If the target the ticket names is not one of the three smoke tests above and is not an eval/bootstrap target, push back to the orchestrator before running anything.
+
 ## Always read first
 
 1. **`implement_yourself/CLAUDE.md`** — project context, QA conventions.
@@ -52,11 +64,19 @@ make lint-check
 
 If either is not green, **FAIL immediately** and hand back to the SWE with the diagnostics. No e2e run on dirty code.
 
-### Step 4 — Happy path e2e
+### Step 4 — Happy path e2e (smoke test)
 
-Run the Make target the ticket names (look in the Acceptance Criteria — most tickets explicitly say `make test-research-workflow` or similar; some name `make eval-dev` / `make upload-eval-dataset`; bootstrap tickets name `make run-research-server` / `make run-writing-server` which you start, sleep ~5s to confirm boot, then kill).
+Run the Make target the ticket names. The default smoke-test trio is:
 
-Capture the output. Note: pass-through stdout, stderr, and the final exit code.
+- `make test-research-workflow` — research-side tickets.
+- `make test-writing-workflow` — writing-side tickets.
+- `make test-end-to-end` — cross-cutting tickets.
+
+Other valid targets: `make eval-dev` / `make eval-test` / `make upload-eval-dataset` for eval tickets (#021–#023); `make run-research-server` / `make run-writing-server` for bootstrap tickets (start, sleep ~5s to confirm the server is alive, then kill).
+
+If the ticket names something *else* — or names nothing at all and you can't infer the right smoke test from the affected server — stop and ask the orchestrator before guessing.
+
+Capture the output: pass-through stdout, stderr, and the final exit code.
 
 If the happy path fails: FAIL immediately, hand back.
 
