@@ -1,6 +1,6 @@
 # Register the three research MCP tool shells
 
-Status: pending
+Status: done
 Tags: `mcp`, `research`, `tools`, `routers`, `fastmcp`
 Depends on: #001
 Blocks: #003, #004, #005
