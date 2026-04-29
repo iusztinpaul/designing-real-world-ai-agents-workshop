@@ -1,6 +1,6 @@
 # Add the `/research` Claude Code skill
 
-Status: pending
+Status: done
 Tags: `claude-code`, `skill`, `research`, `harness`
 Depends on: #006
 Blocks: #009
