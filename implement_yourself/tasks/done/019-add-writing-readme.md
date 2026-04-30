@@ -1,6 +1,6 @@
 # Author the LinkedIn Writer README
 
-Status: pending
+Status: done
 Tags: `docs`, `readme`, `writing`
 Depends on: #018
 Blocks: #020
