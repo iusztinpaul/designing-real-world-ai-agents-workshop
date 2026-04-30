@@ -1,6 +1,6 @@
 # Add a Streamlit chat UI orchestrating both MCP servers
 
-Status: pending
+Status: done
 Tags: `streamlit`, `ui`, `fastmcp-client`, `harness-free`
 Depends on: #015, #017
 Blocks: —
