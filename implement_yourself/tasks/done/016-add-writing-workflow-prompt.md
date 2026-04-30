@@ -1,6 +1,6 @@
 # Register the `linkedin_post_workflow` MCP prompt
 
-Status: pending
+Status: done
 Tags: `mcp`, `writing`, `prompts`, `routers`
 Depends on: #015
 Blocks: #018

@@ -5,6 +5,7 @@ import logging
 from fastmcp import FastMCP
 
 from writing.config.settings import get_settings
+from writing.routers.prompts import register_mcp_prompts
 from writing.routers.tools import register_mcp_tools
 from writing.utils.logging import setup_logging
 
@@ -24,8 +25,8 @@ def create_mcp_server() -> FastMCP:
     mcp = FastMCP(name=settings.server_name, version=settings.version)
 
     register_mcp_tools(mcp)
+    register_mcp_prompts(mcp)
     # register_mcp_resources(mcp) — wired in #017
-    # register_mcp_prompts(mcp) — wired in #016
 
     return mcp
 
