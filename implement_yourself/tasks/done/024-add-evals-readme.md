@@ -1,6 +1,6 @@
 # Author the Evals README
 
-Status: pending
+Status: done
 Tags: `docs`, `readme`, `evals`, `opik`
 Depends on: #023
 Blocks: —
