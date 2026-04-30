@@ -12,19 +12,22 @@ from PIL import Image
 from pydantic import BaseModel
 
 from writing.config.settings import get_settings
+from writing.utils.opik_utils import track_genai_client
 
 logger = logging.getLogger(__name__)
 
 
 @lru_cache
 def get_client() -> genai.Client:
-    """Return a cached singleton Gemini client.
+    """Return a cached singleton Gemini client, wrapped with Opik tracking.
 
     Returns:
-        A configured google.genai.Client instance.
+        A configured google.genai.Client instance, optionally wrapped with
+        Opik tracking when OPIK_API_KEY is set.
     """
     settings = get_settings()
-    return genai.Client(api_key=settings.google_api_key.get_secret_value())
+    client = genai.Client(api_key=settings.google_api_key.get_secret_value())
+    return track_genai_client(client)
 
 
 async def call_gemini(

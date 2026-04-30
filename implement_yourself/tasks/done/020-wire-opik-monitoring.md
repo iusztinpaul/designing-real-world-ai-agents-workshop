@@ -1,6 +1,6 @@
 # Wire Opik observability into both MCP servers
 
-Status: pending
+Status: done
 Tags: `observability`, `opik`, `tracing`, `decorators`, `gemini`
 Depends on: #009, #019
 Blocks: #021

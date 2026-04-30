@@ -9,6 +9,7 @@ from research.routers.prompts import register_mcp_prompts
 from research.routers.resources import register_mcp_resources
 from research.routers.tools import register_mcp_tools
 from research.utils.logging import setup_logging
+from research.utils.opik_utils import configure_opik
 
 logger = logging.getLogger(__name__)
 
@@ -39,6 +40,12 @@ logger.info(
     get_settings().server_name,
     get_settings().version,
 )
+
+if configure_opik():
+    logger.info(
+        "Opik monitoring enabled for project: %s",
+        get_settings().opik_project_name,
+    )
 
 mcp = create_mcp_server()
 

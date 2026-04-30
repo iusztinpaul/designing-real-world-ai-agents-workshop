@@ -2,7 +2,10 @@
 
 import logging
 
+import opik
 from fastmcp import FastMCP
+
+from research.utils.opik_utils import opik_context
 
 logger = logging.getLogger(__name__)
 
@@ -67,6 +70,8 @@ def register_mcp_prompts(mcp: FastMCP) -> None:
     """
 
     @mcp.prompt()
+    @opik.track(type="general")
     async def research_workflow() -> str:
         """Research workflow instructions."""
+        opik_context.initialize_thread_id()
         return WORKFLOW_INSTRUCTIONS
