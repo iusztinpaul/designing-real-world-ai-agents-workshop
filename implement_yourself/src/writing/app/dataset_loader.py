@@ -79,6 +79,16 @@ class DatasetEntry(BaseModel):
         ]
 
 
+class LabeledSample(BaseModel):
+    """A labeled sample for LLM judge evaluation."""
+
+    slug: str
+    ground_truth: str
+    generated: str
+    label: Label
+    critique: str
+
+
 class PostExample(BaseModel):
     """A few-shot example post for the writer."""
 
@@ -129,6 +139,46 @@ def load_dataset() -> list[DatasetEntry]:
 def load_by_scope(scope: str) -> list[DatasetEntry]:
     """Load dataset entries filtered by a specific scope value."""
     return [e for e in load_dataset() if e.scope and scope in e.scope]
+
+
+def load_labeled_samples(
+    label_filter: Label | None = None,
+) -> list[LabeledSample]:
+    """Load all labeled samples with ground truth and generated text.
+
+    Only returns entries that have both label and critique set.
+
+    Args:
+        label_filter: If provided, only return samples with this label.
+
+    Returns:
+        List of LabeledSample objects.
+    """
+    entries = load_dataset()
+    samples: list[LabeledSample] = []
+
+    for entry in entries:
+        if entry.label is None or entry.critique is None:
+            continue
+        if label_filter is not None and entry.label != label_filter:
+            continue
+
+        ground_truth = entry.post_content(DATASET_DIR)
+        generated = entry.generated_content(DATASET_DIR)
+        if not ground_truth or not generated:
+            continue
+
+        samples.append(
+            LabeledSample(
+                slug=entry.slug,
+                ground_truth=ground_truth,
+                generated=generated,
+                label=entry.label,
+                critique=entry.critique,
+            )
+        )
+
+    return samples
 
 
 def load_examples() -> DatasetExamples:

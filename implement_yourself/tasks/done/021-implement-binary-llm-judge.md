@@ -1,6 +1,6 @@
 # Implement the BinaryLLMJudgeMetric and Opik dataset upload
 
-Status: pending
+Status: done
 Tags: `evals`, `opik`, `llm-judge`, `pydantic`, `dataset`
 Depends on: #020
 Blocks: #022
