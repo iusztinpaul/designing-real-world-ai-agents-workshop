@@ -151,3 +151,60 @@ Instructions:
 5. Keep facts anchored in the research — do not invent information.
 6. Return ONLY the edited post text, nothing else.
 """.strip()
+
+PROMPT_IMAGE_SCENE = """
+You are a visual art director creating abstract album-cover-style artwork.
+Read the LinkedIn post below and describe ONE visual scene that captures
+its core emotion or transformation.
+
+<post>
+{post}
+</post>
+
+Your scene must use ONLY geometric shapes, spatial relationships, light, and
+color to convey meaning. Think like a painter, not a designer — no diagrams.
+
+Good metaphor examples (pick one style or invent your own):
+- Chaos-to-order: a cluster of tangled wireframe spheres on the left dissolving
+  into a single glowing crystal on the right
+- Compression: dozens of scattered geometric shards being pulled into a funnel
+  that outputs one clean prism
+- Erosion: a tall structured tower of blocks with pieces crumbling away from
+  the middle, leaving only the base and top intact
+- Simplicity: one bright orange geometric shape floating calmly above a field
+  of dim, fragmented gray shapes
+
+Constraints for the scene:
+- Black background, white/gray shapes, orange as the only accent color.
+- Square format (1:1 aspect ratio), single focal point.
+- NOTHING READABLE. No letters, numbers, labels, arrows with annotations,
+  axis labels, or anything that looks like a word. Zero text.
+- No people, faces, hands, screens, or UI elements.
+- Not a flowchart, diagram, or infographic. A single unified visual scene.
+
+Return ONLY the scene description in 2-3 sentences. No preamble, no
+explanation of what it represents.
+""".strip()
+
+PROMPT_GENERATE_IMAGE = """
+Generate an illustration matching the style of the reference images provided.
+
+<branding_profile>
+{branding_profile}
+</branding_profile>
+
+<character_profile>
+{character_profile}
+</character_profile>
+
+Scene to illustrate:
+
+{scene}
+
+Rules:
+- Absolutely no text, letters, words, labels, or numbers anywhere in the image.
+- Not a diagram or infographic. One unified abstract scene.
+- Black background, white/gray shapes, orange accents only.
+- Square format (1:1 aspect ratio), 1200x1200 pixels.
+- No people, faces, or hands.
+""".strip()

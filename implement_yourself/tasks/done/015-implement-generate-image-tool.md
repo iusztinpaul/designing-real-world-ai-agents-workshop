@@ -1,6 +1,6 @@
 # Implement the `generate_image` tool
 
-Status: pending
+Status: done
 Tags: `mcp`, `writing`, `gemini-flash-image`, `imagen`, `multimodal`
 Depends on: #014
 Blocks: #016
