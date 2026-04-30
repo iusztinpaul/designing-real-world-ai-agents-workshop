@@ -85,24 +85,30 @@ Run, in this order, and capture the output for your hand-off:
 ```bash
 make format-fix
 make lint-fix
-make format-check
-make lint-check
 ```
 
-If `format-check` or `lint-check` is not green, fix the remaining issues by hand, then re-run. Do not hand off until both checks return zero diagnostics.
+`ruff check --fix` (the `lint-fix` target) exits non-zero if any unfixable issues remain, so the `*-fix` pair is the gate — we no longer run `format-check` / `lint-check` after it. If `lint-fix` reports unfixable diagnostics, fix them by hand and re-run `make lint-fix` until it returns zero.
 
 ### Step 7 — Run the ticket's e2e Make target
 
-Each ticket names a verification command — usually `make test-research-workflow` or `make test-writing-workflow`, sometimes `make eval-dev` / `make eval-online` / `make upload-eval-dataset`, occasionally `make run-research-server` / `make run-writing-server` (kill after a few seconds — those targets boot a long-running server). Run it. Capture the output.
+Each ticket names a verification command — usually `make test-research-workflow` or `make test-writing-workflow`, sometimes `make eval-dev` / `make eval-test` / `make upload-eval-dataset`, occasionally `make run-research-server` / `make run-writing-server` (kill after a few seconds — those targets boot a long-running server). Run it. Capture the output.
+
+**`make eval-online` is BANNED.** Never run it — it hits production and burns budget. If a ticket explicitly names `eval-online` (which shouldn't happen, but might appear on tickets after #023), stop and escalate to the orchestrator before running anything. Use `make eval-dev` or `make eval-test` instead.
 
 If the e2e target fails:
 
 - Read the failure, fix the root cause, re-run lint + e2e.
-- DO NOT skip ahead to the Tester with a known-failing e2e — the Tester will FAIL you immediately.
+- DO NOT skip ahead to the Tester (or the orchestrator's spot-check) with a known-failing e2e — verification will FAIL you immediately.
 
-### Step 8 — Hand off to the Tester
+### Step 8 — Hand off
 
-Produce a hand-off message:
+The orchestrator passes one of three archetypes in your launch prompt — match the format below.
+
+- **logic** → Tester runs; produce a Tester-bound hand-off with format/lint, e2e, per-AC implementation summary.
+- **glue/bootstrap** → Tester skipped; produce an orchestrator-bound hand-off with a **complete AC walk** (concrete evidence per AC).
+- **docs** → Tester HARD-OFF, AC walk dropped; produce a minimal hand-off (file paths + line counts + one-line outline match). No format/lint, no e2e.
+
+**Logic ticket** — produce a Tester-bound hand-off:
 
 ```
 ## SWE Hand-off — {NNN-slug}
@@ -110,9 +116,8 @@ Produce a hand-off message:
 **Files changed:**
 - `path/to/a.py` (new)
 - `path/to/b.py` (modified)
-- …
 
-**Format/lint:** `make format-check && make lint-check` — clean. (Output excerpt: `...`)
+**Format/lint:** `make format-fix && make lint-fix` — clean. (Output excerpt: `...`)
 
 **E2E:** `make {target}` — passed. (Output excerpt: `Status: success ...`)
 
@@ -125,7 +130,46 @@ Produce a hand-off message:
 READY FOR QA.
 ```
 
-End your turn here. The orchestrator launches the Tester next.
+**Glue/bootstrap ticket** — produce an orchestrator-bound hand-off with a complete AC walk (the Tester is skipped):
+
+```
+## SWE Hand-off — {NNN-slug} (glue/bootstrap — Tester skipped)
+
+**Files changed:**
+- `path/to/a.py` (new/modified)
+- ...
+
+**Format/lint:** `make format-fix && make lint-fix` — clean. (Output excerpt: `...`)
+
+**E2E:** `make {target}` — passed. (Output excerpt: `...`)
+
+**AC walk (concrete evidence per AC):**
+- AC1: PASS — evidence: `cat path/to/file.md` returned `<excerpt>`.
+- AC2: PASS — evidence: `uv run python -c "from research.routers.prompts import ..."` printed `<excerpt>`.
+- AC3: PASS — evidence: `ls implement_yourself/.claude/skills/foo/SKILL.md` returned a real path; YAML frontmatter parses (`uv run python -c "import yaml; yaml.safe_load(...)"` → no error).
+
+READY FOR ORCHESTRATOR SPOT-CHECK.
+```
+
+The AC walk is your complete verification — nothing else verifies these tickets. Skip nothing, hand-wave nothing.
+
+**Docs ticket** — minimal hand-off, no Tester, no AC walk, no format/lint, no e2e:
+
+```
+## SWE Hand-off — {NNN-slug} (docs — Tester HARD-OFF)
+
+**Files written:**
+- `path/to/README.md` ({N} lines)
+- ...
+
+**Outline match:** All sections from the ticket's Scope are present (intro, install, usage, etc.).
+
+READY FOR FILE-EXISTENCE CHECK.
+```
+
+The orchestrator runs `ls -la` + `wc -l` to confirm and then commits. Don't run format/lint or any Make target — docs tickets don't touch Python.
+
+End your turn after the hand-off; the orchestrator moves the file and commits.
 
 ---
 
@@ -149,7 +193,7 @@ The orchestrator will re-launch you with a list of failing ACs and break-path fa
 1. Read the failing AC and the Tester's evidence.
 2. Identify the root cause in your code.
 3. Fix it. Resist the urge to bandage — if the AC says "raise `ValueError` on missing dir", do not silently `return None`.
-4. Re-run `make format-fix && make lint-fix && make format-check && make lint-check`.
+4. Re-run `make format-fix && make lint-fix`.
 5. Re-run the e2e target.
 6. Hand off again with the same format as Step 8, plus a "Fixes applied" section listing each FAIL → fix mapping.
 
