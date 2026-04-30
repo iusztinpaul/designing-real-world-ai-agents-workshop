@@ -1,6 +1,6 @@
 # Add the `/write-post` Claude Code skill
 
-Status: pending
+Status: done
 Tags: `claude-code`, `skill`, `writing`, `harness`
 Depends on: #016
 Blocks: #019
