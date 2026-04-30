@@ -1,6 +1,6 @@
 # Register the writing MCP resources (`config://settings`, `profiles://all`)
 
-Status: pending
+Status: done
 Tags: `mcp`, `writing`, `resources`, `routers`, `config`, `profiles`
 Depends on: #010
 Blocks: #019
