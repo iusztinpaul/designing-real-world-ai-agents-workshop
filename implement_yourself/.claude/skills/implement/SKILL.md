@@ -1,6 +1,6 @@
 ---
 name: implement
-description: Drive a single workshop ticket through the inner SWE↔Tester loop. Resolves the ticket from `implement_yourself/tasks/`, creates a `feat/{NNN-slug}` branch, launches the software-engineer agent to implement it, launches the tester agent to verify it, loops on FAIL up to 3 times, marks the ticket done and moves it to `tasks/done/`, then commits via the `commit-commands` plugin. Stops after one ticket — the human reviews the commit, talks through it, then re-invokes for the next ticket. Trigger when the user types `/implement`, asks to "implement task NNN", says "pick up the next ticket", or otherwise wants to ship one workshop ticket under supervision.
+description: Drive a single workshop ticket through the inner SWE↔Tester loop. Resolves the ticket from `implement_yourself/tasks/`, creates a `feat/{NNN-slug}` branch, launches the software-engineer agent to implement it, then routes by archetype — Tester runs on logic tickets, orchestrator spot-checks the SWE's AC walk on glue/bootstrap tickets, fast-path file existence check on docs tickets (Tester HARD-OFF). Loops on FAIL up to 3 times, moves the file to `tasks/done/`, then commits directly with `git commit -m`. Stops after one ticket — the human reviews the commit, talks through it, then re-invokes for the next ticket. Trigger when the user types `/implement`, asks to "implement task NNN", says "pick up the next ticket", or otherwise wants to ship one workshop ticket under supervision.
 disable-model-invocation: true
 argument-hint: [task-ref-or-description]
 ---
@@ -10,7 +10,7 @@ argument-hint: [task-ref-or-description]
 A workshop-specialized adaptation of squid's `/day` skill. Drives **one** pre-groomed ticket from `implement_yourself/tasks/NNN-slug.groomed.md` through:
 
 ```
-new feature branch → SWE implements → Tester verifies (suite + e2e adversarial) → orchestrator marks done → orchestrator moves file to tasks/done/ → orchestrator commits via /commit-commands:commit → report to human
+new feature branch → SWE implements (+ AC walk on glue tickets) → verifier (Tester on logic tickets, orchestrator spot-check on glue tickets) → orchestrator moves file to tasks/done/ → orchestrator commits directly with `git commit -m` → report to human
 ```
 
 After the report, **the session ends**. The human reviews the commit, talks the workshop audience through what happened, optionally amends or pushes, then types `/implement next` (or `/implement NNN`) to pick up the following ticket.
@@ -29,11 +29,12 @@ When a ticket does not explicitly name a target, infer the right one from the af
 
 ## Critical rules
 
-- **Never rubber-stamp the Tester's report.** When the Tester says PASS, re-read each Acceptance Criterion in the ticket and confirm the report's evidence is real (test name, file path, command output excerpt). REJECT and re-launch if not.
+- **Never rubber-stamp the Tester's (or SWE's, on glue tickets) report.** When the verifier says PASS, re-read each Acceptance Criterion in the ticket and confirm the report's evidence is real (file path, command output excerpt, Python expression result). REJECT and re-launch if not.
 - **`/implement` is single-shot per ticket.** After step 7, end the session. Do not auto-pick the next ticket.
-- **Commit only via the `commit-commands` plugin.** The orchestrator drives the commit using `/commit-commands:commit` after the Tester PASSES and the file is moved to `done/`. Never hand-craft a commit message.
+- **Commit directly with `git commit -m`.** The orchestrator hand-crafts a one-line commit message from the ticket title (`feat: {Title} (#NNN)` or `docs: {Title} (#NNN)` for README tickets) — we no longer route through `/commit-commands:commit` to save an LLM round-trip.
 - **One ticket per invocation.** No batching. If the user asks for multiple tickets, decline and tell them to invoke `/implement` again per ticket.
 - **No worktree isolation.** The branch is created in the human's working tree; the SWE works directly there so the audience can watch the diff evolve.
+- **`make eval-online` is BANNED.** It hits production and burns budget. Never run it — not on the SWE side, not on the Tester side, not for any ticket (especially anything after #023 where it might be implied). Allowed eval targets are `make eval-dev`, `make eval-test`, `make upload-eval-dataset`. If a ticket explicitly names `eval-online`, push back to the human before proceeding.
 
 ---
 
@@ -55,11 +56,14 @@ If multiple files match (rare with the slug case), list them and ask the human t
 
 Once resolved:
 
-- Read the ticket front matter (the Title line and the `Status:`, `Tags:`, `Depends on:`, `Blocks:` block).
-- Verify `Status: pending`. If `Status: done`, refuse: "Ticket already done."
+- Read the ticket front matter (the Title line and the `Tags:`, `Depends on:`, `Blocks:` block). Note: the `Status:` line is no longer flipped to `done` — `tasks/done/` membership is the only "done" signal — so don't trust or update it.
 - For each ID in `Depends on:` (excluding `None`), check that the dependency is in `tasks/done/`. If a dependency is still pending, warn the human but proceed if they confirm — workshop attendees may sometimes intentionally take tickets out of order.
+- Classify the ticket archetype (drives the step-5 routing). Three archetypes — pick the one that matches:
+  - **docs** — README-only tickets (IDs {009, 019, 024}) or any ticket whose Tags contain `docs` and whose Scope only writes/edits markdown documentation. **Tester is HARD-OFF** under any condition — never launch it on a docs ticket. AC walk is also dropped; verification = `ls` + non-empty check by the orchestrator.
+  - **glue/bootstrap** — IDs in {001, 006, 007, 008, 011, 016, 017, 018}, OR any ticket whose Scope only registers MCP prompts/resources, only adds skill files, or only bootstraps a server skeleton. Tester skipped; SWE provides an AC walk; orchestrator spot-checks it.
+  - **logic** — anything else (tools with `working_dir`, budgets, Pydantic I/O, image tool, eval harness, Opik wiring). The Tester runs as today.
 - Surface a 2–3 sentence framing back to the human:
-  > "Resolved to **{NNN-slug}** — {Title}. {1-sentence scope summary from the ticket's first paragraph}. Verification target: `{make target named in the ticket}`. Starting the SWE↔Tester loop."
+  > "Resolved to **{NNN-slug}** — {Title}. {1-sentence scope summary from the ticket's first paragraph}. Verification target: `{make target named in the ticket}`. Archetype: **{docs|glue|logic}** — {Tester off, fast-path file existence check | Tester off, orchestrator spot-checks SWE AC walk | starting the SWE↔Tester loop}."
 
 Proceed without blocking.
 
@@ -101,14 +105,28 @@ This step is the orchestrator's responsibility. Do not delegate to the SWE.
 
 ## Step 3 — Create a visible TaskList
 
-Use `TaskCreate` to make progress inspectable:
+Use `TaskCreate` to make progress inspectable.
+
+**Logic ticket** (4 items):
 
 - `[SWE] implement {NNN-slug}` (in_progress immediately)
 - `[QA] verify {NNN-slug}` — blocked by SWE
-- `[Done] mark + move ticket to tasks/done/` — blocked by QA
-- `[Commit] commit via /commit-commands:commit` — blocked by Done
+- `[Done] move ticket to tasks/done/` — blocked by QA
+- `[Commit] git commit feat/{NNN-slug}` — blocked by Done
 
-Four items, no parallel branches. Mark them complete as each step finishes.
+**Glue/bootstrap ticket** (3 items — Tester is skipped):
+
+- `[SWE] implement + AC walk {NNN-slug}` (in_progress immediately)
+- `[Done] spot-check + move ticket to tasks/done/` — blocked by SWE
+- `[Commit] git commit feat/{NNN-slug}` — blocked by Done
+
+**Docs ticket** (3 items — Tester HARD-OFF, no AC walk):
+
+- `[SWE] write docs {NNN-slug}` (in_progress immediately)
+- `[Done] confirm file(s) exist + move ticket to tasks/done/` — blocked by SWE
+- `[Commit] git commit feat/{NNN-slug}` — blocked by Done
+
+No parallel branches. Mark items complete as each step finishes.
 
 ---
 
@@ -129,16 +147,34 @@ Agent(
   and any file already inside tasks/done/. The ticket's "Out of scope" section may
   list more.
 
-  Run make format-fix && make lint-fix && make format-check && make lint-check until clean.
+  Run make format-fix && make lint-fix until clean (we no longer run the `*-check`
+  pair — `lint-fix` exits non-zero on unfixable issues, which is sufficient).
   Then run the e2e smoke-test Make target named in the ticket (one of
   `test-research-workflow`, `test-writing-workflow`, `test-end-to-end` for most
-  tickets; bootstrap tickets use `run-research-server` / `run-writing-server`)
-  and copy the output into your hand-off.
+  tickets; bootstrap tickets use `run-research-server` / `run-writing-server`;
+  eval tickets use `eval-dev` / `eval-test` / `upload-eval-dataset`) and copy
+  the output into your hand-off — verifiers will trust this excerpt and not
+  re-run the target, so include the final status line.
 
-  DO NOT commit. DO NOT move files to tasks/done/. The orchestrator handles both.
+  **`make eval-online` is BANNED.** Never run it. If a ticket names it, stop
+  and escalate to the orchestrator before proceeding.
 
-  Hand off to the Tester with: files touched, format/lint output, e2e command + output
-  excerpt, "READY FOR QA"."""
+  Ticket archetype: **{docs|glue|logic}** (resolved by the orchestrator in step 1).
+  - On **logic** tickets: hand off to the Tester. Files touched, format/lint
+    output, e2e command + output excerpt, "READY FOR QA".
+  - On **glue/bootstrap** tickets: the Tester is skipped. Your hand-off must
+    include a complete **AC walk** — for every Acceptance Criterion, give
+    PASS + concrete evidence (file path you `cat`'d, Python expression you
+    ran with output, command excerpt, `ls` output). The orchestrator
+    spot-checks your AC walk in lieu of a Tester pass.
+  - On **docs** tickets: the Tester is HARD-OFF and the AC walk is dropped.
+    Just write the docs file(s) named in the ticket. Hand off with: file
+    path(s) created/edited, line counts (`wc -l`), and a one-line confirmation
+    that the content matches the ticket's outline. No format/lint, no e2e,
+    no AC walk required. The orchestrator confirms the file exists + is
+    non-empty and commits.
+
+  DO NOT commit. DO NOT move files to tasks/done/. The orchestrator handles both."""
 )
 ```
 
@@ -146,7 +182,13 @@ Wait for completion. Mark `[SWE]` complete in the TaskList.
 
 ---
 
-## Step 5 — Launch the Tester agent
+## Step 5 — Launch the Tester agent (logic tickets only)
+
+**Skip this step on glue/bootstrap tickets** — the SWE's AC walk + the orchestrator's spot-check is the verification.
+
+**HARD-OFF on docs tickets.** Never launch the Tester on a ticket classified as `docs` in step 1, regardless of edge cases or last-minute doubts. Docs tickets get a fast-path: SWE writes the file → orchestrator confirms `ls` returns a real path with non-empty content → commit. No Tester, no AC walk, no spot-check beyond file existence. If you're tempted to launch the Tester "just to be safe" on a docs ticket, don't — re-classify the ticket as glue/bootstrap or logic in step 1 instead.
+
+For logic tickets, launch the Tester:
 
 ```
 Agent(
@@ -160,14 +202,19 @@ Agent(
 
   Read implement_yourself/CLAUDE.md and the ticket first. Follow your role definition.
 
-  Headline duty: e2e adversarial pass. The smoke-test Make targets are
-  `test-research-workflow`, `test-writing-workflow`, and `test-end-to-end` — pick
-  the one named in the ticket (or, if not named, infer from the affected server).
-  Run it for the happy path, then run 2–3 realistic break paths relevant to the
-  ticket archetype (see your role definition for examples).
+  Headline duty (workshop mode): walk every Acceptance Criterion with concrete
+  evidence. **Trust the SWE's happy-path e2e excerpt — do not re-run the Make
+  target.** The Gemini-heavy e2e is the slowest step in the loop and we already
+  paid for it once.
 
-  Verify every Acceptance Criterion with concrete evidence (test name, file path,
-  command output excerpt). For each AC: PASS with evidence or FAIL with reason.
+  Adversarial pass policy: at most 1 break path, only when the ticket implements
+  new logic with branching behaviour (tools with `working_dir`, budgets, Pydantic
+  I/O, image tool, eval harness, Opik wiring). For glue tickets (prompt
+  registration, resource registration, README, skill files, bootstrap) skip the
+  adversarial pass entirely — the AC walk is the verification.
+
+  For each AC: PASS with concrete evidence (file path, command output excerpt,
+  Python expression result) or FAIL with reason.
 
   Verdict: PASS or FAIL."""
 )
@@ -179,26 +226,45 @@ Wait for completion.
 
 ## Step 6 — Handle the Tester verdict
 
-**Spot-check before accepting** — re-read the ticket's Acceptance Criteria. For each criterion the Tester marked PASS, confirm:
+### Docs tickets — fast-path verification
 
-- Evidence is real (a Make target output line, a file path that exists, a Python expression that was actually run).
-- The break paths in the e2e adversarial section actually attempted realistic failure modes.
+For docs tickets the spot-check is just a file existence + non-empty check. Skip the full AC re-read.
+
+```bash
+ls -la implement_yourself/path/to/README.md   # confirm exists
+wc -l implement_yourself/path/to/README.md    # confirm non-empty (>10 lines)
+```
+
+If both succeed, accept and proceed to step 7. If the file is missing or empty, re-launch the SWE with the gap. Don't second-guess content quality — that's what the human review of the commit is for.
+
+### Logic + glue tickets — spot-check the AC walk
+
+**Spot-check before accepting** — re-read the ticket's Acceptance Criteria. The verifier is the **Tester** on logic tickets and the **SWE's hand-off AC walk** on glue/bootstrap tickets (since the Tester was skipped in step 5).
+
+For each criterion marked PASS, confirm:
+
+- Evidence is real (a Make target output line, a file path that exists, a Python expression with output, an `ls`/`cat` excerpt).
+- The e2e excerpt in the SWE hand-off is credible (right Make target, non-error final line, not fabricated from training data).
+- On logic tickets: the 1 break path has a real command + output excerpt.
+- On glue/bootstrap tickets: every AC has direct evidence in the SWE's hand-off (no Tester to lean on — the SWE is the only signal).
 - No criterion was skipped or hand-waved as "covered by other criteria."
 
-Common rubber-stamp red flags (REJECT and re-launch the Tester with the gap as feedback):
+Common rubber-stamp red flags (REJECT and re-launch the verifier with the gap as feedback — the SWE on glue tickets, the Tester on logic tickets):
 
-- A 3-second "all PASS" on a multi-step flow.
+- The Tester fabricated an e2e excerpt rather than quoting the SWE's. (Look for "I ran `make test-...`" without a corresponding entry in the SWE hand-off — that's a re-run we explicitly told them to skip *and* a likely fabrication.)
 - AC requiring a runtime file (e.g. `post.md exists`) marked PASS without a `ls`/`cat` excerpt.
 - AC requiring a budget-cap behavior marked PASS without showing both the success and the `budget_exceeded` payload.
+- A logic-ticket break path marked PASS without an output excerpt.
+- A glue-ticket AC asserting "prompt is listable" / "resource is readable" / "skill YAML parses" / "README links resolve" marked PASS without showing the `uv run python -c "..."`, `mcp.list_prompts()`, `cat`, or markdown-link probe that proves it.
 
 Outcomes:
 
-- **PASS (verified).** Mark `[QA]` complete. Proceed to step 7.
-- **FAIL or PASS-but-rubber-stamped.** Re-launch the SWE with concrete feedback (the failing AC, the break-path failures, the suggested fixes). Then re-run step 5 on the same ticket.
+- **PASS (verified).** Mark `[QA]` complete (logic tickets) — there is no `[QA]` task on glue tickets, so just proceed to step 7.
+- **FAIL or PASS-but-rubber-stamped.** Re-launch the SWE with concrete feedback (the failing AC, evidence gaps, suggested fixes). Then re-run step 5 (logic tickets) or re-spot-check (glue tickets).
   ```
   Agent(
     subagent_type="software-engineer",
-    prompt="QA failed on ticket {NNN-slug}. Concrete feedback: {failed AC + break-path failures + fixes}. Apply the fixes, re-run make format-fix && make lint-fix && make format-check && make lint-check, re-run the e2e target, hand off to QA again."
+    prompt="Verification failed on ticket {NNN-slug}. Concrete feedback: {failed AC + evidence gaps + fixes}. Apply the fixes, re-run make format-fix && make lint-fix, re-run the e2e target, hand off again. (Glue/bootstrap tickets: re-emit the AC walk with the missing evidence. Docs tickets: write the missing file content; orchestrator will re-run the file existence check.)"
   )
   ```
 
@@ -216,48 +282,40 @@ If the Tester FAILs the same ticket three times without a PASS, stop the pipelin
 
 ---
 
-## Step 7 — Mark done + move file + commit + report
+## Step 7 — Move file + commit + report
 
-Once the Tester reports PASS *and* you've spot-checked the evidence:
+Once verification is PASS *and* you've spot-checked the evidence:
 
-### 7a. Flip the `Status:` line in place
+### 7a. Move the file to `tasks/done/`
 
-The ticket's frontmatter has a line `Status: pending`. Use `Edit`:
-
-```
-Edit(
-  file_path="implement_yourself/tasks/{NNN-slug}.groomed.md",
-  old_string="Status: pending",
-  new_string="Status: done",
-)
-```
-
-### 7b. Move the file to `tasks/done/`
+`tasks/done/` membership is the only "done" signal — we no longer flip the `Status: pending` frontmatter line, and we keep the `.groomed.md` suffix as-is to avoid an extra rename round-trip.
 
 ```bash
 mkdir -p implement_yourself/tasks/done
-git mv implement_yourself/tasks/{NNN-slug}.groomed.md implement_yourself/tasks/done/{NNN-slug}.md
+git mv implement_yourself/tasks/{NNN-slug}.groomed.md implement_yourself/tasks/done/{NNN-slug}.groomed.md
 ```
 
-(Drop the `.groomed` infix on rename — the file is no longer in the groomed-pending state.)
+If `git mv` fails because the file isn't tracked yet, fall back to `mv` — the commit step below picks it up via `git add`.
 
-If `git mv` fails because the file isn't tracked yet (the workshop attendee may not have committed the ticket files), fall back to `mv` — the commit step below will pick it up via `git add`.
+### 7b. Mark `[Done]` complete in the TaskList
 
-### 7c. Mark `[Done]` complete in the TaskList
+### 7c. Commit directly with `git commit`
 
-### 7d. Commit via the `commit-commands` plugin
+We hand-craft the commit message from the ticket title — no `/commit-commands:commit` round-trip. Pick the type from the ticket archetype:
 
-The plugin is enabled in `implement_yourself/.claude/settings.json` and exposes `/commit-commands:commit`. Invoke it via the `Skill` tool:
+- `feat:` — implementation tickets (logic, MCP tools, server bootstraps, prompt/resource registration, skill files).
+- `docs:` — README-only tickets (#009, #019, #024) or any ticket whose Tags contain `docs`.
 
+Subject template: `<type>: {Title} (#NNN)` — match the existing repo log (`feat: Add the /write-post Claude Code skill (#018)`, `docs: Author the LinkedIn Writer README (#019)`).
+
+```bash
+git add -A
+git commit -m "feat: {Title} (#NNN)"   # or docs: ... for README tickets
 ```
-Skill(skill="commit-commands:commit")
-```
 
-The plugin reads the working tree, drafts a commit message based on the diff and recent log style, stages the relevant files, and creates the commit on the current branch (`feat/{NNN-slug}` from step 2).
+(Workshop scope justifies `git add -A`: only the SWE's source edits and the `git mv` from 7a are in the working tree; the SWE was forbidden from touching anything else.)
 
-Do not hand-craft the commit message. Do not pass arguments unless the plugin's slash command requires them — current behaviour is "no args".
-
-If the plugin returns an error (e.g. unsigned commits gate, pre-commit hook failure), surface the error to the human and stop. Do **not** retry with `--no-verify` or `-c commit.gpgsign=false` — those flags require explicit human authorization.
+If the commit fails (pre-commit hook, signing gate, etc.), surface the error to the human and stop. Do **not** retry with `--no-verify` or `-c commit.gpgsign=false` — those require explicit human authorization.
 
 After the commit lands:
 
@@ -266,7 +324,7 @@ After the commit lands:
 
 Mark `[Commit]` complete in the TaskList.
 
-### 7e. Final summary block to the human
+### 7d. Final summary block to the human
 
 Print a single markdown block:
 
@@ -274,17 +332,18 @@ Print a single markdown block:
 ## /implement complete — {NNN-slug}: {Title}
 
 **Branch:** `feat/{NNN-slug}` (1 commit ahead of base).
+**Archetype:** {logic | glue/bootstrap | docs}. {Tester ran | Tester skipped — verified via SWE AC walk + orchestrator spot-check | Tester HARD-OFF — verified via `ls` + `wc -l`}.
 **Files changed** ({N}): `path/to/a.py`, `path/to/b.py`, …
-**E2E command:** `make {target}` — passed.
-**Format/lint:** `make format-check && make lint-check` — passed.
+**E2E command:** `make {target}` — passed (per SWE excerpt).
+**Format/lint:** `make format-fix && make lint-fix` — passed.
 
 **Acceptance criteria:**
 - [x] AC1 — evidence: `…`
 - [x] AC2 — evidence: `…`
 - …
 
-**Ticket moved to:** `implement_yourself/tasks/done/{NNN-slug}.md` (Status: done).
-**Commit:** `{shortsha} {commit subject}` (via `commit-commands` plugin).
+**Ticket moved to:** `implement_yourself/tasks/done/{NNN-slug}.groomed.md`.
+**Commit:** `{shortsha} {commit subject}`.
 
 **Working tree is clean.** Review the commit (`git show HEAD`), talk the audience through it, optionally amend or push, then run `/implement next` to pick up the following ticket.
 ```
@@ -298,7 +357,7 @@ End the session. Do **not** invoke `/implement` recursively. Do **not** pick the
 - **No retry caps on lint/format.** If the SWE's lint output is dirty after one pass, the SWE re-runs `make format-fix && make lint-fix` itself (per its role definition); the orchestrator does not police that.
 - **No PM grooming, no PR Reviewer, no On-Call.** Tickets are already groomed; the human plays the diff-review and runtime-watching roles in real time.
 - **Dependencies are advisory.** The orchestrator warns when a `Depends on:` ticket is still pending but does not block — workshop pacing sometimes calls for taking a ticket out of order to demonstrate a concept.
-- **`tasks/done/` is sacred.** The orchestrator is the only writer. The SWE and Tester agents are forbidden from touching `tasks/done/`.
+- **`tasks/done/` is sacred.** The orchestrator is the only writer. The SWE and Tester agents are forbidden from touching `tasks/done/`. The file's `.groomed.md` suffix is preserved on move — membership in `done/` is the only "done" signal we maintain.
 - **The skill is tied to `implement_yourself/`.** All paths are rooted there. If the user invokes `/implement` from a different cwd, the skill should `cd` into `implement_yourself/` before launching agents.
 - **Branch + commit are the orchestrator's job.** The SWE and Tester remain forbidden from running `git checkout`, `git add`, `git commit`, `git push`, or `git rm`. The orchestrator owns both endpoints of the git lifecycle for a ticket.
 - **No push, no PR.** `/implement` stops at the local commit. Pushing the branch and opening a PR (if desired) is the human's manual step. This matches the workshop's "pause-per-task, narrate, then move on" cadence.

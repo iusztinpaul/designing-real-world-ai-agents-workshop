@@ -2,6 +2,10 @@
 
 We are building an educative workshop teaching people how to build AI systems by implementing a hybrid AI system containing a Deep Research Agent and a Writing Workflow, both served as MCP servers and connected to a harness such as Claude Code or Cursor.
 
+# Project Root
+
+**`implement_yourself/` is the project root for this workshop project.** When Claude (or Cursor, or any MCP harness) is launched from this directory, all relative paths — `outputs/`, `inputs/`, `tasks/`, `test_logic/`, `scratch_*/`, etc. — resolve under `implement_yourself/`, not under the parent repo. Skills loaded from the parent (e.g. `/research`, `/research-and-write`, `/write-post`) that say "relative to the project root" should be read as relative to **this** directory whenever the harness was opened here. The parent repo's `outputs/` is for the reference implementation; the workshop's outputs belong inside `implement_yourself/outputs/`.
+
 # Project Structure
 
 ```
