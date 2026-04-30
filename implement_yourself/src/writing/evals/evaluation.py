@@ -1,11 +1,13 @@
-"""Offline evaluation harness for LinkedIn post judge alignment."""
+"""Offline and online evaluation harnesses for LinkedIn post judge alignment."""
 
+import asyncio
 import logging
 from typing import Any
 
 from opik import evaluation
 
-from writing.evals.dataset import upload_dataset_to_opik
+from writing.app.generate_post import generate_post
+from writing.evals.dataset import upload_dataset_to_opik, upload_online_dataset_to_opik
 from writing.evals.metric import BinaryLLMJudgeMetric
 
 logger = logging.getLogger(__name__)
@@ -68,6 +70,82 @@ def run_evaluation(
     # 6. Compute and log F1.
     f1 = _compute_f1(result.test_results)
     return f1
+
+
+def run_online_evaluation(
+    split: str = "online_test",
+    workers: int = 1,
+    nb_samples: int | None = None,
+) -> float | None:
+    """Run the online LLM judge evaluation by generating posts on the fly.
+
+    Uploads the dataset split to Opik (guideline + research only), generates a
+    post for each sample using the full writing workflow, scores each post with
+    BinaryLLMJudgeMetric, and (for labelled splits) computes the F1 score.
+
+    For the ``online_test`` split there are no expert labels, so F1 is not
+    computed and ``None`` is returned — Opik still records every trace and
+    judge score for human review.
+
+    Args:
+        split: Dataset split to evaluate (e.g. 'online_test', 'dev_evaluator').
+        workers: Number of parallel evaluation threads.  Defaults to 1 because
+            each sample runs the full evaluator-optimizer loop.
+        nb_samples: Max number of samples to evaluate.  ``None`` means all.
+
+    Returns:
+        The F1 score (float in [0.0, 1.0]) for labelled splits, or ``None``
+        for the ``online_test`` split.
+    """
+    # 1. Upload split (guideline + research only — no pre-generated post).
+    dataset = upload_online_dataset_to_opik(split)
+
+    # 2. Construct judge metric.
+    metric = BinaryLLMJudgeMetric()
+
+    # 3. Define online task — generates a post on the fly.
+    def _online_task(sample: dict[str, Any]) -> dict[str, Any]:
+        guideline = sample["guideline"]
+        research = sample.get("research", "")
+        logger.info("Generating post for: %s...", sample.get("slug", "unknown"))
+        result = asyncio.run(generate_post(guideline, research))
+        logger.info("Generated %d chars", len(result.post.content))
+        return {
+            "guideline": guideline,
+            "research": research,
+            "output": result.post.content,
+        }
+
+    # 4. Build experiment_config, run evaluation.
+    experiment_config = {
+        "mode": "online",
+        "split": split,
+        "metric": metric.name,
+        "model": metric._model,
+    }
+
+    result = evaluation.evaluate(
+        dataset=dataset,
+        task=_online_task,
+        scoring_metrics=[metric],
+        experiment_config=experiment_config,
+        task_threads=workers,
+        nb_samples=nb_samples,
+    )
+
+    # 5. Log the experiment URL if available.
+    if result.experiment_url:
+        logger.info("Opik experiment URL: %s", result.experiment_url)
+
+    # 6. Skip F1 for online_test split — no expert labels available.
+    if split == "online_test":
+        logger.info(
+            "Skipping F1 computation for online_test — no expert labels available."
+        )
+        return None
+
+    # 7. Otherwise compute F1.
+    return _compute_f1(result.test_results)
 
 
 def _compute_f1(test_results: list) -> float:

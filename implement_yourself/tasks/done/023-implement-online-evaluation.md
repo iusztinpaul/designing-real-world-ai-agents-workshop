@@ -1,6 +1,6 @@
 # Implement online evaluation (generate-then-judge on live traces)
 
-Status: pending
+Status: done
 Tags: `evals`, `opik`, `online`, `generate-on-the-fly`
 Depends on: #022
 Blocks: #024
