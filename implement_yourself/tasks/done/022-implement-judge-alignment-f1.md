@@ -1,6 +1,6 @@
 # Implement the offline evaluation harness with F1 alignment
 
-Status: pending
+Status: done
 Tags: `evals`, `opik`, `f1`, `alignment`, `harness`
 Depends on: #021
 Blocks: #023
