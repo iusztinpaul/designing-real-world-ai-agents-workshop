@@ -64,3 +64,7 @@ We manage all the core commands through GNU Make as our command center. File ava
 We use uv to manage our Python project such as the virtual environment(s), dependencies, and overall package the project.
 
 Thus, use uv to run any custom command that is not present in the @Makefile, but uses Python: `uv run python ...`
+
+## Fallback when `make` is not installed
+
+Some environments (fresh WSL, minimal containers, corporate dev images) ship without GNU Make. **Do not block on a missing `make`** — every target in the Makefile is a thin wrapper around a one-line `uv run ...` invocation. When `make <target>` fails with `command not found: make`, open the `Makefile`, find the target's recipe, and run the underlying command directly. Example: `make test-research-workflow` becomes `uv run python scripts/test_research_workflow.py --working-dir test_logic --iterations 2` (after the two `mkdir -p` / `cp` setup lines also shown in the recipe). The Makefile's `export PYTHONPATH=./src/` and `include .env` are already handled by `uv run` reading the project's environment + `.env`, so no extra shell setup is needed.
