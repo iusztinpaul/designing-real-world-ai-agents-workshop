@@ -14,7 +14,7 @@ A hands-on workshop, presented at [AI Engineering Conference Europe](https://www
 
 ## From Our Agentic AI Engineering Course
 
-Built as a lightweight companion to our [Agentic AI Engineering Course](https://academy.towardsai.net/courses/agent-engineering?utm_source=github&utm_medium=aieng&utm_campaign=2026_aieng_workshop&utm_id=researchwriter), which covers **34 lessons and three end-to-end portfolio projects on building production-grade agentic systems**. This workshop distills the core agentic patterns into a ~2-4 hours hands-on workshop.
+Built as a lightweight companion to our [Agentic AI Engineering Course](https://academy.towardsai.net/courses/agent-engineering?utm_source=github&utm_medium=aieng&utm_campaign=2026_aieng_workshop&utm_id=researchwriter), which covers **34 lessons and three end-to-end portfolio projects on building production-grade agentic systems**. This workshop distills the core agentic patterns into a ~2–4 hour hands-on build.
 
 <a href="https://academy.towardsai.net/courses/agent-engineering?utm_source=github&utm_medium=aieng&utm_campaign=2026_aieng_workshop&utm_id=researchwriter"><img src="media/course_clip.gif" alt="Agentic AI Engineering Course" width="800"/></a>
 
@@ -25,7 +25,7 @@ Built as a lightweight companion to our [Agentic AI Engineering Course](https://
 You'll get the most out of this workshop by working through these three modes **in order**, where each one builds on the last:
 
 1. **Watch the workshop.** Start with the [YouTube recording](https://www.youtube.com/watch?v=mYSRn6PC1mc) and the [slides](https://drive.google.com/file/d/1RWdS5VQYjz7a9y7NzHhAnyhGtxi6e0vt/view?usp=sharing) above. Understand the concepts, what the system does, why each piece exists and what the agentic patterns look like end-to-end. ~2 hours.
-2. **Run the finished code.** Follow the [Getting Started](#getting-started) and [Running the Code](#running-the-code) sections below to install the project and exercise by running the MCP servers, skills, and evaluation pipeline against the shipped dataset. You'll see the system behave on real inputs and inspect every artifact it produces (research briefs, post drafts, judge scores). ~30 minutes hands-on.
+2. **Run the finished code.** Follow the [Getting Started](#getting-started) and [Running the Code](#running-the-code) sections below to install the project and run the MCP servers, skills, and evaluation pipeline against the shipped dataset. You'll see the system behave on real inputs and inspect every artifact it produces (research briefs, post drafts, judge scores). ~30 minutes hands-on.
 3. **Implement it yourself with agentic coding.** Open [`implement_yourself/`](implement_yourself/), which is a stripped-down skeleton prepared with an agentic coding setup: 25 pre-groomed tickets, a custom `/implement` Claude Code skill that orchestrates SWE and Tester agents in a loop, ticket by ticket, until the directory is a 1:1 functional replica of `src/`. The goal is to learn how to implement the workshop from scratch using modern agentic coding techniques. See [`implement_yourself/README.md`](implement_yourself/README.md) for the kickoff guide. ~2–4 hours depending on how deep you go.
 
    > **No cheating, by design.** `implement_yourself/` is a self-contained project. Open your harness (Claude Code, Cursor, …) **directly in that folder** (not at the repo root) so its working directory is scoped to the skeleton. The agents can't see the reference implementation in `../src/`, can't grep it, can't read its files. You get a real build, not a copy-paste.
