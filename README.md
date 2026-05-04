@@ -10,6 +10,7 @@ A hands-on workshop, presented at [AI Engineering Conference Europe](https://www
 
 📑 Slides [here](https://drive.google.com/file/d/1RWdS5VQYjz7a9y7NzHhAnyhGtxi6e0vt/view?usp=sharing).
 
+> [!TIP]
 > ## From our Agentic AI Engineering Full Course
 >
 > Built as a lightweight companion to the [Agentic AI Engineering Course](https://academy.towardsai.net/courses/agent-engineering?utm_source=github&utm_medium=aieng&utm_campaign=2026_aieng_workshop&utm_id=researchwriter), which covers 34 lessons and three end-to-end portfolio projects. This workshop distills the core agentic patterns into a ~2-hour hands-on build.
