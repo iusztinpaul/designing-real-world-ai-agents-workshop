@@ -490,7 +490,7 @@ make eval-online            # Generate + judge posts on the fly
 
 | Resource                                                                                 | Description                                                                                                     |
 | ---------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
-| [Agentic AI Engineering Course](https://academy.towardsai.net/courses/agent-engineering?utm_source=github&utm_medium=aieng&utm_campaign=2026_aieng_workshop&utm_id=researchwriter) | Our full course. 34 lessons. Three end-to-end portfolio projects. A certificate. And a Discord community.       |
+| [Agentic AI Engineering Course](https://academy.towardsai.net/courses/agent-engineering?utm_source=github&utm_medium=aieng&utm_campaign=2026_aieng_workshop&utm_id=researchwriter) | Our full course on shipping production-grade AI agents. 34 lessons. Three end-to-end portfolio projects. A certificate. And a Discord community.       |
 | [Agentic AI Engineering Guide](https://email-course.towardsai.net/)                      | Free 6-day email course on the mistakes that silently break AI agents in production.                            |
 | [AI Engineering Cheatsheets](https://github.com/louisfb01/ai-engineering-cheatsheets)    | Quick-reference sheets for agents, RAG, fine-tuning, and more. Ready to be plugged into Claude Code as context. |
 
