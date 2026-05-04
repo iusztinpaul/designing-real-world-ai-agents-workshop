@@ -28,13 +28,7 @@ Rated 5/5 by 300+ students. The first 6 lessons are free:
 
 ## How to Use This Repo
 
-Three ways to use this repo. Pick the mode that fits the time you have. Or work through all three in order, since each builds on the last.
-
-| Mode | Time | What you walk away with | What you need |
-|---|---|---|---|
-| 1. Watch | ~2 hr | Watch the workshop and see the patterns end-to-end | Start with the [2-hour YouTube workshop](https://www.youtube.com/watch?v=mYSRn6PC1mc) and the [slides](https://drive.google.com/file/d/1RWdS5VQYjz7a9y7NzHhAnyhGtxi6e0vt/view?usp=sharing) above. You'll come away with a mental model of the full multi-agent system: tool-use agents, evaluator-optimizer loops, grounded search, structured LLM output, and MCP-server design. |
-| 2. Run | ~30 min | Run the finished code. See it produce real artifacts | Watch the system generate a research brief, draft a LinkedIn post through an evaluator-optimizer loop, and score itself with an LLM-as-judge. Follow the [Getting Started](#getting-started) and [Running the Code](#running-the-code) sections to install the project and run the MCP servers, skills, and evaluation pipeline. |
-| 3. Build | ~2–4 hr | Implement it yourself with agentic coding. Build a 1:1 replica from scratch | Open [`implement_yourself/`](implement_yourself/), a stripped-down skeleton prepared with 25 pre-groomed tickets and a custom `/implement` Claude Code skill that orchestrates SWE and Tester agents in a loop, ticket by ticket, until the directory matches `src/`. See [`implement_yourself/README.md`](implement_yourself/README.md) for the kickoff guide. |
+Three ways to use this repo. Pick the mode that fits the time you have. Or work through all three in order, since each builds on the last:
 
 1. **Watch the workshop and see the patterns end-to-end. Watch in ~2 hr.** Start with the [2-hour YouTube workshop](https://www.youtube.com/watch?v=mYSRn6PC1mc) and the [slides](https://drive.google.com/file/d/1RWdS5VQYjz7a9y7NzHhAnyhGtxi6e0vt/view?usp=sharing) above. You'll come away with a mental model of the full multi-agent system: tool-use agents, evaluator-optimizer loops, grounded search, structured LLM output, and MCP-server design.
 2. **Run the finished code. See it produce real artifacts. Run in ~30 min.** Watch the system generate a research brief, draft a LinkedIn post through an evaluator-optimizer loop, and score itself with an LLM-as-judge. Follow the [Getting Started](#getting-started) and [Running the Code](#running-the-code) sections to install the project and run the MCP servers, skills, and evaluation pipeline.
