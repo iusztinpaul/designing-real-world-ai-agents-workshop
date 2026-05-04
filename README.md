@@ -314,13 +314,6 @@ What's the most complex system you've encountered recently?
 
 > **Assumes** working Python knowledge and basic familiarity with LLMs.
 
-| Section | Estimated Time |
-|---------|---------------|
-| Setup | ~15 min |
-| Deep Research Agent | ~40 min |
-| LinkedIn Writing Workflow | ~40 min |
-| Evaluation & Polish | ~25 min |
-
 ### Prerequisites
 
 | Requirement | Check | Install |
