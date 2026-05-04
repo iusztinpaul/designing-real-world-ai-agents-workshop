@@ -12,9 +12,13 @@ A hands-on workshop, presented at [AI Engineering Conference Europe](https://www
 
 ----
 
-## From Our Agentic AI Engineering Course
+## Whenever You're Ready, Here's How to Go Deeper
 
-Built as a lightweight companion to our [Agentic AI Engineering Course](https://academy.towardsai.net/courses/agent-engineering?utm_source=github&utm_medium=aieng&utm_campaign=2026_aieng_workshop&utm_id=researchwriter), which covers **34 lessons and three end-to-end portfolio projects on building production-grade agentic systems**. This workshop distills the core agentic patterns into a ~2–4 hour hands-on build.
+This workshop is a 2–4 hour taste. If you want to go from zero to shipping production-grade AI agents, check out our [**Agentic AI Engineering Course**](https://academy.towardsai.net/courses/agent-engineering?utm_source=github&utm_medium=aieng&utm_campaign=2026_aieng_workshop&utm_id=researchwriter), built with Towards AI.
+
+**34 lessons. Three end-to-end portfolio projects. A certificate. And a Discord community with direct access to industry experts and us.**
+
+*Rated 5/5 by 300+ students. The first 6 lessons are free —* [**Start here →**](https://academy.towardsai.net/courses/agent-engineering?utm_source=github&utm_medium=aieng&utm_campaign=2026_aieng_workshop&utm_id=researchwriter)
 
 <a href="https://academy.towardsai.net/courses/agent-engineering?utm_source=github&utm_medium=aieng&utm_campaign=2026_aieng_workshop&utm_id=researchwriter"><img src="media/course_clip.gif" alt="Agentic AI Engineering Course" width="800"/></a>
 
